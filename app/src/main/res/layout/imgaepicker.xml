@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+
+        android:src="@drawable/ic_photo_camera_black_48dp"
+        android:id="@+id/camera"
+        android:layout_width="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_height="@dimen/_54sdp"
+        android:contentDescription="@string/tap_to_open_camera" />
+
+    <ImageView
+        android:src="@drawable/ic_photo_black_48dp"
+        android:id="@+id/photo"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_toEndOf="@id/camera"
+        android:layout_width="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_height="@dimen/_54sdp"
+        android:contentDescription="@string/tap_to_open_photo_gallery" />
+
+    <TextView
+        android:textColor="@color/FixColorCancelTextColor"
+        android:layout_toEndOf="@id/photo"
+        android:layout_below="@id/photo"
+        android:text="@string/cancel"
+        android:id="@+id/CANCEL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</RelativeLayout>

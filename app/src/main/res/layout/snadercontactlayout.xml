@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/Download"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="start"
+    android:layout_marginTop="12dp">
+    <RelativeLayout
+        android:layout_width="210dp"
+        android:background="@color/Chat_Color_green"
+        android:layout_alignParentEnd="true"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:id="@+id/main"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/Icon"
+                android:layout_width="50dp"
+                android:layout_height="58dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_alignBottom="@id/main"
+                android:layout_marginStart="15dp"
+                android:contentDescription="Icon Of PDF"
+                android:src="@drawable/contact"
+                tools:ignore="NotSibling" />
+
+            <TextView
+                android:id="@+id/filename"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="25dp"
+                android:layout_toEndOf="@+id/Icon"
+                android:text="PDF File Name"
+                android:textAllCaps="false"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/filename"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@+id/Icon"
+                android:text="+91 7023941072"
+                android:textColor="@color/black" />
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/number"
+                android:layout_marginTop="5dp"
+                android:layout_alignParentEnd="true"
+                android:text="12:12:12"
+                android:textColor="#808080" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

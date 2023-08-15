@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/MainBackgroundColor"
+    android:layout_height="match_parent"
+    tools:context=".ContactFromActivity">
+
+    <TextView
+        android:textColor="@color/MainTextColor"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_alignParentTop="true"
+        android:id="@+id/text1"
+        android:text="@string/report_a_bug"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/_34ssp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:layout_centerHorizontal="true"
+        android:hint="@string/problem"
+        android:layout_below="@id/text1"
+        android:id="@+id/Problem"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:textColor="@color/MainTextColor"
+        android:textColorHint="@color/MainTextColor"
+        android:layout_marginStart="@dimen/_25sdp"
+        android:layout_marginEnd="@dimen/_25sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:importantForAutofill="no"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/example"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_100sdp"
+        android:layout_below="@id/Problem"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="@dimen/_25sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_25sdp"
+        android:hint="@string/example"
+        android:importantForAutofill="no"
+        android:inputType="textMultiLine"
+        android:textColor="@color/MainTextColor"
+        android:textColorHint="@color/MainTextColor" />
+
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/recycler"-->
+<!--        android:layout_marginTop="@dimen/_15sdp"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"/>-->
+
+    <TextView
+        android:layout_marginTop="@dimen/_5sdp"
+        android:text="Take some Screen Shot"
+        android:textColor="@color/MainTextColor"
+        android:layout_below="@id/example"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_alignParentStart="true"
+        android:id="@+id/screenShotText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/images"
+
+        android:background="@color/RecView"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/_9sdp"
+        android:layout_below="@id/screenShotText"
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_150sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/addImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/addimagelayout" />
+
+        <ImageView
+            android:id="@+id/addImage"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:src="@drawable/ic_baseline_add_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.492" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <CheckBox
+        android:layout_below="@id/images"
+        android:textColor="@color/MainTextColor"
+        android:text="@string/include_device_informotion"
+        android:layout_width="wrap_content"
+        android:id="@+id/checkbox"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_9sdp"
+        android:text="Report"
+        android:textColor="@color/FixColorWhite"
+        android:textSize="@dimen/_24ssp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/report"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+
+</RelativeLayout>

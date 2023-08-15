@@ -1,0 +1,58 @@
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
+
+
+    <com.github.chrisbanes.photoview.PhotoView
+        android:id="@+id/photoView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/bglay"
+        tools:srcCompat="@tools:sample/avatars[1]" />
+
+    <EditText
+        android:id="@+id/editTextOverlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:hint="Text"
+        android:textColor="#FFFFFF"
+        android:layout_centerInParent="true"
+        android:visibility="invisible" />
+
+    <!-- Add other UI elements here like buttons, text input fields, etc. -->
+    <ImageView
+        android:src="@drawable/text_light"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:id="@+id/addTextButton"
+        android:scaleType="fitXY"
+        android:layout_width="@dimen/_44sdp"
+        android:layout_height="@dimen/_44sdp"
+        android:layout_centerHorizontal="true"
+        android:text="Add Text"
+        android:padding="10dp" />
+
+
+    <ImageView
+        android:src="@drawable/ic_checkmark_light"
+        android:id="@+id/saveButton"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:scaleType="fitXY"
+        android:layout_width="@dimen/_44sdp"
+        android:layout_height="@dimen/_44sdp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:text="Save"
+        android:padding="10dp" />
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,43 @@
+<!-- item_user.xml -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/list_chat_layout_background"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="8dp">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/NotesIcon"
+        android:layout_width="80dp"
+        android:layout_marginStart="1dp"
+        android:scaleType="center"
+        android:adjustViewBounds="true"
+        android:layout_height="80dp"
+        app:riv_border_color="#333333"
+        app:riv_border_width="2dip"
+        app:riv_corner_radius="30dip"
+        app:riv_mutate_background="true"
+        app:riv_oval="true"
+        android:src="@drawable/userimage"/>
+    <TextView
+        android:id="@+id/notesName"
+        android:maxLength="23"
+        android:textColor="@color/MainTextColor"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/NotesIcon"
+        android:layout_marginStart="12dp"
+        android:textSize="20sp" />
+    <ImageView
+        android:id="@+id/copy"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_centerVertical="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_baseline_copy_all_24"
+        android:layout_alignParentEnd="true"
+        android:layout_width="@dimen/_34sdp"
+        android:layout_height="@dimen/_34sdp"
+        android:contentDescription="@string/tap_to_copy_the_link" />
+
+</RelativeLayout>

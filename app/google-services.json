@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "27692683761",
+    "firebase_url": "https://friend-circle-f948a-default-rtdb.firebaseio.com",
+    "project_id": "friend-circle-f948a",
+    "storage_bucket": "friend-circle-f948a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:27692683761:android:1c3e89b348dc8e333db450",
+        "android_client_info": {
+          "package_name": "com.crazyostudio.studentcircle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "27692683761-gt84cpbf7p2kgdo3th43qhnctem5vmsc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCItXCDsACvvQAHjuj61yxulrSzCdY7sAo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "27692683761-gt84cpbf7p2kgdo3th43qhnctem5vmsc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

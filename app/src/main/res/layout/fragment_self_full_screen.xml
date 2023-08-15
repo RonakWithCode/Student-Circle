@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/FixColorBlack"
+    android:layout_height="match_parent"
+    tools:context=".fragment.SelfFullScreenFragment">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/ToolBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50sdp"
+        android:background="@color/green"
+        android:minHeight="?attr/actionBarSize">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/BackBts"
+            android:layout_width="20dp"
+            android:layout_height="32dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/img"
+            app:riv_oval="true" />
+
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/userImage"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="30dp"
+            android:scaleType="center"
+            android:src="@drawable/userimage"
+            app:riv_border_color="#4A4A4A"
+            app:riv_border_width="1dp"
+            app:riv_corner_radius="30dp"
+            app:riv_oval="true" />
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="23dp"
+            android:layout_marginTop="6dp"
+            android:maxLength="24"
+
+            android:textColor="@color/BlackMainTextColor"
+            android:textSize="19sp"
+            android:textStyle="bold" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+
+
+    <com.crazyostudio.studentcircle.ColorChangingImageView
+
+        android:id="@+id/ImageView"
+        android:layout_width="match_parent"
+        android:layout_below="@id/ToolBar"
+        android:layout_marginBottom="@dimen/_50sdp"
+        android:layout_height="match_parent" />
+    <TextView
+        android:textAlignment="center"
+        android:autoLink="web"
+        android:textColorLink="@color/Link"
+        android:textColor="@color/StoryTextColor"
+        android:maxLines="5"
+        android:id="@+id/text"
+        android:textStyle="normal"
+
+        android:layout_margin="5dp"
+        android:layout_centerInParent="true"
+        android:textSize="34sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>

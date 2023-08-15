@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/NameCopy"
+        android:title="@string/copy_name"/>
+    <item android:id="@+id/NumberCopy"
+        android:title="@string/copy_number"/>
+
+    <item android:id="@+id/findName"
+        android:title="Find With Name"/>
+    <item android:id="@+id/findNumber"
+        android:title="Find With Number"/>
+
+</menu>

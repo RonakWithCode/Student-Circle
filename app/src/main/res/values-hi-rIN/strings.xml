@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Student Circle</string>
+    <string name="crazy_studio">Crazy Studio</string>
+    <string name="HaveAccount">क्या आपके पास पहले से एक खाता मौजूद है?</string>
+    <string name="create_account">एक नया खाता बनाएं</string>
+    <string name="don_t_have_an_account">कोई खाता नहीं है</string>
+    <string name="have_an_account">क्या आपके पास कोई खाता है?</string>
+    <string name="login">लॉग इन करें</string>
+    <string name="log_in">लॉग इन करें</string>
+    <string name="log_out">लॉग आउट</string>
+    <string name="sign_up">साइन अप करें</string>
+    <string name="item_name">आइटम नाम</string>
+    <string name="try_again">पुनः प्रयास करें</string>
+    <string name="wait">इंतज़ार</string>
+    <string name="ok">ठीक</string>
+    <string name="name">नाम</string>
+    <string name="mail">ईमेल</string>
+    <string name="password">पासवर्ड</string>
+    <string name="number">फ़ोन नंबर</string>
+    <string name="upload">डालना</string>
+    <string name="logout">लॉग आउट</string>
+    <string name="settings">समायोजन</string>
+    <string name="bio">bio</string>
+    <string name="tell_me_about_your_self">ओर बताओ अपने बारे मेँ</string>
+    <string name="profile">प्रोफ़ाइल</string>
+    <string name="PhoneNumber">फ़ोन नंबर</string>
+    <string name="if_your_change_amy_things_in_profile_your_can_tap_on_profile">यदि आप प्रोफ़ाइल में कुछ भी बदलते हैं तो आप प्रोफ़ाइल आइकन पर टैप कर सकते हैं</string>
+    <string name="Theme">थीम</string>
+    <string name="changes">परिवर्तन</string>
+    <string name="todo">ऐसा करने के लिए</string>
+    <string name="user">उपयोगकर्ता</string>
+    <string name="enter_login_pass">लॉगिन पिन दर्ज करें</string>
+    <string name="make_pin_for_secure_your_privacy">अपनी गोपनीयता सुरक्षित करने के लिए पिन बनाएं</string>
+    <string name="first_make_fake_pin">सबसे पहले फर्जी-पिन बनाएं</string>
+    <string name="pin_star">****</string>
+    <string name="make_real_pin">रियल-पिन बनाएं</string>
+    <string name="tap_make_pin">पिन बनाएं टैप करें</string>
+    <string name="about">के बारे में</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="contact_us">संपर्क करें</string>
+    <string name="terms_amp_privacy_policy">शर्तें एवं गोपनीयता नीति</string>
+    <string name="accept_terms_and_conditions">नियम और शर्तों को स्वीकार करें</string>
+    <string name="read_more"><a href="https://crazy-studio-website.web.app/PrivacyPolicy.html">और पढ़ें</a></string>
+    <string name="public_group_chating">सार्वजनिक समूह चैटिंग</string>
+    <string name="icon">आइकन</string>
+    <string name="otp">ओ.टी.पी</string>
+
+
+    <string name="otp_title">कृपया 6 अंकों का सत्यापन कोड दर्ज करें</string>
+    <string name="otp_button_text">सत्यापित करना</string>
+    <string name="resend_msg">ओटीपी प्राप्त नहीं हुआ?</string>
+    <string name="resend_again_msg">पुनः भेजें</string>
+    <string name="sent_to_91_xxxx_xxx">को भेजा +91 XXXX XXX</string>
+    <string name="change">परिवर्तन</string>
+    <string name="phone_number">फ़ोन नंबर</string>
+    <string name="tap_to_go">जाने के लिए टैप करें</string>
+    <string name="text_o">देखना</string>
+    <string name="icon_of_camrea">कैमरे का चिह्न</string>
+    <string name="pdf_icon">पीडीएफ आइकन</string>
+    <string name="copy_name">नाम कॉपी करें</string>
+    <string name="copy_number">नंबर कॉपी करें</string>
+    <string name="copy">प्रतिलिपि</string>
+    <string name="delete">मिटाना</string>
+    <string name="tap_to_add_new_story">नई कहानी जोड़ने के लिए टैप करें</string>
+    <string name="tap_to_change_colors">रंग बदलने के लिए टैप करें</string>
+    <string name="Select_the_language">भाषा चुनें</string>
+    <string name="save">Save</string>
+    <string name="english">English</string>
+    <string name="hindi">हिंदी</string>
+    <string name="tap_to_replay">जवाब देने के लिए टैप करें</string>
+    <string name="enter_subject_name">विषय का नाम दर्ज करें</string>
+    <string name="tap_to_open_in_full_screen">पूर्ण स्क्रीन में खोलने के लिए टैप करें</string>
+    <string name="tap_to_copy_the_link">लिंक कॉपी करने के लिए टैप करें</string>
+    <string name="tap_to_add_new_material">नई सामग्री जोड़ने के लिए टैप करें</string>
+    <string name="cancel">रद्द करनां</string>
+    <string name="tap_to_open_photo_gallery">फोटो गैलरी खोलने के लिए टैप करें</string>
+    <string name="tap_to_open_camera">कैमरा खोलने के लिए टैप करें</string>
+    <string name="tap_to_select_the_image_your_want_to_edit">उस छवि का चयन करने के लिए टैप करें जिसे आप संपादित करना चाहते हैं</string>
+    <string name="problem">संकट</string>
+    <string name="example">उदाहरण</string>
+    <string name="include_device_informotion">डिवाइस की जानकारी शामिल करें</string>
+    <string name="report_a_bug">एक बग रिपोर्ट करो</string>
+</resources>

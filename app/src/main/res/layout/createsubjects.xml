@@ -1,0 +1,95 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/list_chat_layout_background"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="8dp">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/userAvatar"
+        android:layout_width="80dp"
+        android:layout_marginStart="1dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:layout_height="80dp"
+        app:riv_border_color="#333333"
+        app:riv_border_width="2dip"
+        app:riv_corner_radius="30dip"
+        app:riv_mutate_background="true"
+        app:riv_oval="true"
+        android:src="@drawable/imagepickericon"/>
+    <EditText
+        android:maxLength="23"
+        android:id="@+id/subName"
+        android:textColor="@color/MainTextColor"
+        android:layout_marginTop="5dp"
+        android:hint="@string/enter_subject_name"
+        android:textColorHint="@color/MainTextColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/userAvatar"
+        android:layout_marginStart="12dp"
+        android:textSize="20sp" />
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/images"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/_9sdp"
+        android:layout_below="@id/userAvatar"
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_150sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/addImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/addimagelayout" />
+
+        <ImageView
+            android:id="@+id/addImage"
+
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:src="@drawable/addbuttonicon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.492" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:gravity="end"
+        android:layout_marginTop="@dimen/_9sdp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/images"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="CANCEL"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:textSize="@dimen/_20ssp"
+            android:layout_width="wrap_content"
+            android:textColor="@color/FixColorCancelTextColor"
+            android:id="@+id/CANCEL"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:text="SAVE"
+            android:textColor="@color/FixColorSaveTextColor"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_width="wrap_content"
+            android:id="@+id/save"
+            android:textSize="@dimen/_20ssp"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

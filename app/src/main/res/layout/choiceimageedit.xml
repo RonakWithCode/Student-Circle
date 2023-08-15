@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_centerInParent="true"
+    android:background="@color/MainBackgroundColor"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:layout_marginTop="@dimen/_9sdp"
+        android:id="@+id/text"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:textSize="@dimen/_22sdp"
+        android:textColor="@color/MainTextColor"
+        android:text="Your want to edit this Image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:gravity="end"
+        android:layout_marginTop="@dimen/_50sdp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/text"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="Edit"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:textSize="@dimen/_20ssp"
+            android:layout_width="wrap_content"
+            android:textColor="@color/FixColorCancelTextColor"
+            android:id="@+id/Edit"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:text="Continue"
+            android:textColor="@color/FixColorSaveTextColor"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_width="wrap_content"
+                android:id="@+id/Continue"
+            android:textSize="@dimen/_20ssp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:layout_marginTop="10dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
+    android:layout_marginBottom="5dp"
+    android:layout_height="wrap_content">
+
+    <com.ortiz.touchview.TouchImageView
+        android:id="@+id/Imageview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="5dp"
+        android:contentDescription="@string/todo"
+        android:scaleType="fitXY"
+        android:maxHeight="250dp"
+        android:maxWidth="250dp"
+        android:adjustViewBounds="true"
+        tools:src="@tools:sample/avatars" />
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:text="12:12:12 PM"
+        android:layout_gravity="end"
+        android:textColor="#808080"
+        android:layout_below="@id/Imageview"
+        android:layout_marginBottom="2dp"
+        android:layout_marginStart="5dp"
+        android:layout_height="wrap_content"/>
+</RelativeLayout>

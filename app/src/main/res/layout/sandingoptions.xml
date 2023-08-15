@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:src="@drawable/ic_photo_camera_black_48dp"
+        android:layout_width="60dp"
+        android:id="@+id/camera"
+        android:layout_height="60dp"
+        android:layout_marginStart="12dp"
+        android:contentDescription="@string/icon_of_camrea" />
+
+    <ImageView
+        android:layout_marginStart="12dp"
+        android:src="@drawable/ic_baseline_picture_as_pdf_24_black"
+        android:layout_width="60dp"
+        android:id="@+id/document"
+        android:layout_height="60dp"
+        android:contentDescription="@string/pdf_icon" />
+    <ImageView
+        android:layout_marginStart="12dp"
+        android:src="@drawable/contact"
+        android:layout_width="60dp"
+        android:id="@+id/contact"
+        android:layout_height="60dp"
+        android:contentDescription="icon of contact" />
+
+
+</LinearLayout>

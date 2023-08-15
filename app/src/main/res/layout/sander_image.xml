@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_marginTop="10dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
+
+    android:layout_marginBottom="5dp"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:background="@color/Chat_Color_green"
+        android:orientation="vertical"
+        android:layout_alignParentEnd="true"
+        android:layout_height="wrap_content"
+        tools:ignore="UselessParent">
+        <com.ortiz.touchview.TouchImageView
+            android:id="@+id/SanderImageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxHeight="250dp"
+
+            android:layout_margin="5dp"
+            android:maxWidth="250dp"
+            android:contentDescription="@string/todo"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            tools:src="@tools:sample/avatars" />
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:text="12:12:12PM"
+            android:layout_gravity="end"
+            android:textColor="#808080"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</RelativeLayout>

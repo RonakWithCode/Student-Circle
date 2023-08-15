@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="MainBackgroundColor">#202124</color>
+    <color name="MainTextColor">#ffff</color>
+    <color name="BlackMainTextColor">#000000</color>
+    <!--SeeUserProfile-->
+
+    <color name="SeeUserProfileMainBackground">#352828</color>
+    <color name="SeeUserProfilesub_background">#202124</color>
+
+    <!-- Login    -->
+    <color name="PlanText">#171717</color>
+    <color name="Link">#027ebc</color>
+    <!--    SignupDetails   -->
+    <color name="SignupDetailsBlackPlanText">#171717</color>
+    <!--    User_Profile -->
+    <color name="User_ProfileBackground">#4C4545</color>
+    <!--    Fix Color  -->
+    <color name="FixColorBlack">#000000</color>
+
+    <!--User list of Chat Layout Color -->
+    <color name="list_chat_layout_background">#202c33</color>
+    <color name="FixColorWhite">#ffff</color>
+    <color name="RecView">#202c33</color>
+
+</resources>

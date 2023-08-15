@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_marginTop="12dp"
+        android:id="@+id/Download"
+        android:background="@color/Chat_Color_green"
+        android:layout_gravity="end"
+        android:layout_width="210dp"
+        android:layout_height="110dp">
+        <ImageView
+            android:layout_width="54dp"
+            android:src="@drawable/ic_baseline_picture_as_pdf_24"
+            android:layout_marginStart="15dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/pdfIcon"
+            android:layout_height="69dp"
+            android:contentDescription="Icon Of PDF" />
+
+        <TextView
+            android:id="@+id/filename"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="25dp"
+            android:layout_toEndOf="@+id/pdfIcon"
+            android:text="PDF File Name" />
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:id="@+id/pages"-->
+<!--            android:layout_marginStart="12dp"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:layout_below="@+id/filename"-->
+<!--            android:textColor="@color/black"-->
+
+<!--            android:layout_toEndOf="@+id/pdfIcon"-->
+<!--            android:text="150 Page" />-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:id="@+id/size"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/filename"
+            android:layout_toEndOf="@+id/pdfIcon"
+            android:text="75 kb" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#808080"
+            android:id="@+id/time"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/size"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="12dp"
+            android:text="12:12:12" />
+
+    </RelativeLayout>
+</LinearLayout>

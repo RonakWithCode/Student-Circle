@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/MainBackgroundColor"
+    android:layout_height="match_parent"
+    tools:context=".user.SignUp">
+    <ImageView
+        android:id="@+id/loginIcon"
+        android:src="@drawable/adduser"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="325dp"
+        android:contentDescription="@string/icon" />
+
+    <TextView
+        android:layout_width="60dp"
+        android:id="@+id/indan"
+        android:layout_marginTop="25dp"
+        android:layout_below="@id/loginIcon"
+        android:layout_alignParentStart="true"
+        android:text="+91"
+        android:background="@drawable/number"
+        android:textSize="32sp"
+        android:textColor="@color/MainTextColor"
+        android:layout_marginStart="30dp"
+        android:textAlignment="center"
+        android:paddingTop="10dp"
+        android:layout_height="60dp"/>
+
+    <EditText
+        android:id="@+id/Number"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/loginIcon"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="50dp"
+        android:layout_toEndOf="@+id/indan"
+        android:autofillHints=""
+        android:background="@drawable/number"
+        android:hint="123 456 7890"
+        android:inputType="phone"
+        android:maxLength="10"
+        android:paddingStart="12dp"
+        android:textColor="@color/MainTextColor"
+        android:textColorHint="@color/MainTextColor"
+        android:textSize="32sp"
+        tools:ignore="RtlSymmetry" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Number"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="19dp"
+        android:autoLink="web"
+        android:text="@string/accept_terms_and_conditions"
+        android:textColor="@color/MainTextColor" />
+
+    <TextView
+        android:id="@+id/link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Number"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="33dp"
+        android:layout_toEndOf="@+id/checkBox"
+        android:autoLink="web"
+        android:linksClickable="true"
+        android:text="@string/read_more"
+        android:textColor="@color/Link" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/roundcolorbutton"
+        android:layout_height="64dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="30dp"
+        android:theme="@style/Theme.FriendCircle.bts"
+        android:textAlignment="center"
+        android:textSize="22sp"
+        android:layout_marginEnd="30dp"
+        android:layout_below="@id/checkBox"
+        android:layout_width="wrap_content"
+        android:text="@string/otp" />
+
+
+<!--    <TextView-->
+<!--        android:textSize="@dimen/_24ssp"-->
+<!--        android:layout_marginTop="@dimen/_25sdp"-->
+<!--        android:layout_below="@id/button"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:textColor="@color/MainTextColor"-->
+<!--        android:text="@string/Select_the_language"-->
+<!--        android:id="@+id/texts"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"/>-->
+<!--    <Spinner-->
+<!--        android:id="@+id/language"-->
+<!--        android:textAlignment="center"-->
+<!--        android:layout_marginTop="@dimen/_5sdp"-->
+<!--        android:layout_below="@+id/texts"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"/>-->
+
+
+</RelativeLayout>
