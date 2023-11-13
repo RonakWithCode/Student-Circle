@@ -16,7 +16,7 @@ import com.crazyostudio.studentcircle.model.HelpImageAdaptersOnclick;
 
 import java.util.ArrayList;
 
-public class HelpImageAdapters extends RecyclerView.Adapter<HelpImageAdapters.HelpImageAdaptersViewHolder> {
+    public class HelpImageAdapters extends RecyclerView.Adapter<HelpImageAdapters.HelpImageAdaptersViewHolder> {
     ArrayList<Uri> image;
     Context context;
     HelpImageAdaptersOnclick onclick;

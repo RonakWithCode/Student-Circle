@@ -2,11 +2,13 @@ package com.crazyostudio.studentcircle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
 import com.crazyostudio.studentcircle.databinding.ActivityFullscreenBinding;
 import com.crazyostudio.studentcircle.databinding.FragmentFullScreenBinding;
+import com.crazyostudio.studentcircle.model.CurrentInternetConnection;
 
 public class fullscreen extends AppCompatActivity {
     ActivityFullscreenBinding binding;
@@ -15,7 +17,11 @@ public class fullscreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityFullscreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        if (!CurrentInternetConnection.isInternetConnected(this)) {
+            Intent intent = new Intent(this, fragmentLoad.class);
+            intent.putExtra("LoadID","network");
+            startActivity(intent);
+        }
         binding.close.setOnClickListener(view-> finish());
         // Get the image bitmap from the intent
         String image = getIntent().getStringExtra("image");

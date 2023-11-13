@@ -5,6 +5,7 @@ import static android.app.Activity.RESULT_OK;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -52,7 +54,7 @@ public class ShareNotesFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
 //            uri = getArguments().getStringArrayList("Notes");
-           receivedModel = getArguments().getParcelable("subjectModel");
+            receivedModel = getArguments().getParcelable("subjectModel");
 //            uri.addAll(receivedModel.getNotes());
             if (receivedModel != null) {
                 imageUrls = new ArrayList<>();
@@ -65,7 +67,7 @@ public class ShareNotesFragment extends Fragment {
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-         Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         com.crazyostudio.studentcircle.databinding.FragmentShareNotesBinding binding = FragmentShareNotesBinding.inflate(inflater, container, false);
         progressDialog = new ProgressDialog(getContext());
@@ -105,16 +107,21 @@ public class ShareNotesFragment extends Fragment {
                     int count = data.getClipData().getItemCount();
                     for (int i = 0; i < count; i++) {
                         Uri fileUri = data.getClipData().getItemAt(i).getUri();
-                        String mimeType = requireActivity().getContentResolver().getType(fileUri);
-                        String fileType = getFileTypeFromMimeType(mimeType);
+//                        String mimeType = requireActivity().getContentResolver().getType(fileUri);
+                        String fileType = getFileTypeFromMimeType(fileUri);
                         uploadMultipleImages(count, fileUri.toString(), fileType);
                     }
                 }
+
+
+
+
+
                 else if (data.getData() != null) {
                     // Single file selected
                     Uri fileUri = data.getData();
-                    String mimeType = requireActivity().getContentResolver().getType(fileUri);
-                    String fileType = getFileTypeFromMimeType(mimeType);
+//                    String mimeType = requireActivity().getContentResolver().getType(fileUri);
+                    String fileType = getFileTypeFromMimeType(fileUri);
                     uploadMultipleImages(1,fileUri.toString(),fileType);
                 }
             }
@@ -123,60 +130,79 @@ public class ShareNotesFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     private void uploadMultipleImages(int Size, String subImageUri, String imageName) {
-            StorageReference imageRef = storageRef.child(System.currentTimeMillis()+imageName);
-            UploadTask uploadTask = imageRef.putFile(Uri.parse(subImageUri));
-            uploadTask.addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    imageRef.getDownloadUrl().addOnCompleteListener(downloadTask -> {
-                        if (downloadTask.isSuccessful()) {
-                            // Add the download URL to the list
+        StorageReference imageRef = storageRef.child(System.currentTimeMillis()+imageName);
+        UploadTask uploadTask = imageRef.putFile(Uri.parse(subImageUri));
+        uploadTask.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                imageRef.getDownloadUrl().addOnCompleteListener(downloadTask -> {
+                    if (downloadTask.isSuccessful()) {
+                        // Add the download URL to the list
 //                            imageUrls.clear();
-                            imageUrls.add(downloadTask.getResult().toString());
-                        } else {
-                            Log.e(TAG, "Error getting download URL: ", downloadTask.getException());
-                        }
-                        uploadCount++;
-                        if (uploadCount == Size) {
-                            receivedModel.setNotes(imageUrls);
-                            Uri data = Uri.parse(receivedModel.getPath());
-                            String path = data.getQueryParameter("path");
+                        imageUrls.add(downloadTask.getResult().toString());
+                    } else {
+                        Log.e(TAG, "Error getting download URL: ", downloadTask.getException());
+                    }
+                    uploadCount++;
+                    if (uploadCount == Size) {
+                        receivedModel.setNotes(imageUrls);
+                        Uri data = Uri.parse(receivedModel.getPath());
+                        String path = data.getQueryParameter("path");
 
 //                            Uri path = ?Uri.parse(Uri.parse(receivedModel.getPath()).getQueryParameter("path"));
 
-                            firebaseDatabase.getReference().child(path).setValue(receivedModel).addOnCompleteListener(task1 -> {
-                                if (task1.isSuccessful()) {
+                        firebaseDatabase.getReference().child(path).setValue(receivedModel).addOnCompleteListener(task1 -> {
+                            if (task1.isSuccessful()) {
 //                                    dialog.dismiss();
-                                    progressDialog.dismiss();
-                                    adapters.notifyDataSetChanged();
-                                }
-                            }).addOnFailureListener(e -> {
-                                firebaseDatabase.getReference().child("error").child("Share_createSubject").child(System.currentTimeMillis()+"").push().setValue(e.getMessage());
-                                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-//                                dialog.dismiss();
                                 progressDialog.dismiss();
+                                adapters.notifyDataSetChanged();
+                            }
+                        }).addOnFailureListener(e -> {
+                            firebaseDatabase.getReference().child("error").child("Share_createSubject").child(System.currentTimeMillis()+"").push().setValue(e.getMessage());
+                            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+//                                dialog.dismiss();
+                            progressDialog.dismiss();
 
-                            });
-                        }
-                    });
-                } else {
-                    // Handle the error
-                    Log.e(TAG, "Error uploading image: ", task.getException());
-                    // If there was an error, decrement the uploadCount to avoid blocking further uploads
-                    uploadCount--;
-                }
-            });
+                        });
+                    }
+                });
+            } else {
+                // Handle the error
+                Log.e(TAG, "Error uploading image: ", task.getException());
+                // If there was an error, decrement the uploadCount to avoid blocking further uploads
+                uploadCount--;
+            }
+        });
     }
-    private String getFileTypeFromMimeType(String mimeType) {
-        if (mimeType == null) {
-            return "Unknown";
-        } else if (mimeType.startsWith("image/")) {
-            return "Image";
-        } else if (mimeType.equals("application/pdf")) {
-            return "PDF";
-        } else if (mimeType.equals("application/msword")) {
-            return "DOC";
-        } else {
-            return "Unknown";
+    private String getFileTypeFromMimeType(Uri uri) {
+        ContentResolver contentResolver = requireContext().getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+
+        // Get the file extension based on the Uri's MIME type
+        String extension = mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+
+        if (extension == null) {
+            // If the MIME type doesn't provide an extension, try to extract from the Uri's path
+            String path = uri.getPath();
+            if (path != null) {
+                int extensionStartIndex = path.lastIndexOf('.');
+                if (extensionStartIndex != -1) {
+                    extension = path.substring(extensionStartIndex + 1);
+                }
+            }
         }
+
+        return extension;
+
+//        if (mimeType == null) {
+//            return "Unknown";
+//        } else if (mimeType.startsWith("image/")) {
+//            return "Image";
+//        } else if (mimeType.equals("application/pdf")) {
+//            return "PDF";
+//        } else if (mimeType.equals("application/msword")) {
+//            return "DOC";
+//        } else {
+//            return "Unknown";
+//        }
     }
 }

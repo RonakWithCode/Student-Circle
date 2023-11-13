@@ -1,15 +1,21 @@
 package com.crazyostudio.studentcircle.adapters;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.DownloadManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.ContactsContract;
+import android.text.method.Touch;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
@@ -23,6 +29,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.crazyostudio.studentcircle.R;
 import com.crazyostudio.studentcircle.databinding.ReceiverBinding;
 import com.crazyostudio.studentcircle.databinding.ReceiverImageBinding;
@@ -34,6 +41,8 @@ import com.crazyostudio.studentcircle.databinding.SenderBinding;
 import com.crazyostudio.studentcircle.databinding.SnadercontactlayoutBinding;
 import com.crazyostudio.studentcircle.databinding.StoryreplyrcriverBinding;
 import com.crazyostudio.studentcircle.databinding.StoryreplysenderBinding;
+import com.crazyostudio.studentcircle.fullscreen;
+import com.crazyostudio.studentcircle.model.ChatAdaptersInterface;
 import com.crazyostudio.studentcircle.model.Chat_Model;
 import com.crazyostudio.studentcircle.model.UserInfo;
 import com.google.firebase.auth.FirebaseAuth;
@@ -48,22 +57,25 @@ import java.util.Date;
 import java.util.Objects;
 
 public class ChatAdapters extends  RecyclerView.Adapter{
+    ChatAdaptersInterface adaptersInterface;
     ArrayList<Chat_Model> ChatModels;
+    Activity activity_;
     Context context;
     int SANDER_VIEW_TYPE=1
             ,IMAGE_SANDER_VIEW_TYPE=2
             ,SANDER_PDF_VIEW_TYPE=3
             ,SANDER_CONTACT_VIEW_TYPE=4,SANDER_STORY_REPLY;
-
     int
             RECEIVER_VIEW_TYPE=103
             ,IMAGE_RECEIVER_VIEW_TYPE=104
             ,RECEIVER_PDF_VIEW_TYPE=105
             ,RECEIVER_CONTACT_VIEW_TYPE=106,RECEIVER_STORY_REPLY;
 
-    public ChatAdapters(ArrayList<Chat_Model> chatModels, Context context) {
+    public ChatAdapters(ArrayList<Chat_Model> chatModels, Context context,ChatAdaptersInterface ChatAdaptersInterface,Activity activity) {
         ChatModels = chatModels;
         this.context = context;
+        this.adaptersInterface = ChatAdaptersInterface;
+        this.activity_ = activity;
     }
     @NonNull
     @Override
@@ -166,6 +178,30 @@ public class ChatAdapters extends  RecyclerView.Adapter{
             String time = simpleDateFormat.format(date);
 
             ((SanderViewHolder)holder).SendBinding.messageTime.setText(time);
+            ((SanderViewHolder)holder).SendBinding.getRoot().setOnLongClickListener(v -> {
+
+                PopupMenu popup = new PopupMenu(context,  ((SanderViewHolder)holder).SendBinding.messageText);
+                MenuInflater inflater = popup.getMenuInflater();
+                inflater.inflate(R.menu.textmenu, popup.getMenu());
+                popup.setOnMenuItemClickListener(item -> {
+                    if (item.getItemId()== R.id.copy) {
+                        Toast.makeText(context, "Coppy", Toast.LENGTH_SHORT).show();
+                        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                        ClipData clip;
+                        clip = ClipData.newPlainText("text", chatModel.getMessage());
+                        clipboard.setPrimaryClip(clip);
+                        popup.dismiss();
+                    }
+                    else if (item.getItemId()==R.id.delete){
+                            Toast.makeText(context, "delete", Toast.LENGTH_SHORT).show();
+                            adaptersInterface.Delete(chatModel);
+                            popup.dismiss();
+                    }
+                    return true;
+                });
+                popup.show();
+                return false;
+            });
 
         }
         else if (holder.getClass() == SanderPDFViewHolder.class) {
@@ -176,7 +212,6 @@ public class ChatAdapters extends  RecyclerView.Adapter{
                 ((SanderPDFViewHolder)holder).pdfBinding.pdfIcon.setImageResource(R.drawable.apk);
             }else {
                 ((SanderPDFViewHolder)holder).pdfBinding.pdfIcon.setImageResource(R.drawable.document);
-
             }
 //            ((SanderPDFViewHolder)holder).pdfBinding.filename.setText(chatModel.getMessage());
             @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm");
@@ -198,6 +233,42 @@ public class ChatAdapters extends  RecyclerView.Adapter{
                 manager.enqueue(request);
                 Toast.makeText(context, "Check Notification Bar or Download Folder ", Toast.LENGTH_SHORT).show();
         });
+            ((SanderPDFViewHolder)holder).pdfBinding.Download.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    PopupMenu popup = new PopupMenu(context,  ((SanderPDFViewHolder)holder).pdfBinding.Download);
+                    MenuInflater inflater = popup.getMenuInflater();
+                    inflater.inflate(R.menu.imagemenu, popup.getMenu());
+                    popup.setOnMenuItemClickListener(item -> {
+                        switch (item.getItemId()) {
+                            case R.id.openFull:
+                                adaptersInterface.ImageView(chatModel);
+                                popup.dismiss();
+
+                                return false;
+                            case R.id.Download:
+                                String url = chatModel.getMessage();
+                                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+                                request.allowScanningByMediaScanner();
+                                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, chatModel.getFilename());
+                                DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+                                manager.enqueue(request);
+                                Toast.makeText(context, "Check Notification Bar or Download Folder ", Toast.LENGTH_SHORT).show();
+                                popup.dismiss();
+                                return false;
+                            case R.id.delete_btu:
+                                adaptersInterface.DeleteImage(chatModel);
+                                return false;
+                            default:
+                                return false;
+                        }
+                    });
+                    popup.show();
+                    return false;
+                }
+            });
+
 //
         }
         else if (holder.getClass()==SANDERCONTACTViewHolder.class){
@@ -251,10 +322,43 @@ public class ChatAdapters extends  RecyclerView.Adapter{
             ((ImageSanderViewHolder)holder).SendBinding.time.setText(time);
 
             Glide.with(context).load(chatModel.getMessage()).into(((ImageSanderViewHolder)holder).SendBinding.SanderImageview);
-            ((ImageSanderViewHolder) holder).SendBinding.SanderImageview.setOnClickListener(view -> {
-                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(chatModel.getMessage())));
+            ((ImageSanderViewHolder) holder).SendBinding.SanderImageview.setMaximumScale(5.0f); // Set the maximum zoom level
+            ((ImageSanderViewHolder) holder).SendBinding.SanderImageview.setMediumScale(3.0f); // Set the medium zoom level
+            ((ImageSanderViewHolder) holder).SendBinding.SanderImageview.setMinimumScale(1.0f);
+//            ((ImageSanderViewHolder) holder).SendBinding.SanderImageview.setOnClickListener(view -> );
 
+            ((ImageSanderViewHolder) holder).SendBinding.SanderImageview.setOnClickListener(Long->{
+                PopupMenu popup = new PopupMenu(context,  ((ImageSanderViewHolder)holder).SendBinding.SanderImageview);
+                MenuInflater inflater = popup.getMenuInflater();
+                inflater.inflate(R.menu.imagemenu, popup.getMenu());
+                popup.setOnMenuItemClickListener(item -> {
+                    switch (item.getItemId()) {
+                        case R.id.openFull:
+                            adaptersInterface.ImageView(chatModel);
+                            popup.dismiss();
+
+                            return false;
+                        case R.id.Download:
+                            String url = chatModel.getMessage();
+                            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+                            request.allowScanningByMediaScanner();
+                            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, chatModel.getFilename());
+                            DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+                            manager.enqueue(request);
+                            Toast.makeText(context, "Check Notification Bar or Download Folder ", Toast.LENGTH_SHORT).show();
+                            popup.dismiss();
+                            return false;
+                        case R.id.delete_btu:
+                            adaptersInterface.DeleteImage(chatModel);
+                            return false;
+                        default:
+                            return false;
+                    }
+                });
+                popup.show();
             });
+
 
         }
         else if (holder.getClass()==SANDERSTORYREPLYViewHolder.class) {
@@ -331,10 +435,44 @@ public class ChatAdapters extends  RecyclerView.Adapter{
             Date date = new Date(chatModel.getSandTime());
             String time = simpleDateFormat.format(date);
             ((ImageReceiverViewHolder)holder).Binding.time.setText(time);
-
             Glide.with(context).load(chatModel.getMessage()).into(((ImageReceiverViewHolder)holder).Binding.Imageview);
-            ((ImageReceiverViewHolder) holder).Binding.Imageview.setOnClickListener(view -> context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(chatModel.getMessage()))));
+            ((ImageReceiverViewHolder) holder).Binding.Imageview.setMaximumScale(5.0f); // Set the maximum zoom level
+            ((ImageReceiverViewHolder) holder).Binding.Imageview.setMediumScale(3.0f); // Set the medium zoom level
+            ((ImageReceiverViewHolder) holder).Binding.Imageview.setMinimumScale(1.0f);
+//                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(chatModel.getMessage())));
+            ((ImageReceiverViewHolder) holder).Binding.Imageview.setOnClickListener(on -> adaptersInterface.ImageView(chatModel));
+            ((ImageReceiverViewHolder) holder).Binding.getRoot().setOnLongClickListener(v -> {
+                PopupMenu popup = new PopupMenu(context,  ((ImageReceiverViewHolder)holder).Binding.getRoot());
+                MenuInflater inflater = popup.getMenuInflater();
+                inflater.inflate(R.menu.imagemenu, popup.getMenu());
+                popup.setOnMenuItemClickListener(item -> {
+                    switch (item.getItemId()) {
+                        case R.id.openFull:
+                            adaptersInterface.ImageView(chatModel);
+                            popup.dismiss();
 
+                            return false;
+                        case R.id.Download:
+                            String url = chatModel.getMessage();
+                            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+                            request.allowScanningByMediaScanner();
+                            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, chatModel.getFilename());
+                            DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+                            manager.enqueue(request);
+                            Toast.makeText(context, "Check Notification Bar or Download Folder ", Toast.LENGTH_SHORT).show();
+                            popup.dismiss();
+                            return false;
+                        case R.id.delete_btu:
+                            adaptersInterface.ReceiveDeleteImage(chatModel);
+                            return false;
+                        default:
+                            return false;
+                    }
+                });
+                popup.show();
+                return false;
+            });
 
         }
         else if (holder.getClass() == ReceiverPDFViewHolder.class) {
@@ -367,14 +505,43 @@ public class ChatAdapters extends  RecyclerView.Adapter{
                 Toast.makeText(context, "Check Notification Bar or Download Folder ", Toast.LENGTH_SHORT).show();
 
             });
+
+
+            ((ReceiverPDFViewHolder)holder).pdfBinding.Download.setOnLongClickListener(v -> {
+                PopupMenu popup = new PopupMenu(context,  ((ReceiverPDFViewHolder)holder).pdfBinding.Download);
+                MenuInflater inflater = popup.getMenuInflater();
+                inflater.inflate(R.menu.imagemenu, popup.getMenu());
+                popup.setOnMenuItemClickListener(item -> {
+                    switch (item.getItemId()) {
+                        case R.id.openFull:
+                            adaptersInterface.ImageView(chatModel);
+                            popup.dismiss();
+
+                            return false;
+                        case R.id.Download:
+                            String url = chatModel.getMessage();
+                            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+                            request.allowScanningByMediaScanner();
+                            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, chatModel.getFilename());
+                            DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+                            manager.enqueue(request);
+                            Toast.makeText(context, "Check Notification Bar or Download Folder ", Toast.LENGTH_SHORT).show();
+                            popup.dismiss();
+                            return false;
+                        case R.id.delete_btu:
+                            adaptersInterface.ReceiveDeleteImage(chatModel);
+                            return false;
+                        default:
+                            return false;
+                    }
+                });
+                popup.show();
+                return false;
+            });
+
         }
-        else if (holder.getClass() == StoryReplyRcriverViewHolder.class){
-//            Add fun to make Story Rcriver
-
-
-
-            
-        }
+        else if (holder.getClass() == StoryReplyRcriverViewHolder.class){}
         else if (holder.getClass()==ReceiverViewHolder.class){
             ((ReceiverViewHolder)holder).binding.messageText.setText(chatModel.getMessage());
             @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm");
@@ -382,6 +549,31 @@ public class ChatAdapters extends  RecyclerView.Adapter{
             String time = simpleDateFormat.format(date);
 
             ((ReceiverViewHolder)holder).binding.messageTime.setText(time);
+            ((ReceiverViewHolder)holder).binding.getRoot().setOnLongClickListener(v -> {
+
+                PopupMenu popup = new PopupMenu(context,  ((ReceiverViewHolder)holder).binding.messageText);
+                MenuInflater inflater = popup.getMenuInflater();
+                inflater.inflate(R.menu.textmenu, popup.getMenu());
+                popup.setOnMenuItemClickListener(item -> {
+                    if (item.getItemId()== R.id.copy) {
+                        Toast.makeText(context, "Coppy", Toast.LENGTH_SHORT).show();
+                        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                        ClipData clip;
+                        clip = ClipData.newPlainText("text", chatModel.getMessage());
+                        clipboard.setPrimaryClip(clip);
+                        popup.dismiss();
+                    }
+                    else if (item.getItemId()==R.id.delete){
+                        Toast.makeText(context, "dd", Toast.LENGTH_SHORT).show();
+                        adaptersInterface.ReceiveDelete(chatModel);
+                        popup.dismiss();
+                    }
+                    return true;
+                });
+                popup.show();
+                return false;
+            });
+
         }
     }
     @Override

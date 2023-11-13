@@ -32,6 +32,8 @@
     <color name="orange">#FF5722</color>
     <color name="white_Look">#EBECEE</color>
     <color name="green">#005c4b</color>
+    <color name="ToolbarGreen">#005c4b</color>
+    <color name="green_text">#24ba87</color>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#D5A5A3A3</color>
     <color name="colorAccent">#E95345</color>

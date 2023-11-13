@@ -16,8 +16,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.crazyostudio.studentcircle.MainActivity;
 import com.crazyostudio.studentcircle.R;
 import com.crazyostudio.studentcircle.databinding.ActivityLockMangerBinding;
+import com.crazyostudio.studentcircle.fragmentLoad;
+import com.crazyostudio.studentcircle.model.CurrentInternetConnection;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -38,13 +41,25 @@ public class LockMangerActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         d = new ProgressDialog(this);
         dialog = new ProgressDialog(this);
-
-
-
         auth = FirebaseAuth.getInstance();
         d.setTitle("Check Your details ");
         d.show();
-        FirebaseDatabase.getInstance().getReference().child("pin").child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).get().addOnCompleteListener(task -> {
+
+
+        if (!CurrentInternetConnection.isInternetConnected(this)) {
+
+            Intent intent = new Intent(this, fragmentLoad.class);
+            intent.putExtra("LoadID","network");
+            startActivity(intent);
+        }
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user == null) {
+            startActivity(new Intent(this,SignUp.class));
+            finish();
+        }
+        else {
+            FirebaseDatabase.getInstance().getReference().child("pin").child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).get().addOnCompleteListener(task -> {
             DataSnapshot dataSnapshot = task.getResult();
 
 
@@ -182,6 +197,7 @@ public class LockMangerActivity extends AppCompatActivity {
             }
 
         });
+        }
 
         binding.pass.addTextChangedListener(new TextWatcher() {
             @Override
@@ -208,6 +224,20 @@ public class LockMangerActivity extends AppCompatActivity {
             }
         });
         binding.floatingActionButton.setOnClickListener(view -> check());
+
+        }
+
+    @Override
+    protected void onStart() {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+//            onProvideAssistContent();
+        }else {
+            startActivity(new Intent(this,SignUp.class));
+            finish();
+        }
+
+        super.onStart();
+
     }
 
     private void check() {

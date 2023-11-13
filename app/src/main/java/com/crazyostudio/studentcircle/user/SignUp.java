@@ -8,6 +8,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.crazyostudio.studentcircle.databinding.ActivitySignUpBinding;
+import com.crazyostudio.studentcircle.fragmentLoad;
+import com.crazyostudio.studentcircle.model.CurrentInternetConnection;
 import com.google.firebase.auth.FirebaseAuth;
 public class SignUp extends AppCompatActivity {
     private ActivitySignUpBinding binding;
@@ -19,7 +21,11 @@ public class SignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        if (!CurrentInternetConnection.isInternetConnected(this)) {
+            Intent intent = new Intent(this, fragmentLoad.class);
+            intent.putExtra("LoadID","network");
+            startActivity(intent);
+        }
 //        load_lang();
         // Spinner Drop down elements
 

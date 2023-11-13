@@ -20,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.crazyostudio.studentcircle.R;
 import com.crazyostudio.studentcircle.databinding.ActivitySignUpOtpBinding;
+import com.crazyostudio.studentcircle.fragmentLoad;
+import com.crazyostudio.studentcircle.model.CurrentInternetConnection;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
@@ -41,6 +43,11 @@ public class SignUpOTP extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySignUpOtpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        if (!CurrentInternetConnection.isInternetConnected(this)) {
+            Intent intent = new Intent(this, fragmentLoad.class);
+            intent.putExtra("LoadID","network");
+            startActivity(intent);
+        }
         firebaseAuth =  FirebaseAuth.getInstance();
         dialog = new ProgressDialog(this);
         Number = getIntent().getStringExtra("number");

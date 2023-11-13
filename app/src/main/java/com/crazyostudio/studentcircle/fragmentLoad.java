@@ -9,8 +9,12 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.crazyostudio.studentcircle.fragment.FullScreenFragment;
+import com.crazyostudio.studentcircle.fragment.PreviewThemeFragment;
+import com.crazyostudio.studentcircle.fragment.ReceiverProfileViewFragment;
 import com.crazyostudio.studentcircle.fragment.SelfFullScreenFragment;
 import com.crazyostudio.studentcircle.fragment.ShareNotesFragment;
+import com.crazyostudio.studentcircle.fragment.ThemeFragment;
+import com.crazyostudio.studentcircle.model.CurrentInternetConnection;
 import com.crazyostudio.studentcircle.model.SubjectModel;
 import com.crazyostudio.studentcircle.model.noNetworkFragment;
 
@@ -22,6 +26,9 @@ public class fragmentLoad extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment_load);
+
+
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (!getIntent().getStringExtra("LoadID").isEmpty()) {
@@ -72,6 +79,32 @@ public class fragmentLoad extends AppCompatActivity {
                 fragmentTransaction.replace(R.id.loader,NotesImage);
                 fragmentTransaction.commit();
                 break;
+            case "ThemeChange":
+                data.putString("ThemeID",intent.getStringExtra("ThemeID"));
+                Fragment ThemeFragment = new ThemeFragment();
+                ThemeFragment.setArguments(data);
+                fragmentTransaction.replace(R.id.loader,ThemeFragment);
+                fragmentTransaction.commit();
+                break;
+            case "preview_theme":
+                data.putInt("ImageType",intent.getIntExtra("ImageType",0));
+                data.putString("ThemeID",intent.getStringExtra("ThemeID"));
+                Fragment PreviewTheme = new PreviewThemeFragment();
+                PreviewTheme.setArguments(data);
+                fragmentTransaction.replace(R.id.loader,PreviewTheme);
+                fragmentTransaction.commit();
+                break;
+                case "ReceiverProfileView":
+                    data.putString("name", intent.getStringExtra("name"));
+                    data.putString("Images", intent.getStringExtra("Images"));
+                    data.putString("Bio", intent.getStringExtra("Bio"));
+                    data.putString("ReceiverId", intent.getStringExtra("ReceiverId"));
+                    Fragment ReceiverProfileView = new ReceiverProfileViewFragment();
+                    ReceiverProfileView.setArguments(data);
+                    fragmentTransaction.replace(R.id.loader,ReceiverProfileView);
+                    fragmentTransaction.commit();
+                    break;
+
         }
     }
 }

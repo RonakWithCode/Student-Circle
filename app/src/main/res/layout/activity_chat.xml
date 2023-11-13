@@ -10,47 +10,56 @@
 
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar2"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/green"
         android:minHeight="?attr/actionBarSize"
         app:layout_constraintEnd_toEndOf="parent"
+        app:menu="@menu/chatmenu"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/BackBts"
             android:layout_width="20dp"
+            android:layout_marginStart="@dimen/_10sdp"
             android:layout_height="32dp"
             android:scaleType="fitXY"
             android:src="@drawable/img"
             app:riv_oval="true" />
-
-
-        <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/userImage"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="30dp"
-            android:scaleType="center"
-            android:src="@drawable/userimage"
-            app:riv_border_color="#4A4A4A"
-            app:riv_border_width="1dp"
-            app:riv_corner_radius="30dp"
-            app:riv_oval="true" />
-
-        <TextView
-            android:id="@+id/username"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="23dp"
-            android:layout_marginTop="6dp"
-            android:maxLength="24"
-            android:text="Ronak jain"
-            android:textColor="@color/BlackMainTextColor"
-            android:textSize="19sp"
-            android:textStyle="bold" />
+            android:layout_height="wrap_content">
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/userImage"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="30dp"
+                android:scaleType="center"
+                android:src="@drawable/userimage"
+                app:riv_border_color="#4A4A4A"
+                app:riv_border_width="1dp"
+                app:riv_corner_radius="30dp"
+                app:riv_oval="true" />
+
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="23dp"
+                android:layout_marginTop="6dp"
+                android:maxLength="24"
+                android:text="Ronak jain"
+                android:textColor="@color/BlackMainTextColor"
+                android:textSize="19sp"
+                android:textStyle="bold" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -60,7 +69,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar2" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/Sander"
@@ -119,4 +128,36 @@
             android:contentDescription="@string/todo" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ProgressBar
+        android:id="@+id/ChatsProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/ImageFullScreenLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.github.chrisbanes.photoview.PhotoView
+            android:id="@+id/photo_view"
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/close"
+            android:text="X"
+            android:textSize="@dimen/_35sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/FixColorBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

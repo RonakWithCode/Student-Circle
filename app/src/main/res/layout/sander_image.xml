@@ -16,12 +16,11 @@
         android:layout_alignParentEnd="true"
         android:layout_height="wrap_content"
         tools:ignore="UselessParent">
-        <com.ortiz.touchview.TouchImageView
+        <com.github.chrisbanes.photoview.PhotoView
             android:id="@+id/SanderImageview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxHeight="250dp"
-
             android:layout_margin="5dp"
             android:maxWidth="250dp"
             android:contentDescription="@string/todo"

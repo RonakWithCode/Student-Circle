@@ -19,6 +19,7 @@ import com.crazyostudio.studentcircle.databinding.ActivityMainBinding;
 import com.crazyostudio.studentcircle.fragment.ShareFileFragment;
 import com.crazyostudio.studentcircle.fragment.StoryFragment;
 import com.crazyostudio.studentcircle.fragment.UserInfoFragment;
+import com.crazyostudio.studentcircle.model.CurrentInternetConnection;
 import com.crazyostudio.studentcircle.user.AboutActivity;
 import com.crazyostudio.studentcircle.user.SignUp;
 import com.crazyostudio.studentcircle.user.User_Profile;
@@ -45,6 +46,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        if (!CurrentInternetConnection.isInternetConnected(this)) {
+            Intent intent = new Intent(this, fragmentLoad.class);
+            intent.putExtra("LoadID","network");
+            startActivity(intent);
+        }
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.add(new UserInfoFragment(), "Chat");

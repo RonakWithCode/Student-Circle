@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/love"
+    android:layout_height="match_parent"
+    tools:context=".fragment.PreviewThemeFragment">
+
+
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/green"
+        android:minHeight="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:menu="@menu/chatmenu"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/BackBts"
+            android:layout_width="20dp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_height="32dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/img"
+            app:riv_oval="true" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/userImage"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="30dp"
+                android:scaleType="center"
+                android:src="@drawable/userimage"
+                app:riv_border_color="#4A4A4A"
+                app:riv_border_width="1dp"
+                app:riv_corner_radius="30dp"
+                app:riv_oval="true" />
+
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="23dp"
+                android:layout_marginTop="6dp"
+                android:maxLength="24"
+                android:text="Ronak jain"
+                android:textColor="@color/BlackMainTextColor"
+                android:textSize="19sp"
+                android:textStyle="bold" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+    </androidx.appcompat.widget.Toolbar>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/Sander"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/set_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/InputText"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:autofillHints=""
+            android:background="@drawable/edittextbg"
+            android:maxHeight="90dp"
+            android:minHeight="50dp"
+            android:paddingStart="60dp"
+            android:paddingEnd="29dp"
+            android:textColor="@color/black"
+            android:textColorLink="@color/Link"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="LabelFor,MissingConstraints" />
+
+        <ImageView
+            android:id="@+id/imageBts"
+            android:layout_width="37dp"
+            android:layout_height="37dp"
+            android:layout_marginStart="10dp"
+            android:contentDescription="@string/todo"
+            android:src="@drawable/ic_photo_black_48dp"
+            app:layout_constraintBottom_toBottomOf="@+id/InputText"
+            app:layout_constraintStart_toStartOf="@+id/InputText"
+            app:layout_constraintTop_toTopOf="@+id/InputText" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/SandBts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="1dp"
+            android:backgroundTint="@color/green"
+            android:contentDescription="@string/todo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@android:drawable/ic_media_next" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/set_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/green_text"
+        android:text="@string/set"
+        android:textSize="@dimen/_20ssp"
+        android:background="@drawable/round_button"
+        android:textColor="@color/FixColorWhite"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res/android"
+    tools:context=".fragment.ThemeFragment"
+    tools:ignore="NamespaceTypo">
+
+    <ScrollView
+        android:id="@+id/ScrollView_"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/preview_theme"
+        tools:ignore="UselessParent">
+
+
+    <GridLayout
+        android:id="@+id/choice_grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:orientation="vertical"
+        app:columnCount="2"
+        android:rowCount="3">
+
+            <ImageView
+                android:id="@+id/love"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:scaleType="fitXY"
+                android:layout_width="@dimen/_120sdp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:src="@drawable/love"
+                android:layout_height="@dimen/_180sdp"
+                android:contentDescription="@string/tap_select_view_images" />
+
+            <ImageView
+                android:id="@+id/lovebg"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:scaleType="fitXY"
+                android:layout_width="@dimen/_120sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:src="@drawable/lovebg"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="2"
+                android:layout_height="@dimen/_180sdp"
+                android:contentDescription="@string/tap_select_view_images" />
+
+
+            <ImageView
+                android:id="@+id/app"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:scaleType="fitXY"
+                android:layout_width="@dimen/_120sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="3"
+                android:src="@drawable/app"
+                android:layout_height="@dimen/_180sdp"
+                android:contentDescription="@string/tap_select_view_images" />
+
+        <ImageView
+            android:id="@+id/earthbg"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:scaleType="fitXY"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:src="@drawable/earthbg"
+            android:layout_height="@dimen/_180sdp"
+            android:contentDescription="@string/tap_select_view_images" />
+
+        <ImageView
+            android:id="@+id/bluebg"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:scaleType="fitXY"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:src="@drawable/bluebg"
+            android:layout_height="@dimen/_180sdp"
+            android:contentDescription="@string/tap_select_view_images" />
+
+        <ImageView
+            android:id="@+id/prinkbg"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:scaleType="fitXY"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:src="@drawable/prinkbg"
+            android:layout_height="@dimen/_180sdp"
+            android:contentDescription="@string/tap_select_view_images" />
+
+        </GridLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/preview_theme"
+        android:layout_width="match_parent"
+        android:text="@string/preview_theme"
+        android:foreground="@drawable/round_button"
+        android:backgroundTint="@color/green_text"
+        android:textColor="@color/FixColorBlack"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"/>
+
+
+</RelativeLayout>

@@ -20,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.crazyostudio.studentcircle.MainActivity;
 import com.crazyostudio.studentcircle.R;
 import com.crazyostudio.studentcircle.databinding.ActivitySignupDetailsBinding;
+import com.crazyostudio.studentcircle.fragmentLoad;
+import com.crazyostudio.studentcircle.model.CurrentInternetConnection;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -48,6 +50,11 @@ public class SignupDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySignupDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        if (!CurrentInternetConnection.isInternetConnected(this)) {
+            Intent intent = new Intent(this, fragmentLoad.class);
+            intent.putExtra("LoadID","network");
+            startActivity(intent);
+        }
         binding.userImage.setOnClickListener(view ->
                 ImagePicker.with(this)
                         .crop()
@@ -66,7 +73,7 @@ public class SignupDetails extends AppCompatActivity {
             }else {
                 binding.number.setVisibility(View.VISIBLE);
                 binding.number.setError("Enter Your Number ");
-                IsUseNumber =true;
+                IsUseNumber = true;
             }
         }
 
@@ -112,10 +119,25 @@ public class SignupDetails extends AppCompatActivity {
                 imageBts = true;
             }
         }
-      private String filletExtension(Uri Uri) {
-        ContentResolver cr = getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(cr.getType(Uri));
+      private String filletExtension(Uri uri) {
+          ContentResolver contentResolver = getContentResolver();
+          MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+
+          // Get the file extension based on the Uri's MIME type
+          String extension = mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+
+          if (extension == null) {
+              // If the MIME type doesn't provide an extension, try to extract from the Uri's path
+              String path = uri.getPath();
+              if (path != null) {
+                  int extensionStartIndex = path.lastIndexOf('.');
+                  if (extensionStartIndex != -1) {
+                      extension = path.substring(extensionStartIndex + 1);
+                  }
+              }
+          }
+
+          return extension;
     }
 
     private void UploadImage(Uri image) {

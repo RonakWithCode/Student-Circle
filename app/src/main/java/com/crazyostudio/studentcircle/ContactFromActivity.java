@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.crazyostudio.studentcircle.adapters.HelpImageAdapters;
 import com.crazyostudio.studentcircle.databinding.ActivityContactFromBinding;
 import com.crazyostudio.studentcircle.model.BugModel;
+import com.crazyostudio.studentcircle.model.CurrentInternetConnection;
 import com.crazyostudio.studentcircle.model.HelpImageAdaptersOnclick;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,6 +46,12 @@ public class ContactFromActivity extends AppCompatActivity implements HelpImageA
         super.onCreate(savedInstanceState);
         binding = ActivityContactFromBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        if (!CurrentInternetConnection.isInternetConnected(this)) {
+            Intent intent = new Intent(this, fragmentLoad.class);
+            intent.putExtra("LoadID","network");
+            startActivity(intent);
+        }
+
         storageRef = FirebaseStorage.getInstance().getReference("bug");
         firebaseDatabase = FirebaseDatabase.getInstance();
         progressDialog = new ProgressDialog(this);
@@ -155,10 +162,25 @@ public class ContactFromActivity extends AppCompatActivity implements HelpImageA
             });
         }
     }
-    private String filletExtension(Uri Uri) {
-        ContentResolver cr = this.getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(cr.getType(Uri));
+    private String filletExtension(Uri uri) {
+        ContentResolver contentResolver = getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+
+        // Get the file extension based on the Uri's MIME type
+        String extension = mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+
+        if (extension == null) {
+            // If the MIME type doesn't provide an extension, try to extract from the Uri's path
+            String path = uri.getPath();
+            if (path != null) {
+                int extensionStartIndex = path.lastIndexOf('.');
+                if (extensionStartIndex != -1) {
+                    extension = path.substring(extensionStartIndex + 1);
+                }
+            }
+        }
+
+        return extension;
     }
     @SuppressLint("NotifyDataSetChanged")
     @Override

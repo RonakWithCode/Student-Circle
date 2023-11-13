@@ -16,6 +16,7 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityAboutBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         binding.Terms.setOnClickListener(v -> {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://crazy-studio-website.web.app/PrivacyPolicy.html"));
             startActivity(browserIntent);

@@ -9,7 +9,7 @@
     android:layout_marginBottom="5dp"
     android:layout_height="wrap_content">
 
-    <com.ortiz.touchview.TouchImageView
+    <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/Imageview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

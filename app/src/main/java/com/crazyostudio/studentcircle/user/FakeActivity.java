@@ -13,5 +13,6 @@ public class FakeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityFakeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
     }
 }

@@ -93,7 +93,6 @@ public class ShareFileFragment extends Fragment {
     }
 
     private void getNotes(){
-
         ArrayList<SubjectModel> subjectModel = new ArrayList<>();
         notesAdapters = new NotesAdapters(subjectModel,getContext());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -158,7 +157,8 @@ public class ShareFileFragment extends Fragment {
                 .compress(1024)
                 .maxResultSize(1080, 1080)
                 .start(159));
-        createsubjectsBinding.addImage.setOnClickListener(v -> ImagePicker.with(this)
+        createsubjectsBinding.addImage.setOnClickListener(v ->
+                ImagePicker.with(this)
 
                 .compress(1024).maxResultSize(1080, 1080)
                 .start(160));
@@ -190,6 +190,7 @@ public class ShareFileFragment extends Fragment {
         EditorDialog.setCancelable(false);
         EditorDialog.getWindow().getAttributes().windowAnimations = R.style.Animationboy;
         EditorDialog.show();
+
         editorBinding.addTextButton.setOnClickListener(v -> {
             editorBinding.editTextOverlay.setVisibility(View.VISIBLE);
             editorBinding.editTextOverlay.setText("");
@@ -320,9 +321,24 @@ public class ShareFileFragment extends Fragment {
         }
     }
     private String filletExtension(Uri Uri) {
-        ContentResolver cr = requireContext().getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(cr.getType(Uri));
+        ContentResolver contentResolver = requireContext().getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+
+        // Get the file extension based on the Uri's MIME type
+        String extension = mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(Uri));
+
+        if (extension == null) {
+            // If the MIME type doesn't provide an extension, try to extract from the Uri's path
+            String path = Uri.getPath();
+            if (path != null) {
+                int extensionStartIndex = path.lastIndexOf('.');
+                if (extensionStartIndex != -1) {
+                    extension = path.substring(extensionStartIndex + 1);
+                }
+            }
+        }
+
+        return extension;
     }
     @SuppressLint("NotifyDataSetChanged")
     @Override

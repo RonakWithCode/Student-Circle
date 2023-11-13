@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.crazyostudio.studentcircle.databinding.ActivityUserProfileBinding;
+import com.crazyostudio.studentcircle.fragmentLoad;
+import com.crazyostudio.studentcircle.model.CurrentInternetConnection;
 import com.crazyostudio.studentcircle.model.UserInfo;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,6 +44,11 @@ public class User_Profile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityUserProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        if (!CurrentInternetConnection.isInternetConnected(this)) {
+            Intent intent = new Intent(this, fragmentLoad.class);
+            intent.putExtra("LoadID","network");
+            startActivity(intent);
+        }
         auth = FirebaseAuth.getInstance();
         reference = FirebaseStorage.getInstance().getReference("Image");
         database = FirebaseDatabase.getInstance();

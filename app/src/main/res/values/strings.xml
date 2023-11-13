@@ -83,6 +83,15 @@
     <string name="example">example</string>
     <string name="include_device_informotion">Include device informotion</string>
     <string name="report_a_bug">Report a Bug</string>
+    <string name="open">OPEN</string>
+    <string name="Download">Download</string>
+    <string name="delete_message">Delete Message?</string>
+    <string name="delete_for_me">Delete for me</string>
+    <string name="delete_for_everyone">Delete for everyone</string>
+    <string name="clear_chat">clear chat</string>
+    <string name="tap_select_view_images">Tap Select View Images</string>
+    <string name="preview_theme">Preview Theme</string>
+    <string name="set">Set</string>
     <string-array name="lang">
         <item>English</item>
         <item>Hindi</item>

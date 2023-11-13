@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.crazyostudio.studentcircle.fragment.CreateStoryFragment;
+import com.crazyostudio.studentcircle.model.CurrentInternetConnection;
 
 public class StroyManger extends AppCompatActivity {
 
@@ -14,6 +16,11 @@ public class StroyManger extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stroy_manger);
+        if (!CurrentInternetConnection.isInternetConnected(this)) {
+            Intent intent = new Intent(this, fragmentLoad.class);
+            intent.putExtra("LoadID","network");
+            startActivity(intent);
+        }
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         // Begin the fragment transaction
