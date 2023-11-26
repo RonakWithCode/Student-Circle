@@ -14,7 +14,7 @@
     <!--    SignupDetails   -->
     <color name="SignupDetailsBlackPlanText">#171717</color>
     <!--    User_Profile -->
-    <color name="User_ProfileBackground">#4C4545</color>
+    <color name="User_ProfileBackground">#222222</color>
     <!--    Fix Color  -->
     <color name="FixColorBlack">#000000</color>
 

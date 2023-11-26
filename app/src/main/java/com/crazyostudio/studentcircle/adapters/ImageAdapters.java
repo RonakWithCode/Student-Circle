@@ -11,18 +11,22 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.crazyostudio.studentcircle.InterfaceCLass.ImageInterface;
 import com.crazyostudio.studentcircle.R;
 import com.crazyostudio.studentcircle.databinding.AddimagelayoutBinding;
 
 import java.util.ArrayList;
 
 public class ImageAdapters extends RecyclerView.Adapter<ImageAdapters.ImageAdaptersViewHolder> {
-    ArrayList<byte[]> image;
+    ArrayList<Uri> image;
     Context context;
+    ImageInterface imageInterface;
 
-    public ImageAdapters(ArrayList<byte[]> image, Context context) {
+    public ImageAdapters(ArrayList<Uri> image, Context context,ImageInterface imageInterface) {
         this.image = image;
         this.context = context;
+        this.imageInterface = imageInterface;
     }
 
     @NonNull
@@ -34,11 +38,10 @@ public class ImageAdapters extends RecyclerView.Adapter<ImageAdapters.ImageAdapt
 
     @Override
     public void onBindViewHolder(@NonNull ImageAdapters.ImageAdaptersViewHolder holder, int position) {
-        byte[] imagePos = image.get(position);
-        Bitmap compressedBitmap = BitmapFactory.decodeByteArray(imagePos, 0, imagePos.length);
-        holder.binding.image.setImageBitmap(compressedBitmap);
+        Uri imagePos = image.get(position);
+        Glide.with(context).load(imagePos).into(holder.binding.image);
         holder.binding.removeImage.setOnClickListener(r->{
-            image.remove(position);
+            imageInterface.remove(position);
         });
     }
 
@@ -55,3 +58,4 @@ public class ImageAdapters extends RecyclerView.Adapter<ImageAdapters.ImageAdapt
         }
     }
 }
+

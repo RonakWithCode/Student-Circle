@@ -12,12 +12,19 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import com.crazyostudio.studentcircle.MainActivity;
 import com.crazyostudio.studentcircle.adapters.ShareNotesAdapters;
 import com.crazyostudio.studentcircle.databinding.ActivityShareLinkManagerBinding;
+import com.crazyostudio.studentcircle.fragmentLoad;
 import com.crazyostudio.studentcircle.model.SubjectModel;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class ShareLinkManagerActivity extends AppCompatActivity {
     ActivityShareLinkManagerBinding binding;
     FirebaseDatabase users;
@@ -31,6 +38,7 @@ public class ShareLinkManagerActivity extends AppCompatActivity {
         binding = ActivityShareLinkManagerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         // Get the Intent that started this activity
+        Objects.requireNonNull(getSupportActionBar()).hide();
         users = FirebaseDatabase.getInstance();
         notes = new ArrayList<>();
         Intent intent = getIntent();
@@ -40,8 +48,8 @@ public class ShareLinkManagerActivity extends AppCompatActivity {
                 path = data.getQueryParameter("path");
             }
         }
-        binding.BackBts.setOnClickListener(back->startActivity(new Intent(this, MainActivity.class)));
-        binding.share.setOnClickListener(share->{
+        binding.BackBts.setOnClickListener(back -> startActivity(new Intent(this, MainActivity.class)));
+        binding.share.setOnClickListener(share -> {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Share Notes");
@@ -51,17 +59,17 @@ public class ShareLinkManagerActivity extends AppCompatActivity {
 
 
         adapters = new ShareNotesAdapters(notes, this);
-        GridLayoutManager layoutManager = new GridLayoutManager(this,2);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         binding.notes.setLayoutManager(layoutManager);
         binding.notes.setAdapter(adapters);
         users.getReference().child(path).addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        SubjectModel userInfo = snapshot.getValue(SubjectModel.class);
-                        assert userInfo != null;
-                        notes.addAll(userInfo.getNotes());
-                        adapters.notifyDataSetChanged();
+                SubjectModel userInfo = snapshot.getValue(SubjectModel.class);
+                assert userInfo != null;
+                notes.addAll(userInfo.getNotes());
+                adapters.notifyDataSetChanged();
             }
 
             @Override

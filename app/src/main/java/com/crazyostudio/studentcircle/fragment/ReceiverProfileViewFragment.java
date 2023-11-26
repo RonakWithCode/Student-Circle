@@ -2,19 +2,14 @@ package com.crazyostudio.studentcircle.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.crazyostudio.studentcircle.R;
@@ -32,7 +27,6 @@ public class ReceiverProfileViewFragment extends Fragment {
     FragmentReceiverProfileViewBinding binding;
     String name,dp,bio,ReceiverId;
     FirebaseDatabase firebaseDatabase;
-    boolean isProgressBar = false;
     NotesAdapters notesAdapters;
     public ReceiverProfileViewFragment() {
         // Required empty public constructor
@@ -63,15 +57,12 @@ public class ReceiverProfileViewFragment extends Fragment {
         Glide.with(this).load(dp).into(binding.userImage);
 ///////////////////////////////////////////////////////////////////////////////////////////
         firebaseDatabase = FirebaseDatabase.getInstance();
-        if (!isProgressBar){
-            binding.ProgressStory.setVisibility(View.VISIBLE);
-            isProgressBar = true;
-        }
         ShareFileLoad();
         return binding.getRoot();
     }
 
     private void ShareFileLoad() {
+        binding.ProgressStory.setVisibility(View.VISIBLE);
         ArrayList<SubjectModel> subjectModel = new ArrayList<>();
         notesAdapters = new NotesAdapters(subjectModel,getContext());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -86,18 +77,13 @@ public class ReceiverProfileViewFragment extends Fragment {
                     SubjectModel snapshot1Value = snapshot1.getValue(SubjectModel.class);
                     subjectModel.add(snapshot1Value);
                     binding.storyList.setVisibility(View.VISIBLE);
-                    if (isProgressBar){
-                        binding.ProgressStory.setVisibility(View.GONE);
-                    }
+                    binding.ProgressStory.setVisibility(View.GONE);
                     notesAdapters.notifyDataSetChanged();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-//                new PurchaseConfirmationDialogFragment().onCreateDialog()
-//
                 AlertDialog s = new AlertDialog.Builder(requireContext()).setMessage(error.getMessage()).setPositiveButton(getString(R.string.ok), (dialog, which) -> {} ).create();
                 s.show();
             }

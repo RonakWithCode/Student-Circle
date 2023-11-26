@@ -22,6 +22,7 @@ import com.crazyostudio.studentcircle.fragment.UserInfoFragment;
 import com.crazyostudio.studentcircle.model.CurrentInternetConnection;
 import com.crazyostudio.studentcircle.user.AboutActivity;
 import com.crazyostudio.studentcircle.user.SignUp;
+import com.crazyostudio.studentcircle.user.SignupDetails;
 import com.crazyostudio.studentcircle.user.User_Profile;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -32,9 +33,9 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String[] PERMISSIONS_BELOW_10 = {
 //            Manifest.permission.READ_EXTERNAL_STORAGE,
-//            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.CALL_PHONE,
-//            Manifest.permission.READ_EXTERNAL_STORAGE
+            Manifest.permission.READ_EXTERNAL_STORAGE
     };
 
     private static final String[] PERMISSIONS_10_AND_ABOVE = {

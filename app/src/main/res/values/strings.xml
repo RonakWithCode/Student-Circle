@@ -92,6 +92,9 @@
     <string name="tap_select_view_images">Tap Select View Images</string>
     <string name="preview_theme">Preview Theme</string>
     <string name="set">Set</string>
+    <string name="x">X</string>
+    <string name="about_user_info">About User Info</string>
+    <string name="user_share_file">User Share File</string>
     <string-array name="lang">
         <item>English</item>
         <item>Hindi</item>

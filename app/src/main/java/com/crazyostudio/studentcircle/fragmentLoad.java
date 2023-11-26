@@ -19,6 +19,7 @@ import com.crazyostudio.studentcircle.model.SubjectModel;
 import com.crazyostudio.studentcircle.model.noNetworkFragment;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class fragmentLoad extends AppCompatActivity {
     String id;
@@ -75,6 +76,7 @@ public class fragmentLoad extends AppCompatActivity {
 //                SubjectModel receivedModel = getIntent().getParcelableExtra("subjectModel");
                 data.putParcelable("subjectModel",getIntent().getParcelableExtra("subjectModel"));
                 Fragment NotesImage = new ShareNotesFragment();
+                Objects.requireNonNull(getSupportActionBar()).hide();
                 NotesImage.setArguments(data);
                 fragmentTransaction.replace(R.id.loader,NotesImage);
                 fragmentTransaction.commit();
@@ -87,6 +89,7 @@ public class fragmentLoad extends AppCompatActivity {
                 fragmentTransaction.commit();
                 break;
             case "preview_theme":
+                
                 data.putInt("ImageType",intent.getIntExtra("ImageType",0));
                 data.putString("ThemeID",intent.getStringExtra("ThemeID"));
                 Fragment PreviewTheme = new PreviewThemeFragment();
@@ -94,7 +97,7 @@ public class fragmentLoad extends AppCompatActivity {
                 fragmentTransaction.replace(R.id.loader,PreviewTheme);
                 fragmentTransaction.commit();
                 break;
-                case "ReceiverProfileView":
+           case "ReceiverProfileView":
                     data.putString("name", intent.getStringExtra("name"));
                     data.putString("Images", intent.getStringExtra("Images"));
                     data.putString("Bio", intent.getStringExtra("Bio"));

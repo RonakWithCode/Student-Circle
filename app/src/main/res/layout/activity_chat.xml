@@ -8,7 +8,6 @@
     android:layout_height="match_parent"
     tools:context=".Chats.chat">
 
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -17,7 +16,6 @@
         android:minHeight="?attr/actionBarSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:menu="@menu/chatmenu"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -29,36 +27,28 @@
             android:scaleType="fitXY"
             android:src="@drawable/img"
             app:riv_oval="true" />
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar2"
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/userImage"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="30dp"
+            android:scaleType="center"
+            android:src="@drawable/userimage"
+            app:riv_border_color="#4A4A4A"
+            app:riv_border_width="1dp"
+            app:riv_corner_radius="30dp"
+            app:riv_oval="true" />
+
+        <TextView
+            android:id="@+id/username"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/userImage"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_marginStart="30dp"
-                android:scaleType="center"
-                android:src="@drawable/userimage"
-                app:riv_border_color="#4A4A4A"
-                app:riv_border_width="1dp"
-                app:riv_corner_radius="30dp"
-                app:riv_oval="true" />
-
-            <TextView
-                android:id="@+id/username"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="23dp"
-                android:layout_marginTop="6dp"
-                android:maxLength="24"
-                android:text="Ronak jain"
-                android:textColor="@color/BlackMainTextColor"
-                android:textSize="19sp"
-                android:textStyle="bold" />
-
-        </androidx.appcompat.widget.Toolbar>
-
+            android:layout_height="wrap_content"
+            android:layout_marginStart="23dp"
+            android:layout_marginTop="6dp"
+            android:maxLength="24"
+            android:textColor="@color/BlackMainTextColor"
+            android:textSize="19sp"
+            android:textStyle="bold" />
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -102,7 +92,7 @@
             android:autofillHints="" />
 
         <ImageView
-            android:id="@+id/imageBts"
+            android:id="@+id/choseBts"
             android:layout_width="37dp"
             android:layout_height="37dp"
             android:layout_marginStart="10dp"
@@ -113,18 +103,20 @@
             android:contentDescription="@string/todo" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/SandBts"
+            android:id="@+id/sandBts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
+            app:fabSize="auto"
             android:backgroundTint="@color/green"
+            android:padding="@dimen/_2sdp"
             android:layout_marginEnd="1dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@android:drawable/ic_media_next"
+            app:srcCompat="@android:drawable/ic_menu_send"
             android:contentDescription="@string/todo" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -150,7 +142,7 @@
             android:layout_height="match_parent"/>
         <TextView
             android:id="@+id/close"
-            android:text="X"
+            android:text="@string/x"
             android:textSize="@dimen/_35sdp"
             android:layout_marginTop="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"
@@ -158,6 +150,7 @@
             android:layout_alignParentEnd="true"
             android:textColor="@color/FixColorBlack"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            tools:ignore="RelativeOverlap" />
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

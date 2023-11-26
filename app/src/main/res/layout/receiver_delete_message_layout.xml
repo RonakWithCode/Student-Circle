@@ -6,7 +6,7 @@
     android:background="@drawable/roundlayoput"
     android:layout_height="wrap_content">
     <TextView
-        android:id="@+id/textview"
+        android:id="@+id/textviews"
         android:text="@string/delete_message"
         android:textSize="@dimen/_23ssp"
         android:layout_margin="@dimen/_14sdp"
@@ -18,7 +18,7 @@
         android:layout_marginEnd="@dimen/_15sdp"
         android:layout_width="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_below="@id/textview"
+        android:layout_below="@id/textviews"
         android:layout_marginBottom="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_6sdp"
         android:layout_height="wrap_content">

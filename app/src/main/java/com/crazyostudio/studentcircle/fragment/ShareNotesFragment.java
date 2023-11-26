@@ -32,6 +32,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ShareNotesFragment extends Fragment {
     //    ArrayList<String> uri = new ArrayList<>();
@@ -69,7 +70,8 @@ public class ShareNotesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        com.crazyostudio.studentcircle.databinding.FragmentShareNotesBinding binding = FragmentShareNotesBinding.inflate(inflater, container, false);
+        FragmentShareNotesBinding binding = FragmentShareNotesBinding.inflate(inflater, container, false);
+
         progressDialog = new ProgressDialog(getContext());
         storageRef = FirebaseStorage.getInstance().getReference("Share");
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -89,7 +91,13 @@ public class ShareNotesFragment extends Fragment {
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
             startActivityForResult(Intent.createChooser(intent, "Select Pictures"), 123);
         });
-
+        binding.share.setOnClickListener(share -> {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Share Notes");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, receivedModel.getPath());
+            startActivity(Intent.createChooser(shareIntent, "Share link"));
+        });
         return binding.getRoot();
     }
 
@@ -159,7 +167,7 @@ public class ShareNotesFragment extends Fragment {
                         }).addOnFailureListener(e -> {
                             firebaseDatabase.getReference().child("error").child("Share_createSubject").child(System.currentTimeMillis()+"").push().setValue(e.getMessage());
                             Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-//                                dialog.dismiss();
+
                             progressDialog.dismiss();
 
                         });

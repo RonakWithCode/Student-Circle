@@ -1,18 +1,17 @@
 package com.crazyostudio.studentcircle.fragment;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
@@ -20,14 +19,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.MotionEventCompat;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.crazyostudio.studentcircle.InterfaceCLass.ImageInterface;
 import com.crazyostudio.studentcircle.R;
 import com.crazyostudio.studentcircle.adapters.ImageAdapters;
 import com.crazyostudio.studentcircle.adapters.NotesAdapters;
-import com.crazyostudio.studentcircle.databinding.ActivityImageEditorBinding;
 import com.crazyostudio.studentcircle.databinding.CreatesubjectsBinding;
 import com.crazyostudio.studentcircle.databinding.FragmentShareFileBinding;
 import com.crazyostudio.studentcircle.model.SubjectModel;
@@ -39,41 +39,39 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Objects;
 
-// TODO: 8/12/2023 Fix Some like uploading image to firebase database add a ProgressDialog
+// TODO: 8/11/2023 Fix Some bugs like uploading image to firebase database add a ProgressDialog
 //  (private all var)
 // Under
-public class ShareFileFragment extends Fragment {
+public class ShareFileFragment extends Fragment implements ImageInterface {
     private FragmentShareFileBinding binding;
     private FirebaseDatabase firebaseDatabase;
-    private ArrayList<byte[]> subImageUri;
+    private ArrayList<Uri> subImageUri;
     private ImageAdapters imageAdapters;
     private CreatesubjectsBinding createsubjectsBinding;
     private NotesAdapters notesAdapters;
     private Dialog dialog;
     private Uri Data;
     private StorageReference storageRef;
-    private int uploadCount = 0;
-    private ArrayList<String> imageUrls;
-    private float[] lastEvent = null;
-    private Dialog EditorDialog;
-    private ActivityImageEditorBinding editorBinding;
     private ProgressDialog progressDialog;
 
-    public ShareFileFragment() {}
+    int UPLOAD_SIZE = 0;
+    private static final int READ_STORAGE_PERMISSION_CODE = 100;
+    private static final int SUB_NOTES_CODE = 1;
+    private static final int USER_DP_CODE = 2;
+
+    public ShareFileFragment() {
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentShareFileBinding.inflate(inflater,container,false);
+        binding = FragmentShareFileBinding.inflate(inflater, container, false);
         OnStart();
-
 
 
         getNotes();
@@ -82,19 +80,18 @@ public class ShareFileFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void OnStart(){
+    private void OnStart() {
         storageRef = FirebaseStorage.getInstance().getReference("Share");
         firebaseDatabase = FirebaseDatabase.getInstance();
         createsubjectsBinding = CreatesubjectsBinding.inflate(getLayoutInflater());
-        imageUrls = new ArrayList<>();
         subImageUri = new ArrayList<>();
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setCancelable(false);
     }
 
-    private void getNotes(){
+    private void getNotes() {
         ArrayList<SubjectModel> subjectModel = new ArrayList<>();
-        notesAdapters = new NotesAdapters(subjectModel,getContext());
+        notesAdapters = new NotesAdapters(subjectModel, getContext());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         binding.subjects.setLayoutManager(layoutManager);
         binding.subjects.setAdapter(notesAdapters);
@@ -105,9 +102,9 @@ public class ShareFileFragment extends Fragment {
                 subjectModel.clear();
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     SubjectModel snapshot1Value = snapshot1.getValue(SubjectModel.class);
-                        subjectModel.add(snapshot1Value);
+                    subjectModel.add(snapshot1Value);
 
-                        notesAdapters.notifyDataSetChanged();
+                    notesAdapters.notifyDataSetChanged();
                 }
             }
 
@@ -118,32 +115,31 @@ public class ShareFileFragment extends Fragment {
         });
 
     }
+
     @SuppressLint("RestrictedApi")
-    private void showCrateSubject(){
+    private void showCrateSubject() {
+        ViewGroup parent = (ViewGroup) createsubjectsBinding.getRoot().getParent();
+        if (parent != null) {
+            parent.removeView(createsubjectsBinding.getRoot());
+        }
         dialog = new Dialog(getContext());
         dialog.setContentView(createsubjectsBinding.getRoot());
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.createsubjectsboxbg);
         dialog.setCancelable(false);
         dialog.getWindow().getAttributes().windowAnimations = R.style.Animationboy;
-        imageAdapters = new ImageAdapters(subImageUri,getContext());
+        imageAdapters = new ImageAdapters(subImageUri, getContext(), this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         createsubjectsBinding.recyclerView.setLayoutManager(layoutManager);
         createsubjectsBinding.recyclerView.setAdapter(imageAdapters);
-        createsubjectsBinding.CANCEL.setOnClickListener(cancel->dialog.dismiss());
-        createsubjectsBinding.save.setOnClickListener(save->{
+        createsubjectsBinding.CANCEL.setOnClickListener(cancel -> dialog.dismiss());
+        createsubjectsBinding.save.setOnClickListener(save -> {
             if (!createsubjectsBinding.subName.getText().toString().isEmpty()) {
+                long time = System.currentTimeMillis();
                 progressDialog.setTitle("Uploading....");
                 progressDialog.show();
-                StorageReference file = storageRef.child(System.currentTimeMillis()+"."+ filletExtension(Data));
-                file.putFile(Data).addOnSuccessListener(taskSnapshot -> file.getDownloadUrl().addOnSuccessListener(fileUri1 -> {
-                    long time = System.currentTimeMillis();
-                    uploadMultipleImages(fileUri1.toString(),time);
-//                    for (int i = 0; i < subImageUri.size(); i++) {
-////                        uploadNotes(Uri.parse(subImageUri.get(i)));
-//                    }
-//                    https://friend-circle-f948a-default-rtdb.firebaseio.com
-                })).addOnFailureListener(e -> {
+                StorageReference file = storageRef.child(time + "." + filletExtension(Data));
+                file.putFile(Data).addOnSuccessListener(taskSnapshot -> file.getDownloadUrl().addOnSuccessListener(fileUri1 -> UploadToFirebase(time, fileUri1.toString()))).addOnFailureListener(e -> {
                     if (progressDialog.isShowing()) {
                         progressDialog.dismiss();
                     }
@@ -151,150 +147,56 @@ public class ShareFileFragment extends Fragment {
 
             }
 
-            });
+        });
         createsubjectsBinding.userAvatar.setOnClickListener(v -> ImagePicker.with(this)
                 .crop()
                 .compress(1024)
                 .maxResultSize(1080, 1080)
-                .start(159));
+                .start(USER_DP_CODE));
+
         createsubjectsBinding.addImage.setOnClickListener(v ->
-                ImagePicker.with(this)
+        {
+            if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_STORAGE_PERMISSION_CODE);
+            } else {
+                String[] mimeTypes =
+                        {"application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .doc & .docx
+                                "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation", // .ppt & .pptx
+                                "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xls & .xlsx
+                                "text/plain",
+                                "application/pdf",
+                                "application/zip",
+                                "image/*"
+                        };
 
-                .compress(1024).maxResultSize(1080, 1080)
-                .start(160));
-//        createsubjectsBinding.addImage.setOnClickListener(view->{
-//            ShowDialog();
-//        });
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("*/*");
+                intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                startActivityForResult(Intent.createChooser(intent, "Choose File"), SUB_NOTES_CODE);
 
-//        createsubjectsBinding.addImage.setOnClickListener(p->
-//        {
-//            dialog = new Dialog(getContext());
-//            dialog.setContentView(createsubjectsBinding.getRoot());
-//            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//            dialog.getWindow().setBackgroundDrawableResource(R.drawable.createsubjectsboxbg);
-//            dialog.setCancelable(false);
-//            dialog.getWindow().getAttributes().windowAnimations = R.style.Animationboy;
-//        });
 
+            }
+        });
         dialog.show();
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    void  ShowDialog(Uri uri){
-
-        editorBinding = ActivityImageEditorBinding.inflate(getLayoutInflater());
-        EditorDialog = new Dialog(getContext());
-        EditorDialog.setContentView(editorBinding.getRoot());
-        EditorDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        EditorDialog.getWindow().setBackgroundDrawableResource(R.drawable.createsubjectsboxbg);
-        EditorDialog.setCancelable(false);
-        EditorDialog.getWindow().getAttributes().windowAnimations = R.style.Animationboy;
-        EditorDialog.show();
-
-        editorBinding.addTextButton.setOnClickListener(v -> {
-            editorBinding.editTextOverlay.setVisibility(View.VISIBLE);
-            editorBinding.editTextOverlay.setText("");
-            editorBinding.editTextOverlay.requestFocus();
-        });
-
-        editorBinding.photoView.setImageURI(uri);
-
-        editorBinding.editTextOverlay.setOnTouchListener((v, event) -> {
-            int action = MotionEventCompat.getActionMasked(event);
-            if (action == MotionEvent.ACTION_MOVE) {
-                if (lastEvent != null && event.getPointerCount() == 1) {
-                    float dx = event.getX() - lastEvent[0];
-                    float dy = event.getY() - lastEvent[1];
-                    Matrix textMatrix = editorBinding.editTextOverlay.getMatrix();
-                    textMatrix.postTranslate(dx, dy);
-                }
-                lastEvent = new float[]{event.getX(), event.getY()};
-            } else {
-                lastEvent = null;
-            }
-            return true;
-        });
-
-        editorBinding.saveButton.setOnClickListener(v -> {
-            Bitmap editedImage = createEditedImage();
-
-            // Convert Bitmap to byte array
-            ByteArrayOutputStream bass = new ByteArrayOutputStream();
-            editedImage.compress(Bitmap.CompressFormat.JPEG, 100, bass);
-            byte[] data = bass.toByteArray();
-            subImageUri.add(data);
-            EditorDialog.dismiss();
-//             finishActivity(55);
-//            Intent previousScreen = new Intent();
-//            //Sending the data to Activity_A
-//            previousScreen.putExtra("Image",data);
-//            previousScreen.putExtra("hello","data");
-//            setResult(1000, previousScreen);
-//            finish();
-            // Define the path where the image will be stored in Firebase Storage
-//            String fileName = "edited_image.jpg";
-//            StorageReference imageRef = storageReference.child(fileName);
-//
-//            // Upload the image to Firebase Storage
-//            UploadTask uploadTask = imageRef.putBytes(data);
-//            uploadTask.addOnCompleteListener(task -> {
-//                if (task.isSuccessful()) {
-//                    // Image upload is successful
-//                    // You can now get the download URL of the image to use it later
-//                    imageRef.getDownloadUrl().addOnCompleteListener(task1 -> {
-//                        if (task1.isSuccessful()) {
-//                            Uri downloadUri = task1.getResult();
-//                            // Here you have the download URL of the uploaded image
-//                            // You can use this URL to display the image or store it in your database.
-//                        } else {
-//                            // Failed to get the download URL
-//                        }
-//                    });
-//                } else {
-//                    // Image upload failed
-//                }
-//            });
-//            // Save the 'editedImage' to Firebase Storage or process it further.
-//            // You can use the Bitmap for any other operation, like uploading to Firebase Storage.
-//
-//            // Ensure that you have proper Firebase setup and appropriate rules for storage access.
-        });
-
-
-    }
-
-    private void uploadMultipleImages(String fileUri1,long time) {
-        for (byte[] imageUri : subImageUri) {
-            // Get a unique filename for each image
-            String imageName = time + filletExtension(Uri.parse(String.valueOf(imageUri)));
-            StorageReference imageRef = storageRef.child(imageName);
-
-            // Upload the image to Firebase Storage
-            UploadTask uploadTask = imageRef.putBytes(imageUri);
-            uploadTask.addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-
-                    // Image uploaded successfully, get its download URL
+    private void UploadToFirebase(long time, String USER_DP) {
+        ArrayList<String> downloadURI = new ArrayList<>();
+        for (int i = 0; i < subImageUri.size(); i++) {
+            StorageReference imageRef = storageRef.child(System.currentTimeMillis() + filletExtension(subImageUri.get(i)));
+            imageRef.putFile(subImageUri.get(i)).addOnCompleteListener(task -> {
+                if (!task.isSuccessful()) {
+                    Toast.makeText(getContext(), "One file is not upload error "+ Objects.requireNonNull(task.getException()).getMessage() , Toast.LENGTH_SHORT).show();
+                    UPLOAD_SIZE--;
+                } else {
+                    UPLOAD_SIZE++;
                     imageRef.getDownloadUrl().addOnCompleteListener(downloadTask -> {
-                        if (downloadTask.isSuccessful()) {
-                            // Add the download URL to the list
-                            imageUrls.add(downloadTask.getResult().toString());
-                        } else {
-                            // Handle the error
-                            if (progressDialog.isShowing()) {
-                                progressDialog.dismiss();
-                            }
-                        }
-
-                        // Check if all images have been uploaded and their URLs obtained
-                        uploadCount++;
-                        if (uploadCount == subImageUri.size()) {
-                            // All images have been uploaded, do something with the URLs
-//                            saveUrlsToDatabase(imageUrls);
-                            String id =  "https://crazy-studio-website.web.app/user?path="+Uri.encode( "/Share/"+FirebaseAuth.getInstance().getUid()+"/"+time+createsubjectsBinding.subName.getText().toString());
-                            Log.i("SubNotesUri", "showCrateSubject: "+imageUrls);
-                            SubjectModel model = new SubjectModel(createsubjectsBinding.subName.getText().toString(), fileUri1,time,imageUrls,id);
-                            firebaseDatabase.getReference().child("Share").child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).child(time+createsubjectsBinding.subName.getText().toString()).setValue(model).addOnCompleteListener(task1 -> {
+                        downloadURI.add(downloadTask.getResult().toString());
+                        if (downloadURI.size() == subImageUri.size()) {
+                            String id = "https://crazy-studio-website.web.app/user?path=" + Uri.encode("/Share/" + FirebaseAuth.getInstance().getUid() + "/" + time + createsubjectsBinding.subName.getText().toString());
+                            SubjectModel model = new SubjectModel(createsubjectsBinding.subName.getText().toString(), USER_DP, time, downloadURI, id);
+                            firebaseDatabase.getReference().child("Share").child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).child(time + createsubjectsBinding.subName.getText().toString()).setValue(model).addOnCompleteListener(task1 -> {
                                 if (task.isSuccessful()) {
                                     dialog.dismiss();
                                     if (progressDialog.isShowing()) {
@@ -302,7 +204,7 @@ public class ShareFileFragment extends Fragment {
                                     }
                                 }
                             }).addOnFailureListener(e -> {
-                                firebaseDatabase.getReference().child("error").child("Share_createSubject").child(System.currentTimeMillis()+"").push().setValue(e.getMessage());
+                                firebaseDatabase.getReference().child("error").child("Share_createSubject").child(System.currentTimeMillis() + "").push().setValue(e.getMessage());
                                 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                                 dialog.dismiss();
                                 if (progressDialog.isShowing()) {
@@ -312,14 +214,14 @@ public class ShareFileFragment extends Fragment {
                             });
                         }
                     });
-                } else {
-                    // Handle the error
-                    // If there was an error, decrement the uploadCount to avoid blocking further uploads
-                    uploadCount--;
                 }
             });
+
+
         }
     }
+
+
     private String filletExtension(Uri Uri) {
         ContentResolver contentResolver = requireContext().getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
@@ -340,59 +242,40 @@ public class ShareFileFragment extends Fragment {
 
         return extension;
     }
+
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         assert data != null;
-        if (data.getData() != null && requestCode==159) {
+        if (data.getData() != null && requestCode == USER_DP_CODE && resultCode == RESULT_OK) {
             Data = data.getData();
             createsubjectsBinding.userAvatar.setImageURI(data.getData());
 //            userAvatar Image
+        } else if (requestCode == SUB_NOTES_CODE && resultCode == RESULT_OK) {
+            if (data.getClipData() != null) {
+                int count = data.getClipData().getItemCount();
+                for (int i = 0; i < count; i++) {
+                    Uri fileUri = data.getClipData().getItemAt(i).getUri();
+                    subImageUri.add(fileUri);
+                    imageAdapters.notifyDataSetChanged();
+                }
+            } else {
+                if (data.getData() != null) {
+                    subImageUri.add(data.getData());
+                    imageAdapters.notifyDataSetChanged();
+                }
+            }
+        } else {
+            Toast.makeText(getContext(), "RETRY", Toast.LENGTH_SHORT).show();
         }
-        else if (data.getData()!=null&&requestCode==160) {
-//            subImageUri.add(data.getData().toString());
-//            startImageCrop(data.getData());
-            ShowDialog(data.getData());
-            imageAdapters.notifyDataSetChanged();
-        }
-//        }else if (data.getData()!=null&&requestCode==1000){
-//            Toast.makeText(getContext(), data.getExtras().getString("hello"), Toast.LENGTH_SHORT).show();
-//        }
+
     }
 
-//    private void startImageCrop(Uri sourceUri) {
-//        Intent intent = new Intent(getContext(), ImageEditorActivity.class);
-//        intent.putExtra("sourceUri",sourceUri);
-//        startActivityForResult(intent,44);
-//
-//    }
-//
-    public Bitmap createEditedImage() {
-        // Create a new Bitmap to hold the edited image
-        Bitmap editedBitmap = Bitmap.createBitmap(
-                editorBinding.photoView.getWidth(), editorBinding.photoView.getHeight(),
-                Bitmap.Config.ARGB_8888);
-
-        // Create a Canvas with the new Bitmap
-        Canvas canvas = new Canvas(editedBitmap);
-
-        // Draw the original photoView's image on the Canvas
-        editorBinding.photoView.draw(canvas);
-
-        // Calculate the text position on the photoView's image
-        float x = editorBinding.editTextOverlay.getX();
-        float y = editorBinding.editTextOverlay.getY();
-        x = (x / editorBinding.photoView.getWidth()) * editedBitmap.getWidth();
-        y = (y / editorBinding.photoView.getHeight()) * editedBitmap.getHeight();
-
-        // Draw the text on the Canvas at the calculated position
-        canvas.drawText(editorBinding.editTextOverlay.getText().toString(), x, y, editorBinding.editTextOverlay.getPaint());
-
-        // Hide the EditText for the final image capture
-        editorBinding.editTextOverlay.setVisibility(View.INVISIBLE);
-
-        return editedBitmap;
+    @SuppressLint("NotifyDataSetChanged")
+    @Override
+    public void remove(int pos) {
+        subImageUri.remove(pos);
+        imageAdapters.notifyDataSetChanged();
     }
-
 }

@@ -4,11 +4,12 @@ package com.crazyostudio.studentcircle.model;
 public class UserInfo {
     private String name,bio,userImage,userid,mail,number;
 
-    public UserInfo(String name,String userImage,String mail,String Number) {
+    public UserInfo(String name,String userImage,String mail,String Number,String Bio) {
         this.name = name;
         this.userImage = userImage;
         this.mail = mail;
         this.number =Number;
+        this.bio = Bio;
     }
 
     public UserInfo(){}

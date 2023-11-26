@@ -21,11 +21,11 @@ public class ThemeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentThemeBinding.inflate(inflater,container,false);
+        assert getArguments() != null;
 
         binding.app.setOnClickListener(app->{
             Intent intent = new Intent(getContext(), fragmentLoad.class);
             intent.putExtra("LoadID","preview_theme");
-            assert getArguments() != null;
             intent.putExtra("ThemeID",getArguments().getString("ThemeID"));
             intent.putExtra("ImageType",R.drawable.app);
             startActivity(intent);

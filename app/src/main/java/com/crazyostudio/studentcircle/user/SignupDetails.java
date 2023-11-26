@@ -7,16 +7,19 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.crazyostudio.studentcircle.Java_Class.SomeCode;
 import com.crazyostudio.studentcircle.MainActivity;
 import com.crazyostudio.studentcircle.R;
 import com.crazyostudio.studentcircle.databinding.ActivitySignupDetailsBinding;
@@ -24,6 +27,8 @@ import com.crazyostudio.studentcircle.fragmentLoad;
 import com.crazyostudio.studentcircle.model.CurrentInternetConnection;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -38,7 +43,7 @@ import java.util.Objects;
 public class SignupDetails extends AppCompatActivity {
     ActivitySignupDetailsBinding binding;
     ProgressDialog bar;
-    boolean imageBts = false,IsUseNumber=false;
+    boolean imageBts = false;
     private String number;
     private StorageReference reference;
     FirebaseDatabase db;
@@ -63,53 +68,63 @@ public class SignupDetails extends AppCompatActivity {
                         .start(1));
         Auth = FirebaseAuth.getInstance();
         db = FirebaseDatabase.getInstance();
-        reference = FirebaseStorage.getInstance().getReference("Image");
+        reference = FirebaseStorage.getInstance().getReference(Objects.requireNonNull(Auth.getUid()));
         bar = new ProgressDialog(this);
         if (!getIntent().getStringExtra("Number").isEmpty()) {
             number = getIntent().getStringExtra("Number");
         }else {
             if (Objects.requireNonNull(Objects.requireNonNull(Auth.getCurrentUser()).getPhoneNumber()).isEmpty()) {
                 number = Auth.getCurrentUser().getPhoneNumber();
-            }else {
-                binding.number.setVisibility(View.VISIBLE);
-                binding.number.setError("Enter Your Number ");
-                IsUseNumber = true;
             }
         }
 
-        binding.signup.setOnClickListener(view->{
-            if (!binding.Name.getText().toString().isEmpty()) {
-                if (!binding.Mail.getText().toString().isEmpty()){
-                    if (imageBts) {
-                        if (IsUseNumber){
-                            if (binding.number.getText().toString().length()==10) {
-                                bar.show();
-                                bar.setTitle("Waiting...");
-                                bar.setMessage("Uploading Data to Database ");
-                                UploadImage(dataUri);
-                            }else {
-                                binding.number.setError("Enter Your Number ");
-                            }
-                        }else {
-                            bar.show();
-                            bar.setTitle("Waiting...");
-                            bar.setMessage("Uploading Data to Database ");
-                            UploadImage(dataUri);
-                        }
-                    }else {
-                        Toast.makeText(this, "Select Image From Tap on This image icon ", Toast.LENGTH_SHORT).show();
-//                        UploadImage(Uri.parse(String.valueOf(R.drawable.userimage)));
-                    }
-                }else {
-                    binding.Mail.setError("Enter Your E-Mail");
+        setupErrorHandling(binding.Name, binding.textField, "Name cannot be empty.");
+        setupErrorHandling(binding.Mail, binding.MailLayout, "Mail cannot be empty.");
+//        setupErrorHandling(binding.Bio, binding.bioLayout, "Bio cannot be empty.");
+
+        String[] dropdownData = {"Hello", "Busy", "Typing..", "Coder", "At work","DND"};
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, dropdownData);
+        binding.Bio.setAdapter(adapter);
+
+
+        binding.save.setOnClickListener(view-> {
+            if (validateInputs()) {
+                if (imageBts) {
+                    UploadImage(dataUri);
                 }
-            }else {
-                binding.Name.setError("Enter Your Full Name");
+                else {
+                    Toast.makeText(this, "Select the Image From Tap to User image icon.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
-
     }
-        @Override
+
+    private void setupErrorHandling(TextInputEditText editText, TextInputLayout textInputLayout, String errorMessage)  {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // Not needed
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.toString().isEmpty()) {
+                    textInputLayout.setError(errorMessage);
+                } else {
+                    textInputLayout.setErrorEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Not needed
+            }
+        });
+    }
+
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
             super.onActivityResult(requestCode, resultCode, data);
             assert data != null;
@@ -119,32 +134,12 @@ public class SignupDetails extends AppCompatActivity {
                 imageBts = true;
             }
         }
-      private String filletExtension(Uri uri) {
-          ContentResolver contentResolver = getContentResolver();
-          MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-
-          // Get the file extension based on the Uri's MIME type
-          String extension = mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
-
-          if (extension == null) {
-              // If the MIME type doesn't provide an extension, try to extract from the Uri's path
-              String path = uri.getPath();
-              if (path != null) {
-                  int extensionStartIndex = path.lastIndexOf('.');
-                  if (extensionStartIndex != -1) {
-                      extension = path.substring(extensionStartIndex + 1);
-                  }
-              }
-          }
-
-          return extension;
-    }
-
     private void UploadImage(Uri image) {
-        StorageReference file = reference.child(System.currentTimeMillis()+"."+ filletExtension(image));
+        StorageReference file = reference.child("USER_DP").child(System.currentTimeMillis()+"."+ SomeCode.getFileExtensionFromUri(image,this));
             file.putFile(image).addOnSuccessListener(taskSnapshot -> file.getDownloadUrl().addOnSuccessListener(uri -> {
             com.crazyostudio.studentcircle.model.UserInfo userInfo;
-            userInfo = new com.crazyostudio.studentcircle.model.UserInfo(binding.Name.getText().toString(),uri.toString(),binding.Mail.getText().toString(),number);
+
+            userInfo = new com.crazyostudio.studentcircle.model.UserInfo(Objects.requireNonNull(binding.Name.getText()).toString(),uri.toString(), Objects.requireNonNull(binding.Mail.getText()).toString(),number, Objects.requireNonNull(binding.Bio.getText()).toString());
             db.getReference().child("UserInfo").child(Objects.requireNonNull(Auth.getUid())).setValue(userInfo).addOnCompleteListener(task -> {
                 FirebaseUser user = Auth.getCurrentUser();
                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
@@ -259,4 +254,40 @@ public class SignupDetails extends AppCompatActivity {
 
         })).addOnFailureListener(e -> Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show());
     }
+
+    private boolean validateInputs() {
+        boolean isValid = true;
+
+        // Check Name
+        String name = binding.Name.getText().toString().trim();
+        if (TextUtils.isEmpty(name)) {
+            binding.textField.setError("Name cannot be empty");
+            isValid = false;
+        } else {
+            binding.textField.setError(null);
+        }
+
+        // Check Email
+        String email = binding.Mail.getText().toString().trim();
+        if (TextUtils.isEmpty(email)) {
+            binding.MailLayout.setError("Email cannot be empty");
+            isValid = false;
+        } else {
+            binding.MailLayout.setError(null);
+        }
+
+        // Check Bio
+        String bio = binding.Bio.getText().toString().trim();
+        if (TextUtils.isEmpty(bio)) {
+            binding.bioLayout.setError("Bio cannot be empty");
+            isValid = false;
+        } else {
+            binding.bioLayout.setError(null);
+        }
+
+        return isValid;
+    }
+
+
+
 }

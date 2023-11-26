@@ -3,19 +3,12 @@ package com.crazyostudio.studentcircle.adapters;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.DownloadManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Point;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
 import android.provider.ContactsContract;
-import android.text.method.Touch;
-import android.view.Display;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
@@ -29,7 +22,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.crazyostudio.studentcircle.R;
 import com.crazyostudio.studentcircle.databinding.ReceiverBinding;
 import com.crazyostudio.studentcircle.databinding.ReceiverImageBinding;
@@ -41,7 +33,6 @@ import com.crazyostudio.studentcircle.databinding.SenderBinding;
 import com.crazyostudio.studentcircle.databinding.SnadercontactlayoutBinding;
 import com.crazyostudio.studentcircle.databinding.StoryreplyrcriverBinding;
 import com.crazyostudio.studentcircle.databinding.StoryreplysenderBinding;
-import com.crazyostudio.studentcircle.fullscreen;
 import com.crazyostudio.studentcircle.model.ChatAdaptersInterface;
 import com.crazyostudio.studentcircle.model.Chat_Model;
 import com.crazyostudio.studentcircle.model.UserInfo;
@@ -55,7 +46,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
-
 public class ChatAdapters extends  RecyclerView.Adapter{
     ChatAdaptersInterface adaptersInterface;
     ArrayList<Chat_Model> ChatModels;
@@ -224,52 +214,29 @@ public class ChatAdapters extends  RecyclerView.Adapter{
 //            ((SanderPDFViewHolder)holder).pdfBinding.pages.setText(chatModel.getFilePage());
             ((SanderPDFViewHolder)holder).pdfBinding.Download.setOnClickListener(view->
             {
-                String url = chatModel.getMessage();
-                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-                request.allowScanningByMediaScanner();
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, chatModel.getFilename());
-                DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-                manager.enqueue(request);
-                Toast.makeText(context, "Check Notification Bar or Download Folder ", Toast.LENGTH_SHORT).show();
-        });
-            ((SanderPDFViewHolder)holder).pdfBinding.Download.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    PopupMenu popup = new PopupMenu(context,  ((SanderPDFViewHolder)holder).pdfBinding.Download);
-                    MenuInflater inflater = popup.getMenuInflater();
-                    inflater.inflate(R.menu.imagemenu, popup.getMenu());
-                    popup.setOnMenuItemClickListener(item -> {
-                        switch (item.getItemId()) {
-                            case R.id.openFull:
-                                adaptersInterface.ImageView(chatModel);
-                                popup.dismiss();
-
-                                return false;
-                            case R.id.Download:
-                                String url = chatModel.getMessage();
-                                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-                                request.allowScanningByMediaScanner();
-                                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, chatModel.getFilename());
-                                DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-                                manager.enqueue(request);
-                                Toast.makeText(context, "Check Notification Bar or Download Folder ", Toast.LENGTH_SHORT).show();
-                                popup.dismiss();
-                                return false;
-                            case R.id.delete_btu:
-                                adaptersInterface.DeleteImage(chatModel);
-                                return false;
-                            default:
-                                return false;
-                        }
-                    });
-                    popup.show();
-                    return false;
-                }
+                PopupMenu popup = new PopupMenu(context,  ((SanderPDFViewHolder)holder).pdfBinding.Download);
+                MenuInflater inflater = popup.getMenuInflater();
+                inflater.inflate(R.menu.imagemenu, popup.getMenu());
+                popup.setOnMenuItemClickListener(item -> {
+                    switch (item.getItemId()) {
+                        case R.id.openFull:
+                            adaptersInterface.ImageView(chatModel);
+                            popup.dismiss();
+                            return false;
+                        case R.id.Download:
+                            adaptersInterface.Download(Uri.parse(chatModel.getMessage()));
+                            popup.dismiss();
+                            return false;
+                        case R.id.delete_btu:
+                            adaptersInterface.DeleteImage(chatModel);
+                            popup.dismiss();
+                            return false;
+                        default:
+                            return false;
+                    }
+                });
+                popup.show();
             });
-
-//
         }
         else if (holder.getClass()==SANDERCONTACTViewHolder.class){
             @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm");
@@ -339,18 +306,12 @@ public class ChatAdapters extends  RecyclerView.Adapter{
 
                             return false;
                         case R.id.Download:
-                            String url = chatModel.getMessage();
-                            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-                            request.allowScanningByMediaScanner();
-                            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, chatModel.getFilename());
-                            DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-                            manager.enqueue(request);
-                            Toast.makeText(context, "Check Notification Bar or Download Folder ", Toast.LENGTH_SHORT).show();
+                            adaptersInterface.Download(Uri.parse(chatModel.getMessage()));
                             popup.dismiss();
                             return false;
                         case R.id.delete_btu:
                             adaptersInterface.DeleteImage(chatModel);
+                            popup.dismiss();
                             return false;
                         default:
                             return false;
@@ -453,14 +414,7 @@ public class ChatAdapters extends  RecyclerView.Adapter{
 
                             return false;
                         case R.id.Download:
-                            String url = chatModel.getMessage();
-                            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-                            request.allowScanningByMediaScanner();
-                            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, chatModel.getFilename());
-                            DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-                            manager.enqueue(request);
-                            Toast.makeText(context, "Check Notification Bar or Download Folder ", Toast.LENGTH_SHORT).show();
+                            adaptersInterface.Download(Uri.parse(chatModel.getMessage()));
                             popup.dismiss();
                             return false;
                         case R.id.delete_btu:
@@ -494,20 +448,6 @@ public class ChatAdapters extends  RecyclerView.Adapter{
             ((ReceiverPDFViewHolder)holder).pdfBinding.time.setText(time);
             ((ReceiverPDFViewHolder)holder).pdfBinding.Download.setOnClickListener(view->
             {
-
-                String url = chatModel.getMessage();
-                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-                request.allowScanningByMediaScanner();
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, chatModel.getFilename());
-                DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-                manager.enqueue(request);
-                Toast.makeText(context, "Check Notification Bar or Download Folder ", Toast.LENGTH_SHORT).show();
-
-            });
-
-
-            ((ReceiverPDFViewHolder)holder).pdfBinding.Download.setOnLongClickListener(v -> {
                 PopupMenu popup = new PopupMenu(context,  ((ReceiverPDFViewHolder)holder).pdfBinding.Download);
                 MenuInflater inflater = popup.getMenuInflater();
                 inflater.inflate(R.menu.imagemenu, popup.getMenu());
@@ -519,14 +459,8 @@ public class ChatAdapters extends  RecyclerView.Adapter{
 
                             return false;
                         case R.id.Download:
-                            String url = chatModel.getMessage();
-                            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-                            request.allowScanningByMediaScanner();
-                            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, chatModel.getFilename());
-                            DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-                            manager.enqueue(request);
-                            Toast.makeText(context, "Check Notification Bar or Download Folder ", Toast.LENGTH_SHORT).show();
+                            adaptersInterface.Download(Uri.parse(chatModel.getMessage()));
+
                             popup.dismiss();
                             return false;
                         case R.id.delete_btu:
@@ -537,11 +471,8 @@ public class ChatAdapters extends  RecyclerView.Adapter{
                     }
                 });
                 popup.show();
-                return false;
             });
-
         }
-        else if (holder.getClass() == StoryReplyRcriverViewHolder.class){}
         else if (holder.getClass()==ReceiverViewHolder.class){
             ((ReceiverViewHolder)holder).binding.messageText.setText(chatModel.getMessage());
             @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm");
