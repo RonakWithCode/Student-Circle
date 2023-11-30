@@ -11,6 +11,7 @@ import com.crazyostudio.studentcircle.databinding.ActivitySignUpBinding;
 import com.crazyostudio.studentcircle.fragmentLoad;
 import com.crazyostudio.studentcircle.model.CurrentInternetConnection;
 import com.google.firebase.auth.FirebaseAuth;
+
 public class SignUp extends AppCompatActivity {
     private ActivitySignUpBinding binding;
 //
