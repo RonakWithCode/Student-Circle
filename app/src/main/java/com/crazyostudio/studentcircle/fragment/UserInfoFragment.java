@@ -62,7 +62,7 @@ public class UserInfoFragment extends Fragment {
                     UserInfo userInfo = snapshot1.getValue(UserInfo.class);
                     if (!Objects.equals(snapshot1.getKey(), auth.getUid())) {
                         assert userInfo != null;
-                        userInfo.setUserid(snapshot1.getKey());
+//                        userInfo.setUserid(snapshot1.getKey());
                         userInfoS.add(userInfo);
 
                     }

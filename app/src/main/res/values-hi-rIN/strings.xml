@@ -89,5 +89,13 @@
     <string name="clear_chat">clear chat</string>
     <string name="preview_theme">Preview Theme</string>
     <string name="set">Set</string>
+    <string name="username">Username</string>
+    <string name="next">Next</string>
+    <string name="last_name">Last name</string>
+    <string name="first_name">First name</string>
+    <string name="set_up_account">Set up account</string>
+    <string name="you_can_change_latter">You can change latter</string>
+    <string name="chose_username">Chose username</string>
+    <string name="get_help_in_login">get help in login<a href="https://crazy-studio-website.web.app/PrivacyPolicy.html">Read More</a></string>
 
 </resources>

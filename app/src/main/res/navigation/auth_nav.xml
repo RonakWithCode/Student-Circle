@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/auth_nav"
+    app:startDestination="@id/signInFragment">
+
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.crazyostudio.studentcircle.fragment.SignInFragment"
+        android:label="fragment_sign_in"
+        tools:layout="@layout/fragment_sign_in" >
+        <action
+            android:id="@+id/action_signInFragment_to_signInWithOTP"
+            app:destination="@id/signInWithOTP" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.crazyostudio.studentcircle.fragment.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" />
+    <fragment
+        android:id="@+id/signUpUsername"
+        android:name="com.crazyostudio.studentcircle.fragment.SignUpUsername"
+        android:label="fragment_sign_up_username"
+        tools:layout="@layout/fragment_sign_up_username" />
+    <fragment
+        android:id="@+id/signUpInfoFragment"
+        android:name="com.crazyostudio.studentcircle.fragment.SignUpInfoFragment"
+        android:label="fragment_sign_up_info"
+        tools:layout="@layout/fragment_sign_up_info" >
+        <action
+            android:id="@+id/action_signUpInfoFragment_to_recommendedScreenFragment"
+            app:destination="@id/recommendedScreenFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signInWithOTP"
+        android:name="com.crazyostudio.studentcircle.fragment.SignInWithOTP"
+        android:label="fragment_sign_in_with_o_t_p"
+        tools:layout="@layout/fragment_sign_in_with_o_t_p" >
+        <action
+            android:id="@+id/action_signInWithOTP_to_signUpInfoFragment"
+            app:destination="@id/signUpInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recommendedScreenFragment"
+        android:name="com.crazyostudio.studentcircle.fragment.RecommendedScreenFragment"
+        android:label="fragment_recommended_screen"
+        tools:layout="@layout/fragment_recommended_screen" />
+</navigation>

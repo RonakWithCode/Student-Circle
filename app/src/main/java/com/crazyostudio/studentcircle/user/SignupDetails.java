@@ -1,44 +1,32 @@
 package com.crazyostudio.studentcircle.user;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.View;
-import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.crazyostudio.studentcircle.Java_Class.SomeCode;
-import com.crazyostudio.studentcircle.MainActivity;
-import com.crazyostudio.studentcircle.R;
 import com.crazyostudio.studentcircle.databinding.ActivitySignupDetailsBinding;
 import com.crazyostudio.studentcircle.fragmentLoad;
 import com.crazyostudio.studentcircle.model.CurrentInternetConnection;
 import com.github.dhaval2404.imagepicker.ImagePicker;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
+
+
 
 public class SignupDetails extends AppCompatActivity {
     ActivitySignupDetailsBinding binding;
@@ -91,7 +79,7 @@ public class SignupDetails extends AppCompatActivity {
         binding.save.setOnClickListener(view-> {
             if (validateInputs()) {
                 if (imageBts) {
-                    UploadImage(dataUri);
+//                    UploadImage(dataUri);
                 }
                 else {
                     Toast.makeText(this, "Select the Image From Tap to User image icon.", Toast.LENGTH_SHORT).show();
@@ -134,126 +122,126 @@ public class SignupDetails extends AppCompatActivity {
                 imageBts = true;
             }
         }
-    private void UploadImage(Uri image) {
-        StorageReference file = reference.child("USER_DP").child(System.currentTimeMillis()+"."+ SomeCode.getFileExtensionFromUri(image,this));
-            file.putFile(image).addOnSuccessListener(taskSnapshot -> file.getDownloadUrl().addOnSuccessListener(uri -> {
-            com.crazyostudio.studentcircle.model.UserInfo userInfo;
-
-            userInfo = new com.crazyostudio.studentcircle.model.UserInfo(Objects.requireNonNull(binding.Name.getText()).toString(),uri.toString(), Objects.requireNonNull(binding.Mail.getText()).toString(),number, Objects.requireNonNull(binding.Bio.getText()).toString());
-            db.getReference().child("UserInfo").child(Objects.requireNonNull(Auth.getUid())).setValue(userInfo).addOnCompleteListener(task -> {
-                FirebaseUser user = Auth.getCurrentUser();
-                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                        .setDisplayName(binding.Name.getText().toString())
-                        .setPhotoUri(uri)
-                        .build();
-
-                assert user != null;
-                user.updateProfile(profileUpdates)
-                        .addOnCompleteListener(task1 -> {
-                            if (task1.isSuccessful()) {
-                                if (bar.isShowing()) {
-                                    bar.dismiss();
-                                    Dialog Pin_dialog = new Dialog(SignupDetails.this);
-                                    Pin_dialog.setContentView(R.layout.pindialogbox);
-                                    Pin_dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-                                    Pin_dialog.getWindow().setBackgroundDrawableResource(R.drawable.pinboxlayout);
-                                    Pin_dialog.setCancelable(false);
-                                    Pin_dialog.show();
-
-                                    EditText fakePin = Pin_dialog.findViewById(R.id.fakePin);
-                                    EditText realPin = Pin_dialog.findViewById(R.id.real_pin);
-                                    FloatingActionButton button = Pin_dialog.findViewById(R.id.create_Btu);
-                                    fakePin.addTextChangedListener(new TextWatcher() {
-                                        @Override
-                                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                                        }
-
-                                        @Override
-                                        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                                            if (fakePin.getText().toString().length()==4) {
-                                                realPin.requestFocus();
-
-//                            fakePin.getNextFocusDownId();
-                                            }
-                                            else    {
-                                                fakePin.setError("Length of a number is 4");
-                                            }
-                                        }
-
-                                        @Override
-                                        public void afterTextChanged(Editable editable) {
-                                            if (fakePin.getText().toString().length()==4) {
-//                            fakePin.getNextFocusDownId();
-                                            }
-                                            else {
-                                                fakePin.setError("Length of a number is 4");
-                                            }
-                                        }
-                                    });
-                                    realPin.addTextChangedListener(new TextWatcher() {
-                                        @Override
-                                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                                        }
-
-                                        @Override
-                                        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                                            if (!(fakePin.getText().toString().length() == 4)) {
-                                                fakePin.requestFocus();
-                                            }
-                                            if (realPin.getText().toString().length()==4) {
-                                                button.setVisibility(View.VISIBLE);
-
-                                            }
-                                            else    {
-                                                realPin.setError("Length of a number is 4");
-                                            }
-                                        }
-
-                                        @Override
-                                        public void afterTextChanged(Editable editable) {
-                                            if (!(fakePin.getText().toString().length() == 4)) {
-                                                fakePin.requestFocus();
-                                            }
-                                            if (realPin.getText().toString().length()==4) {
-                                                button.setVisibility(View.VISIBLE);
-                                                realPin.clearFocus();
-//                            fakePin.getNextFocusDownId();
-                                            }
-                                            else {
-                                                realPin.setError("Length of a number is 4");
-                                            }
-                                        }
-                                    });
-                                    button.setOnClickListener(view -> {
-                                        Map<String, String> pins = new HashMap<>();
-                                        pins.put("fakePin",fakePin.getText().toString());
-                                        pins.put("realPin",realPin.getText().toString());
-
-                                        FirebaseDatabase.getInstance().getReference().child("pin").child(Auth.getUid()).setValue(pins).addOnCompleteListener(task2 -> {
-                                            if (task2.isSuccessful()){
-                                                Pin_dialog.dismiss();
-                                                startActivity(new Intent(SignupDetails.this, MainActivity.class));
-                                                finish();
-                                            }
-                                            else {
-                                                Toast.makeText(SignupDetails.this, "ReTry", Toast.LENGTH_SHORT).show();
-                                                fakePin.setText("");
-                                                realPin.setText("");
-                                                button.setVisibility(View.INVISIBLE);
-                                            }
-                                        });
-                                    });
-
-                                }
-                            }
-                        });
-
-            });
-
-        })).addOnFailureListener(e -> Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show());
-    }
+//    private void UploadImage(Uri image) {
+//        StorageReference file = reference.child("USER_DP").child(System.currentTimeMillis()+"."+ SomeCode.getFileExtensionFromUri(image,this));
+//            file.putFile(image).addOnSuccessListener(taskSnapshot -> file.getDownloadUrl().addOnSuccessListener(uri -> {
+//            com.crazyostudio.studentcircle.model.UserInfo userInfo;
+//
+////            userInfo = new com.crazyostudio.studentcircle.model.UserInfo(Objects.requireNonNull(binding.Name.getText()).toString(),uri.toString(), Objects.requireNonNull(binding.Mail.getText()).toString(),number, Objects.requireNonNull(binding.Bio.getText()).toString());
+//            db.getReference().child("UserInfo").child(Objects.requireNonNull(Auth.getUid())).setValue(userInfo).addOnCompleteListener(task -> {
+//                FirebaseUser user = Auth.getCurrentUser();
+//                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+//                        .setDisplayName(binding.Name.getText().toString())
+//                        .setPhotoUri(uri)
+//                        .build();
+//
+//                assert user != null;
+//                user.updateProfile(profileUpdates)
+//                        .addOnCompleteListener(task1 -> {
+//                            if (task1.isSuccessful()) {
+//                                if (bar.isShowing()) {
+//                                    bar.dismiss();
+//                                    Dialog Pin_dialog = new Dialog(SignupDetails.this);
+//                                    Pin_dialog.setContentView(R.layout.pindialogbox);
+//                                    Pin_dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+//                                    Pin_dialog.getWindow().setBackgroundDrawableResource(R.drawable.pinboxlayout);
+//                                    Pin_dialog.setCancelable(false);
+//                                    Pin_dialog.show();
+//
+//                                    EditText fakePin = Pin_dialog.findViewById(R.id.fakePin);
+//                                    EditText realPin = Pin_dialog.findViewById(R.id.real_pin);
+//                                    FloatingActionButton button = Pin_dialog.findViewById(R.id.create_Btu);
+//                                    fakePin.addTextChangedListener(new TextWatcher() {
+//                                        @Override
+//                                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//                                        }
+//
+//                                        @Override
+//                                        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                                            if (fakePin.getText().toString().length()==4) {
+//                                                realPin.requestFocus();
+//
+////                            fakePin.getNextFocusDownId();
+//                                            }
+//                                            else    {
+//                                                fakePin.setError("Length of a number is 4");
+//                                            }
+//                                        }
+//
+//                                        @Override
+//                                        public void afterTextChanged(Editable editable) {
+//                                            if (fakePin.getText().toString().length()==4) {
+////                            fakePin.getNextFocusDownId();
+//                                            }
+//                                            else {
+//                                                fakePin.setError("Length of a number is 4");
+//                                            }
+//                                        }
+//                                    });
+//                                    realPin.addTextChangedListener(new TextWatcher() {
+//                                        @Override
+//                                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//                                        }
+//
+//                                        @Override
+//                                        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                                            if (!(fakePin.getText().toString().length() == 4)) {
+//                                                fakePin.requestFocus();
+//                                            }
+//                                            if (realPin.getText().toString().length()==4) {
+//                                                button.setVisibility(View.VISIBLE);
+//
+//                                            }
+//                                            else    {
+//                                                realPin.setError("Length of a number is 4");
+//                                            }
+//                                        }
+//
+//                                        @Override
+//                                        public void afterTextChanged(Editable editable) {
+//                                            if (!(fakePin.getText().toString().length() == 4)) {
+//                                                fakePin.requestFocus();
+//                                            }
+//                                            if (realPin.getText().toString().length()==4) {
+//                                                button.setVisibility(View.VISIBLE);
+//                                                realPin.clearFocus();
+////                            fakePin.getNextFocusDownId();
+//                                            }
+//                                            else {
+//                                                realPin.setError("Length of a number is 4");
+//                                            }
+//                                        }
+//                                    });
+//                                    button.setOnClickListener(view -> {
+//                                        Map<String, String> pins = new HashMap<>();
+//                                        pins.put("fakePin",fakePin.getText().toString());
+//                                        pins.put("realPin",realPin.getText().toString());
+//
+//                                        FirebaseDatabase.getInstance().getReference().child("pin").child(Auth.getUid()).setValue(pins).addOnCompleteListener(task2 -> {
+//                                            if (task2.isSuccessful()){
+//                                                Pin_dialog.dismiss();
+//                                                startActivity(new Intent(SignupDetails.this, MainActivity.class));
+//                                                finish();
+//                                            }
+//                                            else {
+//                                                Toast.makeText(SignupDetails.this, "ReTry", Toast.LENGTH_SHORT).show();
+//                                                fakePin.setText("");
+//                                                realPin.setText("");
+//                                                button.setVisibility(View.INVISIBLE);
+//                                            }
+//                                        });
+//                                    });
+//
+//                                }
+//                            }
+//                        });
+//
+//            });
+//
+//        })).addOnFailureListener(e -> Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show());
+//    }
 
     private boolean validateInputs() {
         boolean isValid = true;

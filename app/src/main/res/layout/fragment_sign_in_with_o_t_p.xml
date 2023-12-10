@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:textAlignment="center"
     android:background="@color/MainBackgroundColor"
-    tools:context=".user.SignUpOTP">
+    tools:context=".fragment.SignInWithOTP">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -237,6 +237,17 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 android:src="@drawable/pin"/>
+
+            <ProgressBar
+                android:id="@+id/ProgressBar"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

@@ -24,7 +24,7 @@
     <string name="bio">bio</string>
     <string name="tell_me_about_your_self">Tell me about your self</string>
     <string name="profile">Profile</string>
-    <string name="PhoneNumber">Phone Number</string>
+    <string name="PhoneNumber">Phone number</string>
     <string name="if_your_change_amy_things_in_profile_your_can_tap_on_profile">If your change anything in profile your can tap on the profile icon</string>
     <string name="Theme">Theme</string>
     <string name="changes">Change</string>
@@ -42,7 +42,7 @@
     <string name="contact_us">Contact Us</string>
 
     <string name="terms_amp_privacy_policy"><![CDATA[Terms & Privacy Policy]]></string>
-    <string name="accept_terms_and_conditions">Accept Terms and Conditions</string>
+    <string name="accept_terms_and_conditions">Accept Terms and Conditions <a href="https://crazy-studio-website.web.app/PrivacyPolicy.html">Read More</a></string>
     <string name="read_more"><a href="https://crazy-studio-website.web.app/PrivacyPolicy.html">Read More</a></string>
     <string name="public_group_chating">Public Group Chating</string>
     <string name="icon">Icon</string>
@@ -87,18 +87,25 @@
     <string name="Download">Download</string>
     <string name="delete_message">Delete Message?</string>
     <string name="delete_for_me">Delete for me</string>
-    <string name="delete_for_everyone">Delete for everyone</string>
+    <string name="delete_for_everyone" translatable="false">Delete for everyone</string>
     <string name="clear_chat">clear chat</string>
-    <string name="tap_select_view_images">Tap Select View Images</string>
+    <string name="tap_select_view_images" translatable="false">Tap Select View Images</string>
     <string name="preview_theme">Preview Theme</string>
     <string name="set">Set</string>
-    <string name="x">X</string>
-    <string name="about_user_info">About User Info</string>
-    <string name="user_share_file">User Share File</string>
-    <string-array name="lang">
-        <item>English</item>
-        <item>Hindi</item>
+    <string name="x" translatable="false">X</string>
+    <string name="about_user_info" translatable="false">About User Info</string>
+    <string name="user_share_file" translatable="false">User Share File</string>
+    <string name="username_email_or_phone_number" translatable="false">Username, email or phone number</string>
+    <string name="password_otp" translatable="false">Password, OTP</string>
+    <string name="username">Username</string>
+    <string name="next">Next</string>
+    <string name="last_name">Last name</string>
+    <string name="first_name">First name</string>
+    <string name="set_up_account">Set up account</string>
+    <string name="you_can_change_latter">You can change latter</string>
+    <string name="chose_username">Chose username</string>
+    <string name="get_help_in_login"><a href="https://crazy-studio-website.web.app/PrivacyPolicy.html">get help in login</a></string>
+    <string name="recommended_to_following" translatable="false">recommended to following </string>
 
-    </string-array>
 
 </resources>

@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat;
 
 import com.crazyostudio.studentcircle.adapters.ViewPagerAdapter;
 import com.crazyostudio.studentcircle.databinding.ActivityMainBinding;
+import com.crazyostudio.studentcircle.fragment.HomeFragment;
 import com.crazyostudio.studentcircle.fragment.ShareFileFragment;
 import com.crazyostudio.studentcircle.fragment.StoryFragment;
 import com.crazyostudio.studentcircle.fragment.UserInfoFragment;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPagerAdapter.add(new HomeFragment(), "Home");
         viewPagerAdapter.add(new UserInfoFragment(), "Chat");
 //        viewPagerAdapter.add(new StoryFragment(), "Story");
         viewPagerAdapter.add(new ShareFileFragment(), "Share");

@@ -1,21 +1,47 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- item_user.xml -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:background="@color/list_chat_layout_background"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="8dp">
 
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/userAvatar"
+        android:layout_width="80dp"
+        android:layout_marginStart="1dp"
+        android:scaleType="center"
+        android:adjustViewBounds="true"
+        android:layout_height="80dp"
+        app:riv_border_color="#333333"
+        app:riv_border_width="2dip"
+        app:riv_corner_radius="30dip"
+        app:riv_mutate_background="true"
+        app:riv_oval="true"
+        android:src="@drawable/userimage"/>
     <TextView
-        android:id="@+id/repoName"
-        android:layout_width="match_parent"
+        android:id="@+id/repName"
+        android:maxLength="23"
+        android:textColor="@color/MainTextColor"
+        android:layout_marginTop="5dp"
+
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:layout_marginBottom="8dp"/>
+        android:layout_toEndOf="@id/userAvatar"
+        android:layout_marginStart="12dp"
+        android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/repoDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:id="@+id/decs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLength="80"
+        android:layout_below="@id/repName"
+        android:textColor="@color/MainTextColor"
+        android:layout_toEndOf="@id/userAvatar"
+        android:layout_marginStart="12dp"
+        android:textSize="14sp" />
 
-</LinearLayout>
+
+
+</RelativeLayout>

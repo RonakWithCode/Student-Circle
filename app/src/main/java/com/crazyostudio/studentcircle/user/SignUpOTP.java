@@ -31,6 +31,9 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import java.util.concurrent.TimeUnit;
 
 public class SignUpOTP extends AppCompatActivity {
+
+
+
     ActivitySignUpOtpBinding binding;
     ProgressDialog dialog;
     String Number,verificationId;
@@ -174,6 +177,8 @@ public class SignUpOTP extends AppCompatActivity {
 //            tokens = token;
         }
     };
+
+
     private void SignUp(){
         String UserOtp = mEt1.getText().toString() + mEt2.getText().toString() + mEt3.getText().toString() + mEt4.getText().toString() + mEt5.getText().toString() + mEt6.getText().toString();
         if (!(UserOtp.trim().length() ==6)) {

@@ -1,14 +1,17 @@
 package com.crazyostudio.studentcircle.adapters;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.crazyostudio.studentcircle.R;
+import com.crazyostudio.studentcircle.databinding.RepoItemBinding;
 import com.crazyostudio.studentcircle.model.Repository;
 
 import java.util.List;
@@ -16,11 +19,13 @@ import java.util.List;
 public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.ViewHolder> {
 
     private List<Repository> repositories;
-
-    public RepoAdapter(List<Repository> repositories) {
+    Context Context;
+    public RepoAdapter(List<Repository> repositories,Context context) {
         this.repositories = repositories;
+        this.Context  = context;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void updateData(List<Repository> repositories) {
         this.repositories = repositories;
         notifyDataSetChanged();
@@ -36,8 +41,9 @@ public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Repository repository = repositories.get(position);
-        holder.repoName.setText(repository.getName());
-        holder.repoDescription.setText(repository.getDescription());
+        holder.binding.repName.setText(repository.getName());
+        holder.binding.decs.setText(repository.getDescription());
+        Glide.with(Context).load(repository.getAvatar_url()).placeholder(R.drawable.git_icon).into(holder.binding.userAvatar);
     }
 
     @Override
@@ -46,13 +52,11 @@ public class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.ViewHolder> {
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView repoName;
-        TextView repoDescription;
-
+        RepoItemBinding binding;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            repoName = itemView.findViewById(R.id.repoName);
-            repoDescription = itemView.findViewById(R.id.repoDescription);
+            binding = RepoItemBinding.bind(itemView);
+
         }
     }
 }

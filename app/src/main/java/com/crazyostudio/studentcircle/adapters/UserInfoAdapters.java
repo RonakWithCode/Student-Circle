@@ -44,11 +44,11 @@ public class UserInfoAdapters extends RecyclerView.Adapter<UserInfoAdapters.User
     @Override
     public void onBindViewHolder(@NonNull UserInfoAdaptersViewHolder holder, int position) {
         UserInfo product = userInfo.get(position);
-        Glide.with(context).load(product.getUserImage()).into(holder.binding.userAvatar);
-        holder.binding.username.setText(product.getName());
+        Glide.with(context).load(product.getProfilePictureUrl()).into(holder.binding.userAvatar);
+        holder.binding.username.setText(product.getFullName());
 //        holder.binding.bio.setText(product.getBio());
 
-        FirebaseDatabase.getInstance().getReference().child("chats").child(FirebaseAuth.getInstance().getUid()+product.getUserid()).orderByChild("sandTime").limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("chats").child(FirebaseAuth.getInstance().getUid()+product.getId()).orderByChild("sandTime").limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.hasChildren()){
@@ -81,10 +81,10 @@ public class UserInfoAdapters extends RecyclerView.Adapter<UserInfoAdapters.User
 
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(context, chat.class);
-            intent.putExtra("name",product.getName());
-            intent.putExtra("Images",product.getUserImage());
+            intent.putExtra("name",product.getFullName());
+            intent.putExtra("Images",product.getProfilePictureUrl());
             intent.putExtra("Bio",product.getBio());
-            intent.putExtra("UserId",product.getUserid());
+            intent.putExtra("UserId",product.getId());
             context.startActivity(intent);
 
         });

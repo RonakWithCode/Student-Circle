@@ -92,7 +92,7 @@ public class User_Profile extends AppCompatActivity {
         FirebaseUser user = auth.getCurrentUser();
         // Update the user profile in Firebase Realtime Database
         DatabaseReference userReference = databaseReference.getReference("UserInfo").child(user.getUid());
-
+// TODO: This is pass error change child resolve the error
         userReference.child("name").setValue(Objects.requireNonNull(binding.NameEditText.getText()).toString());
         userReference.child("mail").setValue(Objects.requireNonNull(binding.Mail.getText()).toString());
         userReference.child("bio").setValue(binding.Bio.getText().toString());
@@ -165,9 +165,9 @@ public class User_Profile extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                     _userInfo = snapshot.getValue(UserInfo.class);
-                    Glide.with(User_Profile.this).load(_userInfo.getUserImage()).into(binding.userImage);
-                    binding.NameEditText.setText(_userInfo.getName());
-                    binding.Mail.setText(_userInfo.getMail());
+                    Glide.with(User_Profile.this).load(_userInfo.getProfilePictureUrl()).into(binding.userImage);
+                    binding.NameEditText.setText(_userInfo.getFullName());
+                    binding.Mail.setText(_userInfo.getEmail());
                     binding.Bio.setText(_userInfo.getBio());
                     binding.progressCircular.setVisibility(View.GONE);
             }

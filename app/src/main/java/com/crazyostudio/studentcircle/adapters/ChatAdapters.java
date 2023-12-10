@@ -262,10 +262,10 @@ public class ChatAdapters extends  RecyclerView.Adapter{
                             clipboard.setPrimaryClip(clip);
                             return false;
                         case R.id.findName:
-                            findingUser(chatModel.getMessage(), holder,position,"name");
+//                            findingUser(chatModel.getMessage(), holder,position,"name");
                             return false;
                         case R.id.findNumber:
-                            findingUser(chatModel.getFilename(), holder,position,"number");
+//                            findingUser(chatModel.getFilename(), holder,position,"number");
                             return false;
 
 
@@ -357,11 +357,11 @@ public class ChatAdapters extends  RecyclerView.Adapter{
                             clipboard.setPrimaryClip(clip);
                             return false;
                         case R.id.findName:
-                            findingUser(chatModel.getMessage(), holder,position,"name");
-                            return true;
+//                            findingUser(chatModel.getMessage(), holder,position,"name");
+                            return false;
                         case R.id.findNumber:
-                            findingUser(chatModel.getFilename(), holder,position,"number");
-                            return true;
+//                            findingUser(chatModel.getFilename(), holder,position,"number");
+                            return false;
 ////            case R.id.delete:
 ////                delete(item);
 //                return true;
@@ -512,73 +512,74 @@ public class ChatAdapters extends  RecyclerView.Adapter{
         return ChatModels.size();
     }
     //    Find of Out side function
-    private void findingUser(String name,  RecyclerView.ViewHolder view, int position,String FindBy) {
-        Dialog findUser = new Dialog(context);
-        findUser.setContentView(R.layout.findinguserlayout);
-        findUser.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        findUser.setCanceledOnTouchOutside(true);
-        findUser.onBackPressed();
-        findUser.show();
-        RecyclerView recyclerViewUsers = findUser.findViewById(R.id.users);
-        TextView textView = findUser.findViewById(R.id.not_Found);
-        FirebaseDatabase users;
-        FirebaseAuth auth;
-        UserInfoAdapters userInfoAdapters;
-        auth = FirebaseAuth.getInstance();
-        users = FirebaseDatabase.getInstance();
-        ArrayList<UserInfo> userInfoS = new ArrayList<>();
-        userInfoAdapters = new UserInfoAdapters(userInfoS, context);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-        recyclerViewUsers.setLayoutManager(layoutManager);
-        recyclerViewUsers.setAdapter(userInfoAdapters);
-        users.getReference().child("UserInfo").addValueEventListener(new ValueEventListener() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userInfoS.clear();
-                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                    UserInfo userInfo = snapshot1.getValue(UserInfo.class);
-                    if (!Objects.equals(snapshot1.getKey(), auth.getUid())) {
-                        assert userInfo != null;
-                        if (FindBy.trim().equals("name")){
-                            if (userInfo.getName().equals(name)){
-                                textView.setVisibility(View.INVISIBLE);
-                                recyclerViewUsers.setVisibility(View.VISIBLE);
-                                userInfoS.add(userInfo);
-                            }else {
-                                textView.setVisibility(View.VISIBLE);
-                                recyclerViewUsers.setVisibility(View.INVISIBLE);
-                                textView.setText("We are Not Found amy User of Nmae "+ name);
-
-                            }
-                        }
-                        else if (FindBy.trim().equals("number")){
-                            Toast.makeText(context, "Now"+userInfo.getNumber(), Toast.LENGTH_SHORT).show();
-                            if (userInfo.getNumber().equals(name)) {
-                                Toast.makeText(context, userInfo.getNumber(), Toast.LENGTH_SHORT).show();
-                                textView.setVisibility(View.INVISIBLE);
-                                recyclerViewUsers.setVisibility(View.VISIBLE);
-                                userInfoS.add(userInfo);
-                            }
-                            else {
-                                textView.setVisibility(View.VISIBLE);
-                                textView.setText("We are Not Found amy User of Number "+ name);
-                                recyclerViewUsers.setVisibility(View.INVISIBLE);
-                            }
-
-                        }
-                    }
-                    userInfoAdapters.notifyDataSetChanged();
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
+//    private void findingUser(String name,  RecyclerView.ViewHolder view, int position,String FindBy) {
+//        Dialog findUser = new Dialog(context);
+//        findUser.setContentView(R.layout.findinguserlayout);
+//        findUser.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+//        findUser.setCanceledOnTouchOutside(true);
+//        findUser.onBackPressed();
+//        findUser.show();
+//        RecyclerView recyclerViewUsers = findUser.findViewById(R.id.users);
+//        TextView textView = findUser.findViewById(R.id.not_Found);
+//        FirebaseDatabase users;
+//        FirebaseAuth auth;
+//        UserInfoAdapters userInfoAdapters;
+//        auth = FirebaseAuth.getInstance();
+//        users = FirebaseDatabase.getInstance();
+//        ArrayList<UserInfo> userInfoS = new ArrayList<>();
+//        userInfoAdapters = new UserInfoAdapters(userInfoS, context);
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+//        recyclerViewUsers.setLayoutManager(layoutManager);
+//        recyclerViewUsers.setAdapter(userInfoAdapters);
+//        users.getReference().child("UserInfo").addValueEventListener(new ValueEventListener() {
+//            @SuppressLint("NotifyDataSetChanged")
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                userInfoS.clear();
+//                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+//                    UserInfo userInfo = snapshot1.getValue(UserInfo.class);
+//                    if (!Objects.equals(snapshot1.getKey(), auth.getUid())) {
+//                        assert userInfo != null;
+//                        if (FindBy.trim().equals("name")){
+//                            if (userInfo.getName().equals(name)){
+//                                textView.setVisibility(View.INVISIBLE);
+//                                recyclerViewUsers.setVisibility(View.VISIBLE);
+//                                userInfoS.add(userInfo);
+//                            }else {
+//                                textView.setVisibility(View.VISIBLE);
+//                                recyclerViewUsers.setVisibility(View.INVISIBLE);
+//                                textView.setText("We are Not Found amy User of Nmae "+ name);
+//
+//                            }
+//                        }
+//                        else if (FindBy.trim().equals("number")){
+//                            Toast.makeText(context, "Now"+userInfo.getFullName(), Toast.LENGTH_SHORT).show();
+//                            if (userInfo.getNumber().equals(name)) {
+//                                Toast.makeText(context, userInfo.getNumber(), Toast.LENGTH_SHORT).show();
+//                                textView.setVisibility(View.INVISIBLE);
+//                                recyclerViewUsers.setVisibility(View.VISIBLE);
+//                                userInfoS.add(userInfo);
+//                            }
+//                            else {
+//                                textView.setVisibility(View.VISIBLE);
+//                                textView.setText("We are Not Found amy User of Number "+ name);
+//                                recyclerViewUsers.setVisibility(View.INVISIBLE);
+//                            }
+//
+//                        }
+//                    }
+//                    userInfoAdapters.notifyDataSetChanged();
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//
+//    }
 //    Ending
 
     //    Starting Holder Class hear

@@ -2,6 +2,7 @@
 <resources>
     <color name="MainBackgroundColor">#202124</color>
     <color name="MainTextColor">#ffff</color>
+    <color name="RecommendedScreenFragmentBackgroundColor">#f6f6f6</color>
     <color name="BlackMainTextColor">#000000</color>
     <!--SeeUserProfile-->
 
@@ -22,5 +23,6 @@
     <color name="list_chat_layout_background">#202c33</color>
     <color name="FixColorWhite">#ffff</color>
     <color name="RecView">#202c33</color>
+    <color name="iconBackEmailOrPass">#ffff</color>
 
 </resources>
