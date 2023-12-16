@@ -83,5 +83,12 @@
 
 
     <color name="iconBackEmailOrPass">#ffff</color>
+    <color name="lavender">#8692f7</color>
+
+
+
+    <!--Navigation Drawer  Color -->
+    <color name="NavigationColor">#2754B1</color>
+
 
 </resources>

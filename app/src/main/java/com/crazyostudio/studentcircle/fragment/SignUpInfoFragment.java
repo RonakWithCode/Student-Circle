@@ -23,6 +23,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.bumptech.glide.Glide;
 import com.crazyostudio.studentcircle.Java_Class.SomeCode;
@@ -156,6 +158,12 @@ public class SignUpInfoFragment extends Fragment {
                         binding.ProgressBar.setVisibility(View.GONE);
 //                        requireActivity().finish();
 //                        requireContext().startActivity(new Intent(requireContext(), MainActivity.class));
+
+                        NavHostFragment navHostFragment = (NavHostFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+                        assert navHostFragment != null;
+                        NavController navController = navHostFragment.getNavController();
+                        navController.navigate(R.id.action_signUpInfoFragment_to_recommendedScreenFragment);
+
 
 
                     }else {

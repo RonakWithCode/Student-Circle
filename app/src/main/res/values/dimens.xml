@@ -4,4 +4,5 @@
     <dimen name="et_otp_height">40dp</dimen>
     <dimen name="margin_right_otp">20dp</dimen>
     <dimen name="subtitle">18sp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>
