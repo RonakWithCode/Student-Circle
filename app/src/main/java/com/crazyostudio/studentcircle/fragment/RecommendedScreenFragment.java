@@ -1,42 +1,29 @@
 package com.crazyostudio.studentcircle.fragment;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Location;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.crazyostudio.studentcircle.R;
 import com.crazyostudio.studentcircle.adapters.UserFollowAdapter;
 import com.crazyostudio.studentcircle.databinding.FragmentRecommendedScreenBinding;
 import com.crazyostudio.studentcircle.model.UserInfo;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -48,6 +35,7 @@ public class RecommendedScreenFragment extends Fragment implements UserFollowAda
     UserFollowAdapter adapter;
     List<UserInfo> user;
     String currentUserId;
+    FirebaseAuth auth;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,8 +55,10 @@ public class RecommendedScreenFragment extends Fragment implements UserFollowAda
         LinearLayoutManager manager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
         binding.RecyclerUser.setLayoutManager(manager);
         binding.RecyclerUser.setAdapter(adapter);
+        auth = FirebaseAuth.getInstance();
         LoadUser();
         return binding.getRoot();
+
     }
 
 
@@ -92,218 +82,106 @@ public class RecommendedScreenFragment extends Fragment implements UserFollowAda
             }
         });
     }
-
     @SuppressLint("SetTextI18n")
     @Override
     public void Follow(UserInfo userInfo, Button followBTN) {
+        String otherUserId = userInfo.getId();
+        ArrayList<String> currentUserFollowingIds = new ArrayList<>();
+        ArrayList<String> otherUserIdsArray = new ArrayList<>();
+
         if (followBTN.getText().equals("following...")) {
-//            for unfollow
-            String FollowUserId = userInfo.getId();
-            ArrayList<String> userID = new ArrayList<>();
-            database.getReference().child("UserFollow").child(currentUserId).child("following").addListenerForSingleValueEvent(new ValueEventListener() {
+
+            database.getReference().child("followInfo").child(Objects.requireNonNull(auth.getUid())).child("following").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-//                            if (Objects.equals(childSnapshot.getKey(), FollowUserId)) {
-                                String followingUserId = childSnapshot.getKey();
-                                userID.add(followingUserId);
-//                            }
-                        }
-                        userID.remove(FollowUserId);
-                        if (userID.isEmpty()){
-                            database.getReference().child("UserFollow").child(currentUserId).child("following").removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        database.getReference().child("UserInfo").child(currentUserId).child("followingCount").setValue(userID.size());
-                                        ArrayList<String> followersID = new ArrayList<>();
-
-                                        database.getReference().child("UserFollow").child(FollowUserId).child("followers").addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                if (snapshot.exists()) {
-                                                    for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-//                                                    if (!Objects.equals(childSnapshot.getKey(), currentUserId)) {
-                                                        String followingUserId = childSnapshot.getKey();
-                                                        followersID.add(followingUserId);
-//                                                    }
-                                                    }
-                                                    followersID.remove(currentUserId);
-                                                    if (followersID.isEmpty()){
-                                                        database.getReference().child("UserFollow").child(FollowUserId).child("followers").removeValue();
-
-                                                    }else {
-                                                        database.getReference().child("UserFollow").child(FollowUserId).child("followers").setValue(followersID);
-                                                    }
-                                                    database.getReference().child("UserInfo").child(FollowUserId).child("followersCount").setValue(followersID.size());
-
-                                                    adapter.notifyDataSetChanged();
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError error) {
-                                                // Handle onCancelled event if needed
-                                            }
-                                        });
-
-                                    }
-                                }
-                            });
-
-                        }else {
-                            database.getReference().child("UserFollow").child(currentUserId).child("following").removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-
-                                        database.getReference().child("UserInfo").child(currentUserId).child("followingCount").setValue(userID.size());
-
-
-                                        ArrayList<String> followersID = new ArrayList<>();
-                                        database.getReference().child("UserFollow").child(FollowUserId).child("followers").addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                if (snapshot.exists()) {
-                                                    for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-//                                                    if (!Objects.equals(childSnapshot.getKey(), currentUserId)) {
-                                                        String followingUserId = childSnapshot.getKey();
-                                                        followersID.add(followingUserId);
-//                                                    }
-                                                    }
-                                                    followersID.remove(currentUserId);
-                                                    if (followersID.isEmpty()){
-                                                        database.getReference().child("UserFollow").child(FollowUserId).child("followers").setValue(followersID);
-
-                                                    }else {
-                                                        database.getReference().child("UserFollow").child(FollowUserId).child("followers").removeValue();
-
-                                                    }
-                                                    database.getReference().child("UserInfo").child(FollowUserId).child("followersCount").setValue(followersID.size());
-
-                                                    adapter.notifyDataSetChanged();
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError error) {
-                                                // Handle onCancelled event if needed
-                                            }
-                                        });
-
-                                    }
-                                }
-                            });
-
-                        }
+//                    if (snapshot.exists())
+                    for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                        String followingUserId = childSnapshot.getValue(String.class);
+                        currentUserFollowingIds.add(followingUserId);
                     }
+                    currentUserFollowingIds.remove(otherUserId);
+                    database.getReference().child("followInfo").child(auth.getUid()).child("following").setValue(currentUserFollowingIds);
+                    database.getReference().child("UserInfo").child(currentUserId).child("followingCount").setValue(currentUserFollowingIds.size());
+
+                    database.getReference().child("followInfo").child(otherUserId).child("followers").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                                if (snapshot.exists()) {
+                            for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                                String OtherFollowingUserId = childSnapshot.getValue(String.class);
+                                otherUserIdsArray.add(OtherFollowingUserId);
+                            }
+                            otherUserIdsArray.remove(currentUserId);
+                            database.getReference().child("followInfo").child(otherUserId).child("followers").setValue(otherUserIdsArray);
+                            database.getReference().child("UserInfo").child(otherUserId).child("followersCount").setValue(otherUserIdsArray.size());
+                        }
+//                                }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                 }
+
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    // Handle onCancelled event if needed
+
                 }
             });
 
             followBTN.setText("follow");
-//            followBTN.setBackgroundColor(Color.WHITE);
-            followBTN.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.purple_500));
-            followBTN.setTextColor(Color.BLACK); // Replace with the desired text color
-            adapter.notifyDataSetChanged();
+            followBTN.setBackgroundColor(ContextCompat.getColor(requireContext(),R.color.purple_500));
+            followBTN.setTextColor(Color.WHITE);
 
-        } else {
-            String FollowUserId = userInfo.getId();
-            ArrayList<String> userID = new ArrayList<>();
-            database.getReference().child("UserFollow").child(currentUserId).child("following").addListenerForSingleValueEvent(new ValueEventListener() {
+        }else {
+
+            database.getReference().child("followInfo").child(Objects.requireNonNull(auth.getUid())).child("following").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                            String followingUserId = childSnapshot.getKey();
-                            userID.add(followingUserId);
+//                    if (snapshot.exists())
+
+                    for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                            String followingUserId = childSnapshot.getValue(String.class);
+                            currentUserFollowingIds.add(followingUserId);
                         }
-                        userID.add(FollowUserId);
-                        database.getReference().child("UserFollow").child(currentUserId).child("following").setValue(userID).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        currentUserFollowingIds.add(otherUserId);
+                        database.getReference().child("followInfo").child(auth.getUid()).child("following").setValue(currentUserFollowingIds);
+                        database.getReference().child("UserInfo").child(currentUserId).child("followingCount").setValue(currentUserFollowingIds.size());
+                        database.getReference().child("followInfo").child(otherUserId).child("followers").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    database.getReference().child("UserInfo").child(currentUserId).child("followingCount").setValue(userID.size());
-                                    ArrayList<String> followersID = new ArrayList<>();
-                                    database.getReference().child("UserFollow").child(FollowUserId).child("followers").addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            if (snapshot.exists()) {
-                                                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                                                    String followingUserId = childSnapshot.getKey();
-                                                    followersID.add(followingUserId);
-                                                }
-                                            }
-                                            followersID.add(currentUserId);
-                                            database.getReference().child("UserFollow").child(FollowUserId).child("followers").setValue(followersID);
-                                            database.getReference().child("UserInfo").child(FollowUserId).child("followersCount").setValue(followersID.size());
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                                if (snapshot.exists()) {
+                                    for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                                        String OtherFollowingUserId = childSnapshot.getValue(String.class);
+                                        otherUserIdsArray.add(OtherFollowingUserId);
+                                    }
+                                    otherUserIdsArray.add(currentUserId);
+                                    database.getReference().child("followInfo").child(otherUserId).child("followers").setValue(otherUserIdsArray);
+                                    database.getReference().child("UserInfo").child(otherUserId).child("followersCount").setValue(otherUserIdsArray.size());
+                            }
+//                                }
 
-                                            adapter.notifyDataSetChanged();
-                                        }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
 
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-                                            // Handle onCancelled event if needed
-                                        }
-                                    });
-
-                                }
                             }
                         });
-                    } else {
-                        userID.add(FollowUserId);
-                        database.getReference().child("UserFollow").child(currentUserId).child("following").setValue(userID).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    database.getReference().child("UserInfo").child(currentUserId).child("followingCount").setValue(userID.size());
-
-                                    ArrayList<String> followersID = new ArrayList<>();
-                                    database.getReference().child("UserFollow").child(FollowUserId).child("followers").addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            if (snapshot.exists()) {
-                                                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                                                    String followingUserId = childSnapshot.getKey();
-                                                    followersID.add(followingUserId);
-                                                }
-                                            }
-
-                                            followersID.add(currentUserId);
-                                            database.getReference().child("UserFollow").child(FollowUserId).child("followers").setValue(followersID);
-                                            database.getReference().child("UserInfo").child(FollowUserId).child("followersCount").setValue(followersID.size());
-
-                                            adapter.notifyDataSetChanged();
-
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-                                            // Handle onCancelled event if needed
-                                        }
-                                    });
-
-                                }
-                            }
-                        });
-
                     }
-                }
+
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    // Handle onCancelled event if needed
+
                 }
             });
 
-            followBTN.setText("following...");
-            followBTN.setBackgroundColor(Color.WHITE);
-            followBTN.setTextColor(Color.BLACK); // Replace with the desired text color
+
+        followBTN.setText("following...");
+        followBTN.setBackgroundColor(Color.WHITE);
+        followBTN.setTextColor(Color.BLACK); // Replace with the desired text color
+
 
         }
     }

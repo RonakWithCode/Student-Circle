@@ -61,4 +61,3 @@ public class UserFollowAdapter extends RecyclerView.Adapter<UserFollowAdapter.Us
         void Follow(UserInfo userInfo, Button followBTN);
     }
 }
-

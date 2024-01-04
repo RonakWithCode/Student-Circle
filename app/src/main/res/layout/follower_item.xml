@@ -28,9 +28,12 @@
 
     <!-- Follow Button -->
     <Button
-        android:text="Follow"
+        android:text="remove"
         android:id="@+id/followButton"
+        android:backgroundTint="@color/MainBackgroundColor"
+        android:textColor="@color/MainTextColor"
         android:layout_width="wrap_content"
+        android:shadowColor="@color/MainTextColor"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:textSize="@dimen/_14ssp"/>

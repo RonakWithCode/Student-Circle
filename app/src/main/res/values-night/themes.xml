@@ -1,8 +1,8 @@
 <resources>
     <!-- Base application theme. -->
     <style name="Theme.StudentCircle" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <item name="colorPrimary">@color/green</item>
-        <item name="colorPrimaryVariant">@color/green</item>
+        <item name="colorPrimary">@color/NavigationColor</item>
+        <item name="colorPrimaryVariant">@color/NavigationColor</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>

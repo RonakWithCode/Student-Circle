@@ -13,7 +13,6 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
@@ -28,18 +27,15 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.crazyostudio.studentcircle.adapters.ViewPagerAdapter;
 import com.crazyostudio.studentcircle.databinding.ActivityMainBinding;
 import com.crazyostudio.studentcircle.fragment.HomeFragment;
 import com.crazyostudio.studentcircle.fragment.RecommendedScreenFragment;
 import com.crazyostudio.studentcircle.fragment.ShareFileFragment;
-import com.crazyostudio.studentcircle.fragment.StoryFragment;
 import com.crazyostudio.studentcircle.fragment.UserInfoFragment;
 import com.crazyostudio.studentcircle.fragment.UserProfileViewFragment;
 import com.crazyostudio.studentcircle.model.CurrentInternetConnection;
 import com.crazyostudio.studentcircle.user.AboutActivity;
 import com.crazyostudio.studentcircle.user.SignUp;
-import com.crazyostudio.studentcircle.user.SignupDetails;
 import com.crazyostudio.studentcircle.user.User_Profile;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -75,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 //        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 //        viewPagerAdapter.add(new HomeFragment(), "Home");
 //        viewPagerAdapter.add(new UserProfileViewFragment(), "User Profile");
-////        viewPagerAdapter.add(new UserInfoFragment(), "Chat");
+//        viewPagerAdapter.add(new RecommendedScreenFragment(), "Chat");
 ////        viewPagerAdapter.add(new StoryFragment(), "Story");
 //        viewPagerAdapter.add(new ShareFileFragment(), "Share");
 //        binding.viewpager.setAdapter(viewPagerAdapter);
@@ -88,7 +84,8 @@ public class MainActivity extends AppCompatActivity {
         }
         requestPermissions(permissions);
 
-        replaceFragment(new HomeFragment());
+//        replaceFragment(new HomeFragment());
+        replaceFragment(new RecommendedScreenFragment());
 
         binding.bottomNavigationView.setBackground(null);
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -111,12 +108,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showBottomDialog();
-            }
-        });
+        binding.fab.setOnClickListener(view -> showBottomDialog());
 
 
 
@@ -221,32 +213,19 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout shortsLayout = dialog.findViewById(R.id.layoutShorts);
         ImageView cancelButton = dialog.findViewById(R.id.cancelButton);
 
-        videoLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        videoLayout.setOnClickListener(v -> {
 
-                dialog.dismiss();
-                Toast.makeText(MainActivity.this,"Upload a Video is clicked",Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+            Toast.makeText(MainActivity.this,"Upload a Video is clicked",Toast.LENGTH_SHORT).show();
 
-            }
         });
 
-        shortsLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                dialog.dismiss();
-                Toast.makeText(MainActivity.this,"Create a short is Clicked",Toast.LENGTH_SHORT).show();
-
-            }
+        shortsLayout.setOnClickListener(v -> {
+            dialog.dismiss();
+            Toast.makeText(MainActivity.this,"Create a short is Clicked",Toast.LENGTH_SHORT).show();
         });
 
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
+        cancelButton.setOnClickListener(view -> dialog.dismiss());
 
         dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);

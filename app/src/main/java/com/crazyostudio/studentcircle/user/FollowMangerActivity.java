@@ -22,9 +22,9 @@ public class FollowMangerActivity extends AppCompatActivity {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.add(new followersListFragment(), "followers");
         viewPagerAdapter.add(new followingListFragment(), "following");
-//        viewPagerAdapter.add(new StoryFragment(), "Story");
-        binding.viewpager.setAdapter(viewPagerAdapter);
         binding.tabLayout.selectTab(binding.tabLayout.getTabAt(follow));
+//        viewPagerAdapter.get
+        binding.viewpager.setAdapter(viewPagerAdapter);
         binding.tabLayout.setupWithViewPager(binding.viewpager);
 //
 

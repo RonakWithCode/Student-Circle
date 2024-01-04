@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/RecommendedScreenFragmentBackgroundColor"
+    android:background="@color/MainBackgroundColor"
     android:layout_height="match_parent"
     tools:context=".fragment.RecommendedScreenFragment">
 
@@ -38,7 +38,6 @@
             android:layout_below="@id/hintView"
             android:background="@color/MainBackgroundColor"
             android:layout_height="wrap_content">
-            
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/RecyclerUser"
                 android:layout_width="match_parent"

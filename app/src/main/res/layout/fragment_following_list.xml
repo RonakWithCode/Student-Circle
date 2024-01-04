@@ -7,7 +7,7 @@
     tools:context=".fragment.followingListFragment">
 
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/followingList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
