@@ -39,7 +39,7 @@ To get started with the Student-Circle Android app, follow these steps:
 1. Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/your-username/Student-Circle-android.git
+git clone https://github.com/RonakWithCode/Student-Circle.git
 ```
 2. Open the project in Android Studio.
 3. Build and run the project on your Android device or emulator.
