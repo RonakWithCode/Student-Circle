@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/MainBackgroundColor"
+    android:layout_height="match_parent"
+    tools:context=".user.ProfileLinkViewFragment">
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/linksLists"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_25sdp" />
+
+            <TextView
+                android:id="@+id/addLinks"
+                android:text="@string/add_link"
+                android:textAllCaps="true"
+                android:textSize="@dimen/_15ssp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:textColor="@color/MainTextColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+</ScrollView>
+
+
+
+

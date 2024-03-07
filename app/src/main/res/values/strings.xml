@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Student Circle</string>
-    <string name="crazy_studio">Crazy Studio</string>
+    <string name="crazy_studio">Ronosoft studio</string>
     <string name="HaveAccount">Already have an Account?</string>
     <string name="create_account">Create a new Account</string>
     <string name="don_t_have_an_account">don\'t have an account</string>
@@ -160,6 +160,17 @@
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
     <string name="following">Following...</string>
+    <string name="we_should_not_any_account_to_recommended">We should not any account to recommended</string>
+    <string name="tap_to_go_next_srceen">Tap to go next srceen</string>
+    <string name="update_profile">Update Profile</string>
+    <string name="add_link">+ add Link</string>
+    <string name="title">Title</string>
+    <string name="link">link</string>
+    <string name="add">Add</string>
+    <string name="show_links">Show links</string>
+    <string name="add_links">Add Links</string>
+    <string name="tap_edit_or_remove_link">Tap Edit or remove link.</string>
+    <string name="remove">remove</string>
 
 
 </resources>

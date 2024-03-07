@@ -32,6 +32,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+        <ImageView
+            android:src="@drawable/arrow_right"
+            android:layout_marginStart="@dimen/_25sdp"
+            android:layout_marginEnd="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_width="@dimen/_26sdp"
+            android:id="@+id/next"
+            android:layout_height="@dimen/_29sdp"
+            android:contentDescription="@string/tap_to_go_next_srceen" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -40,10 +50,28 @@
             android:layout_height="wrap_content">
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/RecyclerUser"
+                android:visibility="invisible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
+            <TextView
+                android:id="@+id/not_Found"
+                android:layout_width="match_parent"
+                android:layout_centerInParent="true"
+                android:text="@string/we_should_not_any_account_to_recommended"
+                android:textColor="@color/MainTextColor"
+                android:layout_margin="@dimen/_5sdp"
+                android:textAlignment="center"
+                android:textSize="@dimen/_25sdp"
+                android:layout_height="wrap_content"/>
 
+
+            <ProgressBar
+                android:layout_width="match_parent"
+                android:id="@+id/progress_circular"
+                android:layout_centerInParent="true"
+                android:layout_margin="@dimen/_5sdp"
+                android:layout_height="wrap_content"/>
         </RelativeLayout>
 
 

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/MainBackgroundColor"
+    android:layout_marginTop="@dimen/_5sdp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/linkImage"
+        android:layout_width="@dimen/_76sdp"
+        android:layout_height="@dimen/_70sdp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/baseline_link_24"
+        android:contentDescription="@string/tap_edit_or_remove_link" />
+
+    <TextView
+        android:id="@+id/title"
+        android:textSize="@dimen/_23ssp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/MainTextColor"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_9sdp"
+        android:text="Title"
+        android:layout_toEndOf="@+id/linkImage" />
+    <TextView
+        android:id="@+id/link"
+        android:textSize="@dimen/_18ssp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/MainTextColor"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="1dp"
+        android:layout_below="@id/title"
+        android:text="www.google.com/"
+        android:layout_toEndOf="@+id/linkImage" />
+</RelativeLayout>

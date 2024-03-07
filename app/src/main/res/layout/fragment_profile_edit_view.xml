@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/MainBackgroundColor"
-    tools:context=".fragment.SignUpInfoFragment">
+    tools:context=".user.ProfileEditViewFragment">
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,7 +16,7 @@
             android:layout_marginEnd="@dimen/_25sdp"
             android:layout_marginTop="@dimen/_25sdp"
             android:textColor="@color/MainTextColor"
-            android:text="@string/set_up_account"
+            android:text="@string/update_profile"
             android:textAlignment="center"
             android:textSize="@dimen/_25ssp"
             android:layout_width="match_parent"
@@ -85,31 +86,6 @@
                     android:inputType="textPersonName"
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
-
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:id="@+id/Mail_layout"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:textColorHint="@color/MainTextColor"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_height="wrap_content"
-                android:hint="@string/mail">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/Mail"
-                    android:inputType="textEmailAddress"
-                    android:layout_width="match_parent"
-                    android:autofillHints="emailAddress"
-                    android:textColorHint="@color/MainTextColor"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/MainTextColor"
-
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/bio_layout"
                 android:textColorHint="@color/MainTextColor"
@@ -133,9 +109,18 @@
                     tools:ignore="LabelFor" />
 
             </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:layout_marginTop="@dimen/_2sdp"
+                android:id="@+id/addLinks"
+                android:text="@string/show_links"
+                android:textAllCaps="true"
+                android:textSize="@dimen/_15ssp"
+                android:textColor="@color/MainTextColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
 
         </LinearLayout>
-
 
 
         <Button

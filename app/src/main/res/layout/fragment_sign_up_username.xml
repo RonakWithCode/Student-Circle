@@ -63,7 +63,7 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:text="@string/next"
             android:textSize="@dimen/_13ssp"
-            android:enabled="false"
+            android:enabled="true"
             android:id="@+id/Next"
             android:textColor="@color/FixColorWhite"
             android:backgroundTint="@color/colorPrimary"

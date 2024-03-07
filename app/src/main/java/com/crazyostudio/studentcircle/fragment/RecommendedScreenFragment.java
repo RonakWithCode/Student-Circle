@@ -1,6 +1,7 @@
 package com.crazyostudio.studentcircle.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.crazyostudio.studentcircle.MainActivity;
 import com.crazyostudio.studentcircle.R;
 import com.crazyostudio.studentcircle.adapters.UserFollowAdapter;
 import com.crazyostudio.studentcircle.databinding.FragmentRecommendedScreenBinding;
@@ -56,6 +58,10 @@ public class RecommendedScreenFragment extends Fragment implements UserFollowAda
         binding.RecyclerUser.setLayoutManager(manager);
         binding.RecyclerUser.setAdapter(adapter);
         auth = FirebaseAuth.getInstance();
+        binding.next.setOnClickListener(v -> {
+            requireActivity().finish();
+            startActivity(new Intent(requireContext(), MainActivity.class));
+        });
         LoadUser();
         return binding.getRoot();
 
@@ -63,25 +69,47 @@ public class RecommendedScreenFragment extends Fragment implements UserFollowAda
 
 
     void LoadUser() {
-        database.getReference().child("UserInfo").addValueEventListener(new ValueEventListener() {
-            @SuppressLint("NotifyDataSetChanged")
+//        database.getReference().child("UserInfo").addValueEventListener(new ValueEventListener() {
+//            @SuppressLint("NotifyDataSetChanged")
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                for (DataSnapshot data : snapshot.getChildren()) {
+//                    UserInfo userInfo = data.getValue(UserInfo.class);
+//                    if (userInfo != null && userInfo.isActive() && userInfo.getAccountVisibility().equals("public") && !userInfo.getId().equals(FirebaseAuth.getInstance().getUid())) {
+//                        user.add(userInfo);
+//                    }
+//                }
+//                adapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Log.i("ERROR_onCancelled", "onCancelled: " + error);
+//            }
+//        });
+        database.getReference().child("UserInfo").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot data : snapshot.getChildren()) {
                     UserInfo userInfo = data.getValue(UserInfo.class);
                     if (userInfo != null && userInfo.isActive() && userInfo.getAccountVisibility().equals("public") && !userInfo.getId().equals(FirebaseAuth.getInstance().getUid())) {
+                        binding.RecyclerUser.setVisibility(View.VISIBLE);
+                        binding.progressCircular.setVisibility(View.GONE);
+                        binding.notFound.setVisibility(View.GONE);
                         user.add(userInfo);
                     }
                 }
                 adapter.notifyDataSetChanged();
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.i("ERROR_onCancelled", "onCancelled: " + error);
+
             }
         });
     }
+
     @SuppressLint("SetTextI18n")
     @Override
     public void Follow(UserInfo userInfo, Button followBTN) {
@@ -136,7 +164,6 @@ public class RecommendedScreenFragment extends Fragment implements UserFollowAda
             followBTN.setTextColor(Color.WHITE);
 
         }else {
-
             database.getReference().child("followInfo").child(Objects.requireNonNull(auth.getUid())).child("following").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -176,11 +203,9 @@ public class RecommendedScreenFragment extends Fragment implements UserFollowAda
 
                 }
             });
-
-
-        followBTN.setText("following...");
-        followBTN.setBackgroundColor(Color.WHITE);
-        followBTN.setTextColor(Color.BLACK); // Replace with the desired text color
+            followBTN.setText("following...");
+            followBTN.setBackgroundColor(Color.WHITE);
+            followBTN.setTextColor(Color.BLACK); // Replace with the desired text color
 
 
         }

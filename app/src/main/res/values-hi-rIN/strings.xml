@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Student Circle</string>
-    <string name="crazy_studio">Crazy Studio</string>
+    <string name="crazy_studio">Ronosoft studio</string>
     <string name="HaveAccount">क्या आपके पास पहले से एक खाता मौजूद है?</string>
     <string name="create_account">एक नया खाता बनाएं</string>
     <string name="don_t_have_an_account">कोई खाता नहीं है</string>

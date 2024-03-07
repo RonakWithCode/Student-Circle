@@ -91,5 +91,7 @@
     <!--Navigation Drawer  Color -->
     <color name="NavigationColor">#2754B1</color>
 
+    <color name="SaveTextColor">#94abdc</color>
+    <color name="CancelTextColor">#ccdcf6</color>
 
 </resources>

@@ -15,15 +15,14 @@
             app:destination="@id/signInWithOTP" />
     </fragment>
     <fragment
-        android:id="@+id/signUpFragment"
-        android:name="com.crazyostudio.studentcircle.fragment.SignUpFragment"
-        android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up" />
-    <fragment
         android:id="@+id/signUpUsername"
         android:name="com.crazyostudio.studentcircle.fragment.SignUpUsername"
         android:label="fragment_sign_up_username"
-        tools:layout="@layout/fragment_sign_up_username" />
+        tools:layout="@layout/fragment_sign_up_username" >
+        <action
+            android:id="@+id/action_signUpUsername_to_signUpInfoFragment"
+            app:destination="@id/signUpInfoFragment" />
+    </fragment>
     <fragment
         android:id="@+id/signUpInfoFragment"
         android:name="com.crazyostudio.studentcircle.fragment.SignUpInfoFragment"
@@ -39,8 +38,8 @@
         android:label="fragment_sign_in_with_o_t_p"
         tools:layout="@layout/fragment_sign_in_with_o_t_p" >
         <action
-            android:id="@+id/action_signInWithOTP_to_signUpInfoFragment"
-            app:destination="@id/signUpInfoFragment" />
+            android:id="@+id/action_signInWithOTP_to_signUpUsername"
+            app:destination="@id/signUpUsername" />
     </fragment>
     <fragment
         android:id="@+id/recommendedScreenFragment"

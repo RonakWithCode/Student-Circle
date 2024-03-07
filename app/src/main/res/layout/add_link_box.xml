@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/MainBackgroundColor"
+    android:layout_marginStart="@dimen/_15sdp"
+    android:layout_marginEnd="@dimen/_15sdp"
+    android:layout_marginTop="@dimen/_5sdp"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/view_text"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:text="@string/add_links"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:textSize="@dimen/_23ssp"
+        android:textColor="@color/SaveTextColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/close"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:text="X"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:textSize="@dimen/_23ssp"
+        android:textColor="@color/MainTextColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+    <LinearLayout
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_below="@id/close"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/error"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:text="Error"
+            android:visibility="gone"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:textSize="@dimen/_18ssp"
+            android:textColor="@color/design_default_color_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textField"
+        android:layout_width="match_parent"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:textColorHint="@color/MainTextColor"
+        android:layout_height="wrap_content"
+        app:counterEnabled="true"
+        app:counterMaxLength="20"
+        android:hint="@string/title">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:textColorHint="@color/MainTextColor"
+            android:textColor="@color/MainTextColor"
+            android:autofillHints="text"
+            android:inputType="text"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/linkTextField"
+            android:layout_width="match_parent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:textColorHint="@color/MainTextColor"
+            android:layout_height="wrap_content"
+            app:helperText="link"
+            android:hint="@string/link">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/link"
+                android:layout_width="match_parent"
+                android:textColorHint="@color/MainTextColor"
+                android:textColor="@color/MainTextColor"
+                android:autofillHints="link"
+                android:autoLink="all"
+                android:linksClickable="false"
+                android:inputType="text"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:id="@+id/remove"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/remove"
+            android:layout_gravity="center"
+            android:textSize="@dimen/_27ssp"
+            android:visibility="gone"
+            android:textColor="@color/Red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/add"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/add"
+            android:layout_gravity="center"
+            android:textSize="@dimen/_27ssp"
+            android:textColor="@color/SaveTextColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

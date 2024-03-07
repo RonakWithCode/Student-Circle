@@ -20,6 +20,7 @@ import com.crazyostudio.studentcircle.adapters.ViewPagerAdapter;
 import com.crazyostudio.studentcircle.databinding.FragmentUserProfileViewBinding;
 import com.crazyostudio.studentcircle.model.UserInfo;
 import com.crazyostudio.studentcircle.user.FollowMangerActivity;
+import com.crazyostudio.studentcircle.user.User_Profile;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -65,6 +66,11 @@ public class UserProfileViewFragment extends Fragment {
         binding.follow.setOnClickListener(view->{
             Intent intent = new Intent(requireContext(), FollowMangerActivity.class);
             intent.putExtra("follow",0);
+            startActivity(intent);
+        });
+        binding.editBtu.setOnClickListener(view->{
+            Intent intent = new Intent(requireContext(), User_Profile.class);
+//            intent.putExtra("follow",0);
             startActivity(intent);
         });
 

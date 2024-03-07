@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.crazyostudio.studentcircle.Service.AuthService;
 import com.crazyostudio.studentcircle.databinding.ActivityMainBinding;
 import com.crazyostudio.studentcircle.fragment.HomeFragment;
 import com.crazyostudio.studentcircle.fragment.RecommendedScreenFragment;
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        new AuthService().checkProfileComplete(this);
         if (!CurrentInternetConnection.isInternetConnected(this)) {
             Intent intent = new Intent(this, fragmentLoad.class);
             intent.putExtra("LoadID","network");
@@ -84,8 +85,8 @@ public class MainActivity extends AppCompatActivity {
         }
         requestPermissions(permissions);
 
-//        replaceFragment(new HomeFragment());
-        replaceFragment(new RecommendedScreenFragment());
+        replaceFragment(new HomeFragment());
+//        replaceFragment(new RecommendedScreenFragment());
 
         binding.bottomNavigationView.setBackground(null);
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
