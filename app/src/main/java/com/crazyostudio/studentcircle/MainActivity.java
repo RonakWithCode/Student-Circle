@@ -96,7 +96,8 @@ public class MainActivity extends AppCompatActivity {
                     replaceFragment(new HomeFragment());
                     break;
                 case R.id.share:
-                    replaceFragment(new ShareFileFragment());
+                    Toast.makeText(this, "ronak papa se baat kar ", Toast.LENGTH_SHORT).show();
+//                    replaceFragment(new ShareFileFragment());
                     break;
                 case R.id.Viedeo:
 //                    replaceFragment(new SubscriptionFragment());
@@ -108,9 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
             return true;
         });
-
         binding.fab.setOnClickListener(view -> showBottomDialog());
-
 
 
     }
@@ -225,6 +224,7 @@ public class MainActivity extends AppCompatActivity {
             dialog.dismiss();
             Toast.makeText(MainActivity.this,"Create a short is Clicked",Toast.LENGTH_SHORT).show();
         });
+
 
         cancelButton.setOnClickListener(view -> dialog.dismiss());
 

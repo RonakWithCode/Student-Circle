@@ -1,7 +1,9 @@
 package com.crazyostudio.studentcircle.fragment;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -88,6 +90,11 @@ public class SignInFragment extends Fragment {
 
         });
 
+        binding.getHelp.setOnClickListener(v -> {
+            Uri uri = Uri.parse("https://ronosoftstudio.vercel.app/"); // missing 'http://' will cause crashed
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        });
         if (!checkLocationPermission()) {
             requestPermission();
         }

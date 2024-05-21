@@ -3,13 +3,16 @@ package com.crazyostudio.studentcircle.Service;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
+import com.crazyostudio.studentcircle.Java_Class.SomeCode;
 import com.crazyostudio.studentcircle.R;
 import com.crazyostudio.studentcircle.databinding.MessageBoxBinding;
 import com.crazyostudio.studentcircle.model.LinksModels;
@@ -17,6 +20,7 @@ import com.crazyostudio.studentcircle.model.UserInfo;
 import com.crazyostudio.studentcircle.user.SignUp;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,6 +34,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -39,31 +45,50 @@ public class AuthService {
     FirebaseStorage storage = FirebaseStorage.getInstance();
     FirebaseUser user = auth.getCurrentUser();
 
-    public interface CallbackUsername{
+    public interface CallbackUsername {
         void onUsernameExists(boolean Is);
+
         void onError(DatabaseError error);
 
     }
-    public interface CallbackSetupAccount{
+
+    public interface CallbackSetupAccount {
         void onSuccess();
+
         void onFailure(String error);
 
     }
 
     public interface LinksModelsCallback {
         void onLinksModelsRetrieved(ArrayList<LinksModels> linksModelsList);
+
         void onCancelled(DatabaseError error);
     }
+
     public interface SetupMediaLinksCallback {
         void onLinksModelsSetup();
+
         void onFailure(Exception error);
     }
 
-    public String getUid(){
+    public interface getAccountInterface {
+        void onGet(UserInfo userInfo);
+
+        void onFall(DatabaseError e);
+    }
+
+    public interface SetupAccountPic {
+        void onSet();
+
+        void onFall(Exception e);
+    }
+
+    public String getUid() {
         return auth.getUid();
     }
+
     @SuppressLint("SetTextI18n")
-    public void checkProfileComplete(Activity context){
+    public void checkProfileComplete(Activity context) {
         database.getReference().child("UserInfo").child(Objects.requireNonNull(auth.getUid())).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -81,7 +106,7 @@ public class AuthService {
                     Binding.message.setText("There may be a few steps left to finish setting up your account. Please try logging in again or contact our team for help");
                     Binding.okButton.setText("OK");
                     auth.signOut();
-                    Binding.okButton.setOnClickListener(view->{
+                    Binding.okButton.setOnClickListener(view -> {
                         dialog.dismiss();
                         context.finish();
                         context.startActivity(new Intent(context, SignUp.class));
@@ -102,10 +127,11 @@ public class AuthService {
                 Binding.tile.setText(error.getCode());
                 Binding.message.setText(error.getMessage());
                 Binding.okButton.setText("OK");
-                Binding.okButton.setOnClickListener(view-> dialog.dismiss());
+                Binding.okButton.setOnClickListener(view -> dialog.dismiss());
             }
         });
     }
+
     public void checkUsername(String UserName, CallbackUsername callback) {
         database.getReference().child("usernames").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -130,15 +156,17 @@ public class AuthService {
                 callback.onError(error);
             }
         });
-}
+    }
+
     public boolean isValidEmail(String email) {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
-    public void SetupAccount(UserInfo userInfo, Uri profilePic,CallbackSetupAccount callback){
+
+    public void SetupAccount(UserInfo userInfo, Uri profilePic, Context context, CallbackSetupAccount callback) {
         long time = System.currentTimeMillis();
         if (userInfo != null && profilePic != null) {
             StorageReference storageRef = storage.getReference();
-            StorageReference imageRef = storageRef.child(userInfo.getUsername()).child(time+profilePic.getLastPathSegment());
+            StorageReference imageRef = storageRef.child(userInfo.getId()).child("DP").child("profilePic" + SomeCode.getFileExtensionFromUri(profilePic, context));
 
             UploadTask uploadTask = imageRef.putFile(profilePic);
 
@@ -176,7 +204,7 @@ public class AuthService {
                         });
                         userName.add(userInfo.getUsername());
                         database.getReference().child("usernames").setValue(userName).addOnCompleteListener(main -> database.getReference().child("UserInfo").child(Objects.requireNonNull(auth.getUid())).setValue(userInfo).addOnCompleteListener(task1 -> {
-                            if (task1.isSuccessful()){
+                            if (task1.isSuccessful()) {
                                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                         .setDisplayName(userInfo.getFullName())
                                         .setPhotoUri(Uri.parse(userInfo.getProfilePictureUrl()))
@@ -191,10 +219,7 @@ public class AuthService {
                         }).addOnFailureListener(e -> callback.onFailure(e.getMessage())));
 
 
-
-
-
-                        } else {
+                    } else {
                         // Handle errors if getting the download URL fails
                         callback.onFailure("Profile Pic Update error: download URL fails");
 
@@ -215,9 +240,127 @@ public class AuthService {
     }
 
 
+    public void getAccountInfo(getAccountInterface accountInterface) {
+        database.getReference().child("UserInfo").child(getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    UserInfo userInfo = snapshot.getValue(UserInfo.class);
+                    accountInterface.onGet(userInfo);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                accountInterface.onFall(error);
+
+            }
+        });
+    }
+
+    public void SetupProfileImage(Uri profilePic, Context context, UserInfo userInfo, SetupAccountPic callback) {
+//        StorageReference storageRef_ = storage.getReference();
+//        StorageReference delete_imageRef = storageRef_.child(userInfo.getId()).child("DP");
+//        delete_imageRef.delete().addOnCompleteListener(delete -> {
+//            if (delete.isSuccessful()) {
+//                // Deletion successful
+//                callback.onSet();
+//            } else {
+//                // Deletion failed
+//                Exception exception = delete.getException();
+//                if (exception != null) {
+//                    Log.e("TAG_", "Deletion failed: " + exception.getMessage());
+//                } else {
+//                    Log.e("TAG_", "Deletion failed for unknown reason.");
+//                }
+//            }
+//        });
+    StorageReference storageRef1 = storage.getReference();
+    StorageReference imageRef = storageRef1.child(userInfo.getId()).child("DP").child("profilePic."+SomeCode.getFileExtensionFromUri(profilePic,context));
+    UploadTask uploadTask = imageRef.putFile(profilePic);
+                uploadTask.addOnProgressListener(taskSnapshot -> {
+        // ... update a progress bar, etc.
+    }).addOnSuccessListener(taskSnapshot -> Objects.requireNonNull(Objects.requireNonNull(taskSnapshot.getMetadata()).getReference()).getDownloadUrl().addOnCompleteListener(task -> {
+        if (task.isSuccessful()) {
+            Uri downloadUrl = task.getResult();
+            String imageUrl = downloadUrl.toString();
+            database.getReference().child("UserInfo").child(getUid()).child("profilePictureUrl").setValue(imageUrl).addOnCompleteListener(task1 -> {
+                if (task1.isSuccessful()) {
+                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                            .setDisplayName(userInfo.getFullName())
+                            .setPhotoUri(Uri.parse(imageUrl))
+                            .build();
+                    user.updateProfile(profileUpdates);
+                    callback.onSet();
+                }
+            }).addOnFailureListener(e -> callback.onFall(e));
+
+        }
+    }));
 
 
-    public void SetupMediaLinks(ArrayList<LinksModels> models,SetupMediaLinksCallback callback){
+
+
+
+
+
+
+    }
+
+    public void Delete(String imageUrl,UserInfo userInfo,SetupAccountPic callback){
+        database.getReference().child("UserInfo").child(getUid()).child("profilePictureUrl").setValue(imageUrl).addOnCompleteListener(task1 -> {
+            if (task1.isSuccessful()) {
+                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                        .setDisplayName(userInfo.getFullName())
+                        .setPhotoUri(Uri.parse(imageUrl))
+                        .build();
+                user.updateProfile(profileUpdates);
+                callback.onSet();
+            }
+        }).addOnFailureListener(callback::onFall);
+
+    }
+
+
+//
+//    StorageReference storageRef1 = storage.getReference();
+//    StorageReference imageRef = storageRef1.child(userInfo.getId()).child("DP").child("profilePic");
+//    UploadTask uploadTask = imageRef.putFile(profilePic);
+//                uploadTask.addOnProgressListener(taskSnapshot -> {
+//        // ... update a progress bar, etc.
+//    }).addOnSuccessListener(taskSnapshot -> Objects.requireNonNull(Objects.requireNonNull(taskSnapshot.getMetadata()).getReference()).getDownloadUrl().addOnCompleteListener(task -> {
+//        if (task.isSuccessful()) {
+//            Uri downloadUrl = task.getResult();
+//            String imageUrl = downloadUrl.toString();
+//            database.getReference().child("UserInfo").child(getUid()).child("profilePictureUrl").setValue(imageUrl).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                @Override
+//                public void onComplete(@NonNull Task<Void> task) {
+//                    if (task.isSuccessful()) {
+//                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+//                                .setDisplayName(userInfo.getFullName())
+//                                .setPhotoUri(Uri.parse(imageUrl))
+//                                .build();
+//                        user.updateProfile(profileUpdates);
+//                        callback.onSet();
+//                    }
+//                }
+//            }).addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception e) {
+//                    callback.onFall(e);
+//
+//                }
+//            });
+//        }
+//    }));
+
+
+
+
+
+
+
+    public void SetupMediaLinks(ArrayList<LinksModels> models, SetupMediaLinksCallback callback) {
         database.getReference().child("UserInfo").child(getUid()).child("LinksModels").setValue(models).addOnCompleteListener(task -> {
 //  TODO: add call back to this function
             callback.onLinksModelsSetup();
@@ -230,10 +373,9 @@ public class AuthService {
         userInfoRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
+                if (snapshot.exists()) {
                     ArrayList<LinksModels> linksModelsList = new ArrayList<>();
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren())
-                    {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         // Assuming LinksModels has a constructor that takes DataSnapshot as an argument
                         LinksModels linksModel = dataSnapshot.getValue(LinksModels.class);
                         linksModelsList.add(linksModel);

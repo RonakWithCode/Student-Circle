@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Student Circle</string>
+    <string name="app_name">hair hook</string>
     <string name="crazy_studio">Ronosoft studio</string>
     <string name="HaveAccount">Already have an Account?</string>
     <string name="create_account">Create a new Account</string>
@@ -171,6 +171,19 @@
     <string name="add_links">Add Links</string>
     <string name="tap_edit_or_remove_link">Tap Edit or remove link.</string>
     <string name="remove">remove</string>
+    <string name="show_media_links">Show Media links</string>
+    <string name="show_contact_phone">Show Contact Phone</string>
+    <string name="show_custom_button">Show Custom button -------></string>
+    <string name="show_custom_button_hint_text">Tap to see how your profile look like and you change text or action on button  \n</string>
+    <string name="show_contact_e_mail">Show Contact E-mail</string>
+    <string name="sync_with_another_apps">Sync with another apps</string>
+    <string name="set_up_backup_service">Set up backup service</string>
+    <string name="show_on_profile">show on profile</string>
+    <string name="upload_a_profile_picture">Upload a profile picture</string>
+    <string name="set_the_phone_number">set the Phone number</string>
+    <string name="with_country_code">with country code</string>
+    <string name="set_the_e_mail">set the E-mail</string>
+    <string name="e_mail">E-mail</string>
 
 
 </resources>

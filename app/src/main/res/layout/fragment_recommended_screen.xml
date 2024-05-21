@@ -45,6 +45,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/_7sdp"
             android:layout_below="@id/hintView"
             android:background="@color/MainBackgroundColor"
             android:layout_height="wrap_content">

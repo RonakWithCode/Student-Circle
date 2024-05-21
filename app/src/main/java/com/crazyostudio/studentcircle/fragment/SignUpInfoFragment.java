@@ -7,16 +7,24 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -46,6 +54,7 @@ public class SignUpInfoFragment extends Fragment {
     private AuthService service;
     private ProgressDialog bar;
     private String number;
+
     private String token;
     private final int IMAGE_REQUEST_CODE = 123;
     private Uri userImage = Uri.parse("https://firebasestorage.googleapis.com/v0/b/friend-circle-f948a.appspot.com/o/Deffucts%2Fuserimage.png?alt=media&token=ed9dc13c-5810-42af-a66a-12cf861e9acc");
@@ -95,8 +104,8 @@ public class SignUpInfoFragment extends Fragment {
                 bar.setMessage("This may take a few minutes");
                 bar.show();
                 UserInfo userInfo = new UserInfo(service.getUid(),token, Objects.requireNonNull(binding.Name.getText()).toString(), Objects.requireNonNull(binding.Name.getText()).toString(),binding.Bio.getText().toString(),null, Objects.requireNonNull(binding.Mail.getText()).toString(),number,null,null,
-                        "public",null,0,0,null);
-                service.SetupAccount(userInfo, userImage, new AuthService.CallbackSetupAccount() {
+                        "public",null,0,0,null,System.currentTimeMillis());
+                service.SetupAccount(userInfo, userImage, requireContext(),new AuthService.CallbackSetupAccount() {
                     @Override
                     public void onSuccess() {
                         if (bar.isShowing()) {
@@ -120,47 +129,49 @@ public class SignUpInfoFragment extends Fragment {
             }
         });
         return binding.getRoot();
+
     }
 
 
 
 
     private void ShowDialog() {
-        ImgaepickerBinding imgaepickerBinding = ImgaepickerBinding.inflate(getLayoutInflater());
-        Dialog dialog = new Dialog(getContext());
-// Set the layout parameters to center the layout
-        dialog.setContentView(imgaepickerBinding.getRoot());
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.createsubjectsboxbg);
-        dialog.setCancelable(true);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.Animationboy;
-        dialog.show();
-        imgaepickerBinding.camera.setOnClickListener(view -> {
-            // Check if the camera permission is already granted.
-            if (isCameraPermissionGranted()) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(requireContext().getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, IMAGE_REQUEST_CODE);
-                }
+        final Dialog dialogBox = new Dialog(requireContext());
+        dialogBox.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogBox.setContentView(R.layout.profile_pic_selecter_bottom_sheet_layout);
+        ImageView UserDP =  dialogBox.findViewById(R.id.Pic);
+        Glide.with(requireContext()).load(userImage).into(UserDP);
 
-            } else {
-                // Camera permission is not granted. Request permission from the user.
-                dialog.dismiss();
-                requestCameraPermission();
-            }
-
-        });
-        imgaepickerBinding.photo.setOnClickListener(view -> {
+        LinearLayout upload_profile_pic_Layout = dialogBox.findViewById(R.id.upload_profile_pic);
+        LinearLayout delete_btu_Layout = dialogBox.findViewById(R.id.delete_btu);
+        TextView textView = dialogBox.findViewById(R.id.text2);
+        textView.setText("use default Image");
+        upload_profile_pic_Layout.setOnClickListener(v -> {
             pickMedia.launch(new PickVisualMediaRequest.Builder()
                     .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
                     .build());
+            dialogBox.dismiss();
 
-            dialog.dismiss();
         });
-        imgaepickerBinding.cancel.setOnClickListener(view -> dialog.dismiss());
+        delete_btu_Layout.setOnClickListener(v -> {
+            userImage = getUriFromDrawable(R.drawable.userimage);
+            Glide.with(requireContext()).load(userImage).into(binding.userImage);
+            dialogBox.dismiss();
+        });
+
+
+
+        dialogBox.show();
+        dialogBox.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialogBox.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialogBox.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialogBox.getWindow().setGravity(Gravity.BOTTOM);
 
     }
-
+    public  Uri getUriFromDrawable(int drawableId) {
+        // Build a Uri with the resource identifier
+        return Uri.parse("android.resource://" + requireContext().getPackageName() + "/" + drawableId);
+    }
     ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
             registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
                 // Callback is invoked after the user selects a media item or closes the
@@ -169,33 +180,13 @@ public class SignUpInfoFragment extends Fragment {
 //                    Log.d("PhotoPicker", "Selected URI: " + uri);
                     userImage = uri;
                     Glide.with(this).load(userImage).into(binding.userImage);
+
                 } else {
-//                    Log.d("PhotoPicker", "No media selected");
                     binding.error.setError("No media selected");
+                    binding.error.setVisibility(View.VISIBLE);
                 }
             });
-    private boolean isCameraPermissionGranted() {
-        return ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
-    }
-    private void requestCameraPermission() {
-        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Camera permission granted. You can use the camera here.
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(requireContext().getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, IMAGE_REQUEST_CODE);
-                }
 
-            } else {
-                // Camera permission denied. Handle it accordingly (e.g., show a message to the user).
-                Toast.makeText(requireContext(), "Camera permission denied", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
     private void setupErrorHandling(TextInputEditText editText, TextInputLayout textInputLayout, String errorMessage)  {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -218,20 +209,8 @@ public class SignUpInfoFragment extends Fragment {
             }
         });
     }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK) {
-            assert data != null;
-            Uri imageUri = data.getData();
-            Glide.with(this).load(imageUri).into(binding.userImage);
-            userImage = imageUri;
-        }
-    }
     private boolean validateInputs() {
         boolean isValid = true;
-
         // Check Name
         String name = Objects.requireNonNull(binding.Name.getText()).toString().trim();
         setErrorOnField(binding.textField, TextUtils.isEmpty(name) ? "Name cannot be empty" : null);
