@@ -45,6 +45,8 @@
     <color name="MainBackgroundColor">#ffff</color>
     <color name="RecommendedScreenFragmentBackgroundColor">#f6f6f6</color>
     <color name="MainTextColor">#000000</color>
+
+    <color name="OTextColor">#000000</color>
     <color name="HintMainTextColor">#666666</color>
     <color name="BlackMainTextColor">#ffff</color>
 
@@ -83,5 +85,15 @@
 
 
     <color name="iconBackEmailOrPass">#ffff</color>
+    <color name="lavender">#8692f7</color>
+
+
+
+    <!--Navigation Drawer  Color -->
+    <color name="NavigationColor">#2754B1</color>
+
+    <color name="SaveTextColor">#6200EE</color>
+    <color name="CancelTextColor">#94abdc</color>
+    <color name="save_text_color">#6200EE</color>
 
 </resources>

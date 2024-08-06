@@ -1,8 +1,8 @@
 <resources>
     <!-- Base application theme. -->
     <style name="Theme.StudentCircle" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <item name="colorPrimary">@color/green</item>
-        <item name="colorPrimaryVariant">@color/green</item>
+        <item name="colorPrimary">@color/NavigationColor</item>
+        <item name="colorPrimaryVariant">@color/NavigationColor</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -39,5 +39,10 @@
     <style name="Animationboy">
         <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+  <!-- Base application theme. -->
+    <style name="Base.Theme.StudentCircle" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your dark theme here. -->
+        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
     </style>
 </resources>

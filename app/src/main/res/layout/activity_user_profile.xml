@@ -7,123 +7,18 @@
     android:background="@color/User_ProfileBackground"
     tools:context=".user.User_Profile">
 
-    <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/userImage"
-        android:layout_width="190dp"
-        android:layout_height="190dp"
-        android:layout_marginTop="15dp"
-        android:scaleType="center"
-        android:adjustViewBounds="true"
-        android:src="@drawable/userimage"
-        android:layout_centerHorizontal="true"
-        app:riv_border_color="#333333"
-        app:riv_border_width="2dip"
-        app:riv_corner_radius="30dip"
-        app:riv_oval="true" />
 
-
-    <LinearLayout
-        android:layout_centerHorizontal="true"
-        android:id="@+id/Group_Linear"
-        android:layout_marginStart="@dimen/_25sdp"
-        android:layout_marginEnd="@dimen/_25sdp"
-        android:orientation="vertical"
-        android:layout_below="@id/userImage"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_profile_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/profile_auth_nav" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textField"
-            android:layout_width="match_parent"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:textColorHint="@color/MainTextColor"
-            android:layout_height="wrap_content"
-            app:counterEnabled="true"
-            app:counterMaxLength="20"
-            android:hint="@string/name">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/NameEditText"
-                android:layout_width="match_parent"
-                android:textColorHint="@color/MainTextColor"
-                android:textColor="@color/MainTextColor"
-                android:autofillHints="username"
-                android:inputType="textPersonName"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:id="@+id/Mail_layout"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:textColorHint="@color/MainTextColor"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_height="wrap_content"
-            android:hint="@string/mail">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/Mail"
-                android:inputType="textEmailAddress"
-                android:layout_width="match_parent"
-                android:autofillHints="emailAddress"
-                android:textColorHint="@color/MainTextColor"
-                android:layout_height="wrap_content"
-                android:textColor="@color/MainTextColor"
-
-                />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/bio_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:hint="@string/bio"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            app:counterEnabled="true"
-            app:hintEnabled="false"
-            app:counterMaxLength="50">
-
-            <AutoCompleteTextView
-                android:id="@+id/Bio"
-                android:inputType="textEmailAddress"
-                android:layout_width="match_parent"
-                android:autofillHints="emailAddress"
-                android:textColorHint="@color/MainTextColor"
-                android:layout_height="wrap_content"
-                android:textColor="@color/MainTextColor"
-                tools:ignore="LabelFor" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-    </LinearLayout>
-
-
-    <ProgressBar
-        android:id="@+id/progressCircular"
-        android:layout_width="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_height="wrap_content"/>
-
-
-    <Button
-        android:layout_below="@+id/Group_Linear"
-        android:id="@+id/save"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:background="@drawable/roundcolorbutton"
-        android:text="@string/save"
-        android:textAlignment="center"
-        android:textSize="22sp"
-        android:theme="@style/Theme.FriendCircle.bts"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </RelativeLayout>

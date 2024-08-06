@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dialogbg">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/userimage"
+            android:id="@+id/Pic"
+            android:scaleType="fitXY"
+            android:layout_width="@dimen/_45sdp"
+            android:layout_height="@dimen/_45sdp"
+
+            android:padding="8dp"
+            android:textColor="@color/lavender"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="5dp"/>
+
+    </RelativeLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/upload_profile_pic"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:padding="10dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/upload_icon_24"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/upload_a_profile_picture"
+            android:textColor="@color/MainTextColor"
+            android:layout_marginStart="30dp"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/delete_btu"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_delete_24"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/delete"
+            android:id="@+id/text2"
+            android:textColor="@color/MainTextColor"
+            android:layout_marginStart="30dp"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

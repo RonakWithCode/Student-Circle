@@ -1,0 +1,38 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/MainBackgroundColor"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/followProfileImageView"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/ic_launcher_background"/>
+
+    <!-- User Name Being Followed -->
+    <TextView
+        android:layout_centerVertical="true"
+        android:id="@+id/followUserNameTextView"
+        android:textColor="@color/MainTextColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/followProfileImageView"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:text="Username"
+        android:textSize="@dimen/_16ssp"
+        android:textStyle="bold"/>
+
+
+
+    <!-- Follow Button -->
+    <Button
+        android:text="Follow"
+        android:id="@+id/followButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:textSize="@dimen/_14ssp"/>
+
+</RelativeLayout>

@@ -137,4 +137,5 @@
         android:text="@string/get_help_in_login"
         android:layout_alignParentBottom="true"
         />
+
 </RelativeLayout>

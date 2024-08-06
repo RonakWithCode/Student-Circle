@@ -1,0 +1,5 @@
+<!-- res/drawable/round_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/HintMainTextColor" />
+    <corners android:radius="12dp" /> <!-- You can adjust the radius as needed -->
+</shape>

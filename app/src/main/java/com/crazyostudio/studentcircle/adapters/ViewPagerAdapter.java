@@ -30,6 +30,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         return fragments.get(position);
     }
 
+
     @Override
     public int getCount() {
         return fragments.size();

@@ -16,7 +16,7 @@ import java.net.URL;
 
 public class IpGeolocationTask extends AsyncTask<String, Void, String> {
 
-    private static final String API_KEY = "3936bf9a40da22e787a370aecf4908cd\n"; // Replace with your ipstack API key
+    private static final String API_KEY = "3936bf9a40da22e787a370aecf4908cd"; // Replace with your ipstack API key
     private static final String API_URL = "http://api.ipstack.com/";
 
     private IpGeolocationListener listener;

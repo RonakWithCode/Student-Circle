@@ -48,6 +48,7 @@ import java.util.Date;
 import java.util.Objects;
 public class ChatAdapters extends  RecyclerView.Adapter{
     ChatAdaptersInterface adaptersInterface;
+
     ArrayList<Chat_Model> ChatModels;
     Activity activity_;
     Context context;

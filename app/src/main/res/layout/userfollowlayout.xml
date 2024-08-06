@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/MainBackgroundColor"
+    android:padding="16dp">
+
+    <!-- Profile Image of the User Being Followed -->
+    <ImageView
+        android:id="@+id/followProfileImageView"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/ic_launcher_background"
+        android:contentDescription="@string/user_dp" />
+
+    <!-- User Name Being Followed -->
+    <TextView
+        android:id="@+id/followUserNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/MainTextColor"
+        android:layout_toEndOf="@id/followProfileImageView"
+        android:layout_marginTop="@dimen/_6sdp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:textSize="@dimen/_16ssp"
+        android:textStyle="bold"/>
+
+    <!-- Follow Button -->
+    <Button
+        android:id="@+id/followButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:text="@string/follow"
+        android:backgroundTint="@color/purple_500"
+        android:textSize="@dimen/_14ssp"/>
+
+</RelativeLayout>

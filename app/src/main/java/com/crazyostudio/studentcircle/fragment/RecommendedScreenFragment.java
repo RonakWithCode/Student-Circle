@@ -1,24 +1,43 @@
 package com.crazyostudio.studentcircle.fragment;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.location.Location;
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.crazyostudio.studentcircle.MainActivity;
 import com.crazyostudio.studentcircle.R;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.crazyostudio.studentcircle.adapters.UserFollowAdapter;
+import com.crazyostudio.studentcircle.databinding.FragmentRecommendedScreenBinding;
+import com.crazyostudio.studentcircle.model.UserInfo;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 
-public class RecommendedScreenFragment extends Fragment {
-    private FusedLocationProviderClient fusedLocationClient;
+public class RecommendedScreenFragment extends Fragment implements UserFollowAdapter.UserFollowInterface {
+    FragmentRecommendedScreenBinding binding;
+    FirebaseDatabase database;
+    UserFollowAdapter adapter;
+    List<UserInfo> user;
+    String currentUserId;
+    FirebaseAuth auth;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,26 +48,168 @@ public class RecommendedScreenFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentRecommendedScreenBinding.inflate(inflater, container, false);
+        database = FirebaseDatabase.getInstance();
+        currentUserId = FirebaseAuth.getInstance().getUid();
+        user = new ArrayList<>();
+        adapter = new UserFollowAdapter(user, requireContext(), this);
+        LinearLayoutManager manager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
+        binding.RecyclerUser.setLayoutManager(manager);
+        binding.RecyclerUser.setAdapter(adapter);
+        auth = FirebaseAuth.getInstance();
+        binding.next.setOnClickListener(v -> {
+            requireActivity().finish();
+            startActivity(new Intent(requireContext(), MainActivity.class));
+        });
+        LoadUser();
+        return binding.getRoot();
 
-        requestLocationUpdates();
-
-        return inflater.inflate(R.layout.fragment_recommended_screen, container, false);
     }
 
-    private void requestLocationUpdates() {
 
-        fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location != null) {
-                            double latitude = location.getLatitude();
-                            double longitude = location.getLongitude();
-                            // Do something with the latitude and longitude
-                        }
+    void LoadUser() {
+//        database.getReference().child("UserInfo").addValueEventListener(new ValueEventListener() {
+//            @SuppressLint("NotifyDataSetChanged")
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                for (DataSnapshot data : snapshot.getChildren()) {
+//                    UserInfo userInfo = data.getValue(UserInfo.class);
+//                    if (userInfo != null && userInfo.isActive() && userInfo.getAccountVisibility().equals("public") && !userInfo.getId().equals(FirebaseAuth.getInstance().getUid())) {
+//                        user.add(userInfo);
+//                    }
+//                }
+//                adapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Log.i("ERROR_onCancelled", "onCancelled: " + error);
+//            }
+//        });
+        database.getReference().child("UserInfo").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    UserInfo userInfo = data.getValue(UserInfo.class);
+                    if (userInfo != null && userInfo.isActive() && userInfo.getAccountVisibility().equals("public") && !userInfo.getId().equals(FirebaseAuth.getInstance().getUid())) {
+                        binding.RecyclerUser.setVisibility(View.VISIBLE);
+                        binding.progressCircular.setVisibility(View.GONE);
+                        binding.notFound.setVisibility(View.GONE);
+                        user.add(userInfo);
                     }
-                });
+                }
+                adapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
+
+    @SuppressLint("SetTextI18n")
+    @Override
+    public void Follow(UserInfo userInfo, Button followBTN) {
+        String otherUserId = userInfo.getId();
+        ArrayList<String> currentUserFollowingIds = new ArrayList<>();
+        ArrayList<String> otherUserIdsArray = new ArrayList<>();
+
+        if (followBTN.getText().equals("following...")) {
+
+            database.getReference().child("followInfo").child(Objects.requireNonNull(auth.getUid())).child("following").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    if (snapshot.exists())
+                    for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                        String followingUserId = childSnapshot.getValue(String.class);
+                        currentUserFollowingIds.add(followingUserId);
+                    }
+                    currentUserFollowingIds.remove(otherUserId);
+                    database.getReference().child("followInfo").child(auth.getUid()).child("following").setValue(currentUserFollowingIds);
+                    database.getReference().child("UserInfo").child(currentUserId).child("followingCount").setValue(currentUserFollowingIds.size());
+
+                    database.getReference().child("followInfo").child(otherUserId).child("followers").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                                if (snapshot.exists()) {
+                            for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                                String OtherFollowingUserId = childSnapshot.getValue(String.class);
+                                otherUserIdsArray.add(OtherFollowingUserId);
+                            }
+                            otherUserIdsArray.remove(currentUserId);
+                            database.getReference().child("followInfo").child(otherUserId).child("followers").setValue(otherUserIdsArray);
+                            database.getReference().child("UserInfo").child(otherUserId).child("followersCount").setValue(otherUserIdsArray.size());
+                        }
+//                                }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+            followBTN.setText("follow");
+            followBTN.setBackgroundColor(ContextCompat.getColor(requireContext(),R.color.purple_500));
+            followBTN.setTextColor(Color.WHITE);
+
+        }else {
+            database.getReference().child("followInfo").child(Objects.requireNonNull(auth.getUid())).child("following").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    if (snapshot.exists())
+
+                    for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                            String followingUserId = childSnapshot.getValue(String.class);
+                            currentUserFollowingIds.add(followingUserId);
+                        }
+                        currentUserFollowingIds.add(otherUserId);
+                        database.getReference().child("followInfo").child(auth.getUid()).child("following").setValue(currentUserFollowingIds);
+                        database.getReference().child("UserInfo").child(currentUserId).child("followingCount").setValue(currentUserFollowingIds.size());
+                        database.getReference().child("followInfo").child(otherUserId).child("followers").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                                if (snapshot.exists()) {
+                                    for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                                        String OtherFollowingUserId = childSnapshot.getValue(String.class);
+                                        otherUserIdsArray.add(OtherFollowingUserId);
+                                    }
+                                    otherUserIdsArray.add(currentUserId);
+                                    database.getReference().child("followInfo").child(otherUserId).child("followers").setValue(otherUserIdsArray);
+                                    database.getReference().child("UserInfo").child(otherUserId).child("followersCount").setValue(otherUserIdsArray.size());
+                            }
+//                                }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    }
+
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            followBTN.setText("following...");
+            followBTN.setBackgroundColor(Color.WHITE);
+            followBTN.setTextColor(Color.BLACK); // Replace with the desired text color
+
+
+        }
+    }
+
+
 }

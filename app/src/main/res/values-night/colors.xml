@@ -24,5 +24,6 @@
     <color name="FixColorWhite">#ffff</color>
     <color name="RecView">#202c33</color>
     <color name="iconBackEmailOrPass">#ffff</color>
-
+    <!--Navigation Drawer  Color -->
+    <color name="NavigationColor">#2857B8</color>
 </resources>

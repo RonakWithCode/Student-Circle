@@ -15,7 +15,7 @@ public class UserInfo {
     private String email;
     private String PhoneNumber;
     private LocalDate dateOfBirth;
-    private List<String> ProfileLink;
+    private List<LinksModels> LinksModels;
     private String AccountVisibility;
     private List<String> blockUserId;
     private int followersCount;
@@ -26,7 +26,7 @@ public class UserInfo {
     private boolean isDeal_notificationBool;
     private boolean isAccount_shipping_notificationBool;
 
-
+    private long time;
 
 
     public UserInfo(String id, String username, String fullName, String bio, String profilePictureUrl, int followersCount, int followingCount, List<String> mediaIds) {
@@ -52,7 +52,7 @@ public class UserInfo {
 
 
 //   This is main
-    public UserInfo(String id,String token ,String username, String fullName, String bio, String profilePictureUrl, String email, String phoneNumber, LocalDate dateOfBirth, List<String> profileLink, String accountVisibility, List<String> blockUserId, int followersCount, int followingCount, List<String> mediaIds) {
+    public UserInfo(String id,String token ,String username, String fullName, String bio, String profilePictureUrl, String email, String phoneNumber, LocalDate dateOfBirth, List<LinksModels> profileLink, String accountVisibility, List<String> blockUserId, int followersCount, int followingCount, List<String> mediaIds,long time_) {
         this.id = id;
         this.token = token;
         this.username = username;
@@ -62,12 +62,13 @@ public class UserInfo {
         this.email = email;
         PhoneNumber = phoneNumber;
         this.dateOfBirth = dateOfBirth;
-        ProfileLink = profileLink;
+        LinksModels = profileLink;
         AccountVisibility = accountVisibility;
         this.blockUserId = blockUserId;
         this.followersCount = followersCount;
         this.followingCount = followingCount;
         this.mediaIds = mediaIds;
+        this.time = time_;
         isActive = true;
         isPrivacy_modeBool = true;
         isDeal_notificationBool = true;
@@ -75,6 +76,15 @@ public class UserInfo {
     }
 
     public UserInfo(){}
+
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
+    }
 
     public String getToken() {
         return token;
@@ -140,12 +150,12 @@ public class UserInfo {
         PhoneNumber = phoneNumber;
     }
 
-    public List<String> getProfileLink() {
-        return ProfileLink;
+    public List<com.crazyostudio.studentcircle.model.LinksModels> getLinksModels() {
+        return LinksModels;
     }
 
-    public void setProfileLink(List<String> profileLink) {
-        ProfileLink = profileLink;
+    public void setLinksModels(List<com.crazyostudio.studentcircle.model.LinksModels> linksModels) {
+        LinksModels = linksModels;
     }
 
     public String getAccountVisibility() {

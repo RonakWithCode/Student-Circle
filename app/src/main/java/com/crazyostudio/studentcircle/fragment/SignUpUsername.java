@@ -14,15 +14,31 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.crazyostudio.studentcircle.R;
+import com.crazyostudio.studentcircle.Service.AuthService;
 import com.crazyostudio.studentcircle.databinding.FragmentSignUpUsernameBinding;
+import com.google.firebase.database.DatabaseError;
 
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SignUpUsername extends Fragment {
-    FragmentSignUpUsernameBinding binding;
 
-    public SignUpUsername() {
-        // Required empty public constructor
+//    AuthService
+
+    FragmentSignUpUsernameBinding binding;
+    private String number;
+    private String token;
+    public SignUpUsername() {}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            number = getArguments().getString("number");
+            token = getArguments().getString("token");
+        }else {
+            requireActivity().onBackPressed();
+        }
     }
 
     @Override
@@ -40,11 +56,9 @@ public class SignUpUsername extends Fragment {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.length()==0){
                     binding.NameField.setError("Input Username..");
-                    binding.NameField.setErrorEnabled(true);
-                    binding.Next.setEnabled(false);
+                    SetError("Input the valid Username");
                 }else {
                     binding.NameField.setErrorEnabled(false);
-                    binding.Next.setEnabled(true);
                 }
             }
 
@@ -53,14 +67,55 @@ public class SignUpUsername extends Fragment {
 
             }
         });
-//        binding.Next.setOnClickListener(go->{
-//            Bundle bundle = new Bundle();
-//            bundle.putString("username", Objects.requireNonNull(binding.Name.getText()).toString());
-//            NavHostFragment navHostFragment = (NavHostFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-//            assert navHostFragment != null;
-//            NavController navController = navHostFragment.getNavController();
-//            navController.navigate(R.id.action_signUpUsername_to_signUpInfoFragment,bundle);
-//        });
+        binding.Next.setOnClickListener(go->{
+            String text = binding.Name.getText().toString();
+            Pattern pattern = Pattern.compile("^[a-zA-Z0-9_]*$");
+
+// Use a Matcher to check if the text matches the pattern
+            Matcher matcher = pattern.matcher(text);
+
+// Check if the text matches the pattern
+            if (matcher.matches()) {
+                checkUserName();
+            } else {
+                SetError("The text contains A TO Z 1234 _");
+
+            }
+        });
         return binding.getRoot();
+    }
+
+
+    void checkUserName(){
+        AuthService authService = new AuthService();
+        authService.checkUsername(Objects.requireNonNull(binding.Name.getText()).toString(), new AuthService.CallbackUsername() {
+            @Override
+            public void onUsernameExists(boolean Is) {
+                if (!Is){
+                    SendToSetupAccount();
+                }else {
+                    SetError("the username is exists");
+                }
+            }
+
+            @Override
+            public void onError(DatabaseError error) {
+                SetError(error.toString());
+            }
+        });
+    }
+    void SetError(String error){
+        binding.NameField.setError(error);
+        binding.NameField.setErrorEnabled(true);
+    }
+    void SendToSetupAccount(){
+        Bundle bundle = new Bundle();
+        bundle.putString("username", Objects.requireNonNull(binding.Name.getText()).toString());
+        bundle.putString("token",token);
+        bundle.putString("number",number);
+        NavHostFragment navHostFragment = (NavHostFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        assert navHostFragment != null;
+        NavController navController = navHostFragment.getNavController();
+        navController.navigate(R.id.action_signUpUsername_to_signUpInfoFragment,bundle);
     }
 }

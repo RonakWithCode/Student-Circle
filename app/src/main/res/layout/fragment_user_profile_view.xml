@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/MainBackgroundColor"
+    tools:context=".fragment.UserProfileViewFragment">
+
+    <LinearLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/_19sdp"
+            android:text="@string/username"
+            android:textColor="@color/MainTextColor"
+            android:textSize="@dimen/_16ssp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/userInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/UserDP"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="@dimen/_90sdp"
+            android:layout_marginTop="5dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/userimage"
+            app:riv_oval="true" />
+
+        <TextView
+            android:id="@+id/post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:text="0\nposts"
+            android:textAlignment="center"
+            android:textColor="@color/MainTextColor"
+            android:textSize="@dimen/_16ssp" />
+
+        <TextView
+            android:id="@+id/follow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:text="0\nfollow"
+            android:textAlignment="center"
+            android:textColor="@color/MainTextColor"
+            android:textSize="@dimen/_16ssp" />
+
+        <TextView
+            android:id="@+id/following"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:text="0\nfollowing"
+            android:textAlignment="center"
+            android:textColor="@color/MainTextColor"
+            android:textSize="@dimen/_16ssp" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/userInfo"
+        android:layout_marginStart="@dimen/_6sdp"
+        android:layout_marginTop="@dimen/_6sdp"
+        android:text="@string/name"
+        android:textColor="@color/MainTextColor" />
+
+
+    <TextView
+        android:id="@+id/bio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Name"
+        android:layout_marginStart="@dimen/_7sdp"
+        android:layout_marginTop="@dimen/_6sdp"
+        android:text="@string/bio"
+        android:textColor="@color/MainTextColor" />
+
+
+    <LinearLayout
+        android:id="@id/button_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/bio"
+        android:layout_marginTop="@dimen/_5sdp">
+
+        <Button
+            android:id="@+id/editBtu"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_weight="2"
+            android:backgroundTint="@color/FixColorWhite"
+            android:text="Edit"
+            android:textColor="@color/FixColorBlack" />
+
+        <Button
+            android:id="@+id/messageBtu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_weight="2"
+            android:backgroundTint="@color/FixColorWhite"
+            android:text="Share Profile"
+            android:textColor="@color/FixColorBlack" />
+
+
+    </LinearLayout>
+
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_layout"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@color/MainBackgroundColor"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        app:tabTextColor="@color/MainTextColor" />
+
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_below="@id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/MainBackgroundColor"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
+</RelativeLayout>
